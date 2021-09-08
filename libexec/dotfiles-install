@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+# Summary: Search for all install.sh inside DOTFILES_ROOT and execute it
+#
+# Search for all install.sh inside DOTFILES_ROOT and execute it
+
+# http://redsymbol.net/articles/unofficial-bash-strict-mode/
+set -euo pipefail
+IFS=$'\n\t'
+
+DOTFILES_ROOT="${1:?Usage: dotfiles-bin-path DOTFILES_ROOT_PATH}"
+source "${DOTFILES_ROOT}/libexec/helpers"
+
+install_filepaths=$(find -H "$DOTFILES_ROOT" -type f -name "install.sh")
+debug_msg "Paths found: $install_filepaths"
+
+for installer in $install_filepaths
+do
+    debug_msg "Install $installer"
+    sh -c "$installer"
+
+    if [[ $? != 0 ]]
+    then
+        fail_msg "Failed to Install $installer"
+    fi
+done
+

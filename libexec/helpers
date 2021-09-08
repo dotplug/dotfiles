@@ -1,0 +1,121 @@
+#!/usr/bin/env bash
+
+# ==========================================================================
+# PRINT FUNCTION HELPERS
+# ==========================================================================
+
+info_msg () {
+    printf "\r  [ \033[00;34mINFO\033[0m ] $1\n"
+}
+
+debug_msg () {
+#     set +u
+#     if [[ -n $DOTFILES_DEBUG ]]
+#     then
+        printf "\r  [ \033[0;33mDEBUG\033[0m ] $1\n"
+#     fi
+#     set -u
+}
+
+# This function is used to update the filename of the debug
+set_debug_file_label() {
+    # Get current script directory
+    script_file=${1:-$BASH_SOURCE}
+    script_dir=$(dirname $script_file)
+}
+
+success_msg () {
+    printf "\r\033[2K  [ \033[00;32mOK\033[0m ] $1\n"
+}
+
+fail_msg () {
+    printf "\r\033[2K  [ \033[0;31mFAIL\033[0m ] $1\n"
+    exit
+}
+
+# ==========================================================================
+# DOTFILES
+# ==========================================================================
+
+
+# This functions will perform the symlink between a SRC and DEST and will behave idempotently asking for actions in have conflicts
+_link_file () {
+    set_debug_file_label "$BASH_SOURCE"
+
+    local src=$1 dst=$2 
+    local overwrite_all=${3:-"false"} 
+    local backup_all=${4:-"false"} 
+    local skip_all=${5:-"false"}
+
+    local overwrite= backup= skip=
+    local action=
+
+    info_msg "[$script_file] SRC=$src, DST=$dst, OVERWRITE_ALL=$overwrite_all, BACKUP_ALL=$backup_all, SKIP_ALL=$skip_all"
+
+    if [ -f "$dst" -o -d "$dst" -o -L "$dst" ]
+    then
+        if [ "$overwrite_all" == "false" ] && [ "$backup_all" == "false" ] && [ "$skip_all" == "false" ]
+        then
+            local currentSrc="$(readlink $dst)"
+
+            if [ "$currentSrc" == "$src" ]
+            then
+                debug_msg "[$script_file] Current directory $currentSrc its the same that source $src, no action required."
+                skip=true;
+            else
+
+                debug_msg "File already exists: $dst ($(basename "$src")), what do you want to do?\n\
+                    [s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?"
+                read -n 1 action
+
+                case "$action" in
+                    o )
+                        overwrite=true;;
+                    O )
+                        overwrite_all=true;;
+                    b )
+                        backup=true;;
+                    B )
+                        backup_all=true;;
+                    s )
+                        skip=true;;
+                    S )
+                        skip_all=true;;
+                    * )
+                        ;;
+                esac
+            fi
+        fi
+
+        overwrite=${overwrite:-$overwrite_all}
+        backup=${backup:-$backup_all}
+        skip=${skip:-$skip_all}
+
+
+        debug_msg "[$script_file] OVERWRITE=$overwrite, BACKUP=$backup, SKIP=$skip"
+
+        if [ "$overwrite" == "true" ]
+        then
+            rm -rf "$dst"
+            success_msg "removed $dst"
+        fi
+
+        if [ "$backup" == "true" ]
+        then
+            mv "$dst" "${dst}.backup"
+            success_msg "moved $dst to ${dst}.backup"
+        fi
+
+        if [ "$skip" == "true" ]
+        then
+            success_msg "skipped $src"
+        fi
+    fi
+
+    if [ "$skip" != "true" ]  # "false" or empty
+    then
+        ln -s "$1" "$2"
+        success_msg "linked $1 to $2"
+    fi
+}
+

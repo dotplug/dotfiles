@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+# Summary: Search inside dotfiles "bin" dotfiles directories and add all files inside to /usr/local/bin
+#
+# Search inside dotfiles "bin" dotfiles directories and add all files inside to /usr/local/bin
+
+# http://redsymbol.net/articles/unofficial-bash-strict-mode/
+set -euo pipefail
+IFS=$'\n\t'
+
+DOTFILES_ROOT="${1:?Usage: dotfiles-bin-path DOTFILES_ROOT_PATH}"
+source "${DOTFILES_ROOT}/libexec/helpers"
+
+add_bin_files_to_path () {
+    set_debug_file_label "$BASH_SOURCE"
+
+    info_msg 'Add all files inside bin directories to the $PATH'
+
+    local overwrite_all=false backup_all=false skip_all=false
+
+    bin_filepaths=$(find -H "$DOTFILES_ROOT" -type f -maxdepth 5 -path "**/bin/*")
+    debug_msg "Paths found: $bin_filepaths"
+
+    for src in $bin_filepaths
+    do
+        dst="/usr/local/bin/$(basename ${src})"
+        _link_file "$src" "$dst" "$overwrite_all" "$backup_all" "$skip_all"
+    done
+}
+
+add_bin_files_to_path

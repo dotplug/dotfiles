@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+function red() {
+    local RED='\033[00;31m'
+    local NC='\033[0m'
+    printf "\r ${RED}${*}${NC}\n"
+}
+
+red $*

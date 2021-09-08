@@ -1,0 +1,192 @@
+" Vim general configuration.
+" Find basic vim stuff with some vim plugins
+
+" General Configuration {{{
+" Set <Leader> key
+:let mapleader = ","
+:let maplocalleader = ";"
+
+" Split window
+:nnoremap <silent> <leader>- :split<CR>
+:nnoremap <silent> <leader>\| :vsplit<CR>
+:nnoremap <silent> <leader>x :close<CR>
+
+" Zoom Window
+:noremap <silent> <leader>z :tab split<CR>
+
+" Create vim tab
+" :nnoremap <silent> <leader>t :$tabnew<CR>
+nnoremap <Leader>n <esc>:tabprevious<CR>    " Go to previous tab
+nnoremap <Leader>m <esc>:tabnext<CR>        " Go to next tab
+
+" Center Vim searchs
+:nnoremap n nzz
+:nnoremap N Nzz
+
+" Copy until end of line
+:nnoremap Y y$
+
+" Copy all file to the PRIMARY clipboard
+:nnoremap <leader>Y mmggVG"*y'm
+
+" Copy line to the PRIMARY clipboard
+:nnoremap <leader>y mmV"*y'm
+
+" Copy selection to the PRIMARY clipboard
+:vnoremap <leader>y "*y
+" }}}
+
+" ========================= PLUGINS ========================="
+
+" vim-plug (https://github.com/junegunn/vim-plug) settings  {{{
+" Automatically install vim-plug and run PlugInstall if vim-plug not found
+if empty(glob('~/.vim/autoload/plug.vim'))
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+                \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall | source $MYVIMRC
+endif
+" }}}
+
+" Plugin List {{{
+call plug#begin('~/.vim/plugged')
+
+" Fuzzy Finder
+Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf.vim'
+
+" Specify custom rules for filetypes across different projects
+Plug 'editorconfig/editorconfig-vim'
+
+" All of your Plugins must be added before the following line
+call plug#end()
+" }}}
+
+" FZF Vim (to Fuzzy Find files) {{{
+
+" - Popup window (center of the screen)
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8 } }
+
+" Enable per-command history
+" - History files will be stored in the specified directory
+" - When set, CTRL-N and CTRL-P will be bound to 'next-history' and
+"   'previous-history' instead of 'down' and 'up'.
+let g:fzf_history_dir = '~/.local/share/fzf-history'
+
+" Search git tracked file
+nmap <Leader>f :GFiles<CR>
+" Search all files
+nmap <Leader>F :Files<CR>
+
+" Search all buffers
+nmap <Leader>b :Buffers<CR>
+
+" Search in history
+nmap <Leader>h :History<CR>
+
+" Search tags in buffers
+nmap <Leader>t :BTags<CR>
+" Search tags in all project
+nmap <Leader>T :Tags<CR>
+
+" Lines in current buffer
+nmap <Leader>l :BLines<CR>
+" Lines in loaded buffers
+nmap <Leader>L :Lines<CR>
+
+" Search marked line
+
+" }}}
+
+" ====================== CONFIGURATION ======================"
+
+" Status line {{{
+set laststatus=2                                                                    " show always status bar
+set statusline=                                                                     " clear the statusline for when vimrc is reloaded
+set statusline+=%f\                                                                 " file name
+set statusline+=%h                                                                  " Help file flag
+set statusline+=%m                                                                  " Modified flag
+set statusline+=%r                                                                  " Read only flag
+set statusline+=%=                                                                  " right align
+set statusline+=%-16(%{exists('g:loaded_fugitive')?fugitive#statusline():''}\%)     " Git project status
+set statusline+=col:\ %c\                                                           " Column number
+set statusline+=%l/%L                                                               " Cursor line / total lines
+set statusline+=[%{strlen(&fenc)?&fenc:&enc}]                                       " encoding
+set statusline+=[%{strlen(&ft)?&ft:'none'}]                                         " filetype
+" }}}
+
+" Basic Stuff {{{
+syntax enable                       " Highlight syntax
+filetype plugin indent on           " Detect filetype
+set nocompatible                    " Use Vim setting rather than Vi settings
+
+set encoding=utf-8                  " display with utf-8 characters
+set history=1000                    " Set bigger history of the executed commands
+set showmode                        " Show the current mode at the bottom
+set autoread                        " Automatically re-read files if unmodified inside Vim
+set confirm                         " Display a confirmation dialog when closing an unsaved file
+" }}}
+
+" Indentation: Spaces and tabs {{{
+
+" Tab visually selected blocks
+vnoremap <Tab> >gv
+vnoremap <S-Tab> <gv
+
+set tabstop=4                       " number of visual spaces per tab
+set softtabstop=0                   " number of spaces in tab when editing
+set expandtab                       " tabs are spaces
+set shiftwidth=4                    " size of an indent measured in spaces
+set backspace=indent,eol,start      " backspace always
+set smarttab                        " tab key in insert mode insert spaces or tabs to go to the next indent of the next tabstop when cursor is at the beggining of a line.
+" }}}
+
+" Persistent undo, Swap files and Backup (https://sts10.github.io/2016/02/12/best-of-my-vimrc.html) {{{
+" Save temporary/backup files not in the local directory, but in your ~/.vim
+" directory, to keep them out of git repos.
+" But first mkdir backup, swap, and undo first to make this work
+call system('mkdir ~/.vim')
+call system('mkdir ~/.vim_backup')
+" call system('mkdir ~/.vim_swap')
+set backupdir=~/.vim_backup//       " Double // tells vim to use absolute path to create the file, avoiding collisions of same failes from another directories.
+" set directory=~/.vim_swap//         " Double // tells vim to use absolute path to create the file, avoiding collisions of same failes from another directories.
+
+silent call system('mkdir ~/.vim_undo')
+set undofile " Maintain undo history between sessions
+set undodir=~/.vim_undo//           " Double // tells vim to use absolute path to create the file, avoiding collisions of same failes from another directories.
+set undofile
+set undolevels=1000
+set undoreload=10000
+
+set nobackup                        " Don't perform backup of the file while it's saving
+set nowritebackup                   " Don't perform backup of the file while it's writing
+set noswapfile                      " Don't perform swap file creation in local files
+" }}}
+
+" Finding files {{{
+" :find <pattern> to find in subdirectories
+" :b let´s you autocomplete any open buffer
+" Hit <tab> to :find partial matches
+
+set path+=**                        " Set the path to search to all subdirectories from opened directory. We can search with :find
+set wildmenu                        " Display all matches with tab when we tab complete
+" }}}
+
+" Searching {{{
+" Good stuff in docummented in |ins-completion|
+"
+" In INSERT mode:
+" ^x^n for JUST this file after the cursor
+" ^x^p for just THIS file previous the cursor
+" ^x^l match entire lines and continue with the next one
+" ^x^] for tags
+" ^x^f for files (works with ':set path+=**' trick)
+
+set incsearch                       " search as characters are entered
+set hlsearch                        " highlight matches
+set complete+=kspell                " add spelling completions to words
+
+set ignorecase                      " Ignore cases when searching
+set smartcase                       " Ignore 'ignorecase' if uppercase is written when searching
+" }}}
+
+" vim:foldmethod=marker:foldlevel=0

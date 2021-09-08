@@ -1,91 +1,147 @@
-# dotfiles
+# Introducción
+Este dotfiles pretende cumplir dos funciones:
 
-Proyecto plantilla para el típico sistema de ~/.dotfiles donde guardar la configuración del sistema para facilitar los cambios de ordenador, compartir configuración entre máquinas, reinstalaciones de sistema operativo...
+* Almacen de toda la configuración.
+* Gestión de la instalación de todo el software de forma que se pueda replicar en nuevas máquinas.
 
-## Getting started
+Agradecimientos en particular para los [Dotfiles de Holman](https://github.com/holman/dotfiles), que se pueden encontrar aquí, y en cuya estructura está basado este repositorio:
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+## Instalación
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+0. Copiar las claves de ssh para poder descargarme todos los repositorios
 
-## Add your files
+1. Descargar el repositorio en `~/.dotfiles`. Normalmente los dotfiles suelen ir en el $HOME del directorio en el que se está ejecutando.
 
-- [ ] [Create](https://gitlab.com/-/experiment/new_project_readme_content:39e29bd261e79dedeb2e7333a4560551?https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://gitlab.com/-/experiment/new_project_readme_content:39e29bd261e79dedeb2e7333a4560551?https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://gitlab.com/-/experiment/new_project_readme_content:39e29bd261e79dedeb2e7333a4560551?https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
-
-```
-cd existing_repo
-git remote add origin https://gitlab.com/autentia/internal/dotfiles.git
-git branch -M main
-git push -uf origin main
+```shell
+git@gitlab.com:autentia/internal/dotfiles.git ~/.dotfiles
+cd ~/.dotfiles
 ```
 
-## Integrate with your tools
+2. Aplicar los cambios de configuración:
 
-- [ ] [Set up project integrations](https://gitlab.com/-/experiment/new_project_readme_content:39e29bd261e79dedeb2e7333a4560551?https://docs.gitlab.com/ee/user/project/integrations/)
+```shell
+make setup
+```
 
-## Collaborate with your team
+3. Ya está todo tu proyecto configurado. A continuación se explica el funcionamiento del los comandos
 
-- [ ] [Invite team members and collaborators](https://gitlab.com/-/experiment/new_project_readme_content:39e29bd261e79dedeb2e7333a4560551?https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://gitlab.com/-/experiment/new_project_readme_content:39e29bd261e79dedeb2e7333a4560551?https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://gitlab.com/-/experiment/new_project_readme_content:39e29bd261e79dedeb2e7333a4560551?https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Automatically merge when pipeline succeeds](https://gitlab.com/-/experiment/new_project_readme_content:39e29bd261e79dedeb2e7333a4560551?https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+## Dotfiles
 
-## Test and Deploy
+La ejecución de la configuración está basada en el script de nombre `dotfiles`.
+Este script tiene varios comandos que son explicados a continuación
+A continuación la explicación de
 
-Use the built-in continuous integration in GitLab.
+* `dotfiles install`: Busca todos los ficheros llamados `install.sh` que haya dentro del dotfiles y los ejecuta.
+Con esto puedes separar los procesos de instalación de cada una de tus herramientasy tenerlos de manera replicada.
 
-- [ ] [Get started with GitLab CI/CD](https://gitlab.com/-/experiment/new_project_readme_content:39e29bd261e79dedeb2e7333a4560551?https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://gitlab.com/-/experiment/new_project_readme_content:39e29bd261e79dedeb2e7333a4560551?https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://gitlab.com/-/experiment/new_project_readme_content:39e29bd261e79dedeb2e7333a4560551?https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://gitlab.com/-/experiment/new_project_readme_content:39e29bd261e79dedeb2e7333a4560551?https://docs.gitlab.com/ee/user/clusters/agent/)
+> El propósito de este comando es que se ejeucte con frecuencia para tener tu sistema y todas herramientas gestionadas por este repositorio actualizadas
 
-***
+* `dotfiles bin-path`: Busca todos los ficheros dentro de los directorios bin del repositorio dotfiles y crea un enlace simbólico con `/usr/local/bin` para que sean accesibles.
 
-# Editing this README
+* `dotfiles symlink`: Busca todos los ficheros que cumplan la expresión `*.symlink` para hacer un enlace simbólico en $HOME.
+Mucha configuración requiere o se busca por defecto en $HOME pero nosotros queremos tenerla versionada y de esta forma podemos conseguirlo.
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!).  Thank you to [makeareadme.com](https://gitlab.com/-/experiment/new_project_readme_content:39e29bd261e79dedeb2e7333a4560551?https://www.makeareadme.com/) for this template.
+* `dotfiles git-setup`: Configura la línea de comandos de Git con tu usuario y correo para firmar tus commits cuando estés usando git desde la terminal.
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+> Estos comandos son pensados para ser idempotentes. EX. Todos los script de instalación que crees deben poder ejecutarse siempre sin dar fallos
 
-## Name
-Choose a self-explaining name for your project.
+## Estructura y funcionamiento
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+La jerarquía de los ficheros es importante a la hora de gestionar la configuración, de forma que te permite tener separados distintos apartados por tópicos, aislando el impacto de distintas configuraciones.
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+A cada uno de los directorios lo llamaremos «tópico». Estos tópicos pueden ir desde software a directorios con información específica del proyecto con el que estes trabajando.
+La estructura de estos tópicos es:
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+- **macos/Brewfile**: Esta es una lista de las apliaciones que serán instaladas con Homebrew [Homebrew Cask](http://caskroom.io). Podrías querer editar este fichero antes de hacer la instalación.
+Por defecto siempre trataremos de instalar todo con el gestor de paquetes HomeBrew y este fichero dirá el software que tenemos.
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+- **topic/bin/**: Cualquier cosa dentro de un directorio bin dentro del repositorio será añadida al $PATH, estando disponible en cualquier lugar desde la terminal usando el comando `dotfiles bin-path`.
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+> NOTA: El script de dotfiles está dentro de un directorio bin para que después de la primera ejecución pueda ser ejecutado desde cualquier sitio en la terminal.
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+- **topic/install.sh**: Cualquier fichero llamado `install.sh` serán ejecutado cuando se ejecute la instalación del sistema. Para que no se cargue de forma automática, la extensión es .sh y no .zsh
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+> NOTA: A lo que se con la extensión .sh es que por defecto todos los ficheros con extensión .zsh se cargan como parte del proceso de la shell de zsh.
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+- **topic/\<FILENAME | DIRNAME>.symlink**: Cualquier fichero o directorio que termine en `*.symlink` será puesto como un enlace simbólico en tu $HOME. De esta forma, puedes mantener versionados tus dotfiles, pero cargarlos de forma automática en tu $HOME.
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+Con las siguientes propiedades si tuvieras que añadir la instalación de un nuevo tópico como kubernetes podrias:
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+* Crear un directorio "kubernetes" en la raiz de dotfiles y dentro:
+    * Crear fichero "install.sh" que tenga el proceso de instalación si no está en HomeBrew.
+    * Crear fichero "alias.zsh" para crear alias para el uso de Kubernetes en tu terminal. Este será cargado de forma automatica por tu zshrc al entrar en una nueva terminal.
+    * Crear fichero "functions.zsh" para crear funciones para el uso de Kubernetes en tu terminal. Este será cargado de forma automatica.
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+    >  Podrías crear un solo fichero pero es recomendable tener en distintos ficheros acciones distintas. A tu zsh lo único que le importa es la extenxión.
 
-## License
-For open source projects, say how it is licensed.
+    * Crear un directorio llamado ".kube.symlink" para que se cree en tu home un enlace simbólico llamado .kube. Con esto todos los ficheros que incluyas dentro del repositorio se ven reflejados en tu Home.
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+    > Como se ve aquí, el uso de los symlinks no aplica solo a ficheros, sino también a directorios.
+
+Otro ejemplo podría ser en lugar de un tópico de una nueva herramienta crear uno para almacenar la configuración especifica de un cliente.
+
+* **projects/project_name**: Aquí tenemos directorios por cada uno de los proyectos que necesiten configuración específica. En todos los ficheros usamos un prefijo por proyecto para poder identificar las funciones que usamos por cada proyecto.
+    - **alias.sh**: Fichero con los alias que usamos en este projecto.
+    - **functions.zsh**: Fichero con las funciones específicas. Aquí usamos como convención.
+    - **bin/project_custom_executable**: Ejecutable que se añadirá al path y que es propio del cliente
+    - **install.sh**: Instalación de requerimieentos específicos para un cliente.
+
+> El directorio projects no se debe subir a ningún repositorio ya que tiene información sensible y es opcional crearlo. En el .gitignore está añadido este directorio para evitar subidas accidentales.
+
+
+## Creación de funciones auxiliares
+
+Todas las funciones auxiliares estan dentro del directorio libexec/helpers.
+La intención de este directorio es almacenar todas las funciones que vayan a utilizar los scripts de dotfiles, de forma que sea sencillo actualizar funciones específicas o incluso una migración posterior a Python :D
+
+De esta forma, si queremos crear una nueva función en un nuevo fichero «functions_example» una plantilla sería añadir:
+
+```shell
+#!/bin/bash
+
+# file: $HOME/.dotfiles/libexec/helpers
+
+example_function(){
+    info_msg 'Prueba de concepto'
+    ls -lahtr
+
+    success_msg 'Biers'
+
+    # La variable $script_file y la variable $script_dir siempre están disponibles, se actualizan cada vez que ejecutas el método «set_debug_file_label» y nos permiten no tener que estar definiendo variables distintas para trazar en qué fichero estamos. Ya están definidas y podemos usarlas.
+    debug_msg "[$script_file] Probar algo que seguro que falla
+
+    # La función fail_msg por defecto termina la ejecución del programa de forma directa.
+    fail_msg "Cómo esperamos falló. ADIOS"
+}
+```
+
+## Añadir nuevos comandos a dotfiles
+
+La herramienta de dotfiles puede extenderse de la siguiente forma:
+
+1. Crear fichero `libexec/dotfiles-<command-name>` con la siguiente estructura:
+
+```bash
+#!/usr/bin/env bash
+
+# Summary: <++>
+#
+# <++>
+
+# http://redsymbol.net/articles/unofficial-bash-strict-mode/
+set -euo pipefail
+IFS=$'\n\t'
+
+DOTFILES_ROOT="${1:?Usage: dotfiles-bin-path DOTFILES_ROOT_PATH}"
+source "${DOTFILES_ROOT}/libexec/helpers"
+
+<++> Command actions
+```
+
+La estructura del fichero es:
+
+* Comentario de qué hace y cómo funciona el comando
+* Añadir bash strict mode no oficial para facilitar la depuración del script. Más información en el enlace.
+* Cargar las utilidades para imprimir funciones y rutas de ejecución para depurar
+* Contenido del comando.
 

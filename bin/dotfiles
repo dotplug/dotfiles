@@ -1,0 +1,100 @@
+#!/usr/bin/env bash
+
+# http://redsymbol.net/articles/unofficial-bash-strict-mode/
+set -euo pipefail
+IFS=$'\n\t'
+
+# This functions set up the dotfiles root configuration with all commands available.
+# By default it will take the parent directory of this file.
+function set_dotfiles_root() {
+    local DOTFILES_ROOT=${1:-}
+
+    if [ -z "${DOTFILES_ROOT}" ]; then
+        DOTFILES_ROOT="$(cd "$(dirname "$(readlink_f "${0}")")/.." && pwd)"
+    else
+        DOTFILES_ROOT="${DOTFILES_ROOT%/}"
+    fi
+
+    echo $DOTFILES_ROOT
+}
+
+# This functions set up the dotfiles verbose output
+# By defuault disabled
+function set_dotfiles_debug() {
+    local DOTFILES_DEBUG=${1:-}
+
+    if [ -z "${DOTFILES_DEBUG}" ]; then
+        DOTFILES_DEBUG=""
+    else
+        DOTFILES_DEBUG="${DOTFILES_DEBUG%/}"
+    fi
+
+    echo $DOTFILES_DEBUG
+}
+
+function add_dotfiles_internal_libraries_to_path() {
+    local DOTFILES_ROOT=${1}
+    for dir_name in libexec bin; do
+        local dir="${DOTFILES_ROOT}/${dir_name}"
+
+        case ":${PATH}:" in
+            *:${dir}:*) 
+                # echo "\$PATH already contains '${dir}', not adding it again"
+                ;;
+            *) 
+                # echo "\$PATH does not contain '${dir}', prepending and exporting it now";
+                export PATH="$PATH:${dir}";
+                ;;
+        esac;
+    done;
+}
+
+# http://stackoverflow.com/questions/1055671/how-can-i-get-the-behavior-of-gnus-readlink-f-on-a-mac
+function readlink_f() {
+    local target_file="${1}"
+    local file_name
+
+    while [ "${target_file}" != "" ]; do
+        cd "$(dirname ${target_file})"
+        file_name="$(basename "${target_file}")"
+        target_file="$(readlink "${file_name}")"
+    done
+
+    echo "$(pwd -P)/${file_name}"
+}
+
+# =====================================
+# MAIN
+# =====================================
+
+DOTFILES_ROOT=$(set_dotfiles_root)
+DOTFILES_DEBUG=$(set_dotfiles_debug)
+
+# Ensure libexec and bin are in $PATH
+add_dotfiles_internal_libraries_to_path $DOTFILES_ROOT
+
+command="${1:-}"
+case "${command}" in
+    "" )
+        dotfiles-version
+        dotfiles-help
+        ;;
+    -v | --version )
+        dotfiles-version
+        ;;
+    -h | --help )
+        dotfiles-help
+        ;;
+    * )
+        command_path="$(command -v "dotfiles-${command}" || true)"
+        if [ -z "${command_path}" ];then
+            {
+                echo "No such command '${command}'"
+                exec dotfiles-version
+                exec dotfiles-help
+            }
+        fi
+        shift 1
+        exec "${command_path}" "$DOTFILES_ROOT" "$DOTFILES_DEBUG" "$@"
+        ;;
+esac

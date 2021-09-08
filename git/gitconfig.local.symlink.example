@@ -1,0 +1,13 @@
+[user]
+    name = AUTHORNAME
+    email = AUTHOREMAIL
+[credential]
+    helper = GIT_CREDENTIAL_HELPER
+[diff]
+	tool = vimdiff
+[alias]
+    ci = commit
+    st = status
+    df = difftool
+    l = log
+    pr = bitbucket-pull-request

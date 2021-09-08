@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+# Summary: Search inside dotfiles "bin" dotfiles directories and add all files inside to /usr/local/bin
+#
+# Search inside dotfiles "bin" dotfiles directories and add all files inside to /usr/local/bin
+
+# http://redsymbol.net/articles/unofficial-bash-strict-mode/
+set -euo pipefail
+IFS=$'\n\t'
+
+DOTFILES_ROOT="${1:?Usage: dotfiles-bin-path DOTFILES_ROOT_PATH}"
+source "${DOTFILES_ROOT}/libexec/helpers"
+
+setup_gitconfig () {
+    set_debug_file_label "$BASH_SOURCE"
+
+    local DOTFILES_ROOT=${1:?DOTFILE_ROOT must be passed as first argument}
+    local git_config_path=$HOME/.gitconfig.local
+    local git_config_general_path=$HOME/.gitconfig
+    local git_config_path_template=$DOTFILES_ROOT/git/gitconfig.local.symlink.example
+
+    debug_msg "[$script_file] Check if $git_config_path exists"
+
+    if ! [ -f $git_config_path ]
+    then
+        info_msg 'setup gitconfig'
+
+
+        debug_msg "[$script_file] Define git_credential"
+        git_credential='cache'
+        if [ "$(uname -s)" == "Darwin" ]
+        then
+            git_credential='osxkeychain'
+        fi
+
+        info_msg ' - What is your github author name?'
+        read -e git_authorname
+        info_msg ' - What is your github author email?'
+        read -e git_authoremail
+
+        debug_msg "[$script_file] Replace values from the template to the original git config"
+        sed -e "s/AUTHORNAME/$git_authorname/g" -e "s/AUTHOREMAIL/$git_authoremail/g" -e "s/GIT_CREDENTIAL_HELPER/$git_credential/g" $git_config_path_template > $git_config_path
+        cp $git_config_path $git_config_general_path
+
+        success_msg 'gitconfig'
+    else
+        info_msg 'gitconfig already exists'
+    fi
+}
+
+setup_gitconfig $DOTFILES_ROOT
+

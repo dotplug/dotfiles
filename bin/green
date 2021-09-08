@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+function green() {
+    local GREEN='\033[00;32m'
+    local NC='\033[0m'
+    printf "\r ${GREEN}${*}${NC}\n"
+}
+
+green $*

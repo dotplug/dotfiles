@@ -1,0 +1,9 @@
+Host *
+  ControlMaster auto
+  ControlPath ~/.ssh/master-socket/%r@%h:%p
+  ControlPersist 10s
+  ServerAliveInterval 60s
+  AddKeysToAgent yes
+  UseKeychain yes
+  IdentityFile ~/.ssh/id_rsa
+

@@ -1,0 +1,123 @@
+# Install applications with cask inside /Applications directory
+# cask_args appdir: '/Applications'
+
+# Install cask, which is an extension for brew command to install a lot of applications which use to have interfaces
+# To remove taps, you have to execute the command:
+# brew untap
+#
+# tap 'homebrew/bundle'
+# This is used instead of versions
+tap 'homebrew/core'
+# tap 'hudochenkov/sshpass'
+# tap 'jesseduffield/lazydocker'
+
+# ============================================================================
+# Basic stuff GUI
+# ============================================================================
+# This is used to don't turn off the screen when idle
+cask 'caffeine'
+# This is used to move windows and resize it.
+# cask 'hammerspoon'
+# To delete applications with some confidence
+cask 'appcleaner'
+# To edit screenshots
+# cask 'skitch'
+# Calculations in Human format
+# cask 'numi'
+
+# ============================================================================
+# Password manager
+# ============================================================================
+# To manage all types of passwords
+# cask '1password'
+
+# ============================================================================
+# Browsers
+# ============================================================================
+# cask 'firefox'
+cask 'google-chrome'
+# cask 'qutebrowser'
+# cask 'opera-gx'
+
+# ============================================================================
+# Communication
+# ============================================================================
+# cask 'slack'
+# cask 'zoomus'
+# cask 'microsoft-teams'
+# cask 'skype'
+
+# ============================================================================
+# VPN
+# ============================================================================
+# cask 'forticlient-vpn'
+
+# ============================================================================
+# Terminal
+# ============================================================================
+# Version control of text stuff
+brew 'git'
+# Your editor :p
+brew 'vim'
+# To fuzzy find in terminal
+brew 'fzf'
+# Terminal multiplexor to split in panes
+# brew 'tmux'
+# Http client very useful
+brew 'httpie'
+# Corrector of commands
+# brew 'thefuck'
+
+# To use the commandline "tree" usefull for write project structures
+brew 'tree'
+# To watch json files
+brew 'jq'
+# To enable use of .envrc and makefiles properly without manual steps
+# brew 'direnv'
+
+# ============================================================================
+# Web Development
+# ============================================================================
+# To edit your /etc/hosts files and compose it
+# cask 'gas-mask'
+# cask 'http-toolkit'
+
+# ============================================================================
+# Personal, not directly related with work
+# ============================================================================
+# To listen music (8)
+cask 'spotify'
+
+# ============================================================================
+# DevOps. This should be installed per project, instead of in the system.
+# ============================================================================
+
+# AWS
+brew 'awscli'
+brew 'aws-iam-authenticator'
+
+# IaC
+# Wrapper for Terraform
+# To manage terraform custom versions per project
+brew 'tfenv'
+# To validate terraform scripts
+brew 'tflint'
+
+# Virtualization
+cask 'vagrant'
+cask 'virtualbox'
+cask 'docker'
+# brew 'lazydocker'
+brew 'packer'
+brew 'minikube'
+# brew 'helm'
+brew 'k9s'
+
+# Required for ansible to ssh machines without prompt ssh
+brew 'sshpass'
+
+# ============================================================================
+# Network. This should be installed per project, instead of in the system.
+# ============================================================================
+# Required for local port forwarding in a public IP
+cask 'ngrok'

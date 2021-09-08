@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+echo "Usage: dotfiles <command> [<options>]
+
+Dotfiles tool will manage installation and configuration.
+
+Commands:
+   install              Search for all install.sh and execute it
+   uninstall            Search for all uninstall.sh and execute it
+   bin-path             Add bin commands into path
+   symlink              Search for all *.symlink and create symlink related to $HOME
+   git-setup            Add default git configuration in home when using git
+"
