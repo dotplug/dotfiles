@@ -1,13 +1,8 @@
 #!/usr/bin/env bash
 # Summary: Symlink
-#
-
-# http://redsymbol.net/articles/unofficial-bash-strict-mode/
-set -euo pipefail
-IFS=$'\n\t'
 
 DOTFILES_ROOT="${1:?Usage: dotfiles-bin-path DOTFILES_ROOT_PATH}"
-source "${DOTFILES_ROOT}/libexec/helpers"
+source "${DOTFILES_ROOT}/lib/helpers"
 
 create_symlinks () {
     set_debug_file_label "$BASH_SOURCE"

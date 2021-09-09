@@ -3,11 +3,7 @@
     email = AUTHOREMAIL
 [credential]
     helper = GIT_CREDENTIAL_HELPER
-[diff]
-	tool = vimdiff
 [alias]
-    ci = commit
-    st = status
-    df = difftool
+    c = commit -m
+    s = status
     l = log
-    pr = bitbucket-pull-request

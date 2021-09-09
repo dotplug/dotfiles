@@ -1,2 +1,0 @@
-#!/bin/bash
-sudo powermetrics --samplers smc -n 1|grep -i "CPU die temperature"

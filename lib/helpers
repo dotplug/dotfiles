@@ -1,20 +1,15 @@
 #!/usr/bin/env bash
 
-# ==========================================================================
+# ============================================================================
 # PRINT FUNCTION HELPERS
-# ==========================================================================
+# ============================================================================
 
 info_msg () {
     printf "\r  [ \033[00;34mINFO\033[0m ] $1\n"
 }
 
 debug_msg () {
-#     set +u
-#     if [[ -n $DOTFILES_DEBUG ]]
-#     then
-        printf "\r  [ \033[0;33mDEBUG\033[0m ] $1\n"
-#     fi
-#     set -u
+    printf "\r  [ \033[0;33mDEBUG\033[0m ] $1\n"
 }
 
 # This function is used to update the filename of the debug
@@ -33,18 +28,17 @@ fail_msg () {
     exit
 }
 
-# ==========================================================================
+# ============================================================================
 # DOTFILES
-# ==========================================================================
+# ============================================================================
 
-
-# This functions will perform the symlink between a SRC and DEST and will behave idempotently asking for actions in have conflicts
+# This functions will perform the symlink between a SRC and DEST and will behave idempotently asking for actions if  conflicts exist
 _link_file () {
     set_debug_file_label "$BASH_SOURCE"
 
-    local src=$1 dst=$2 
-    local overwrite_all=${3:-"false"} 
-    local backup_all=${4:-"false"} 
+    local src=$1 dst=$2
+    local overwrite_all=${3:-"false"}
+    local backup_all=${4:-"false"}
     local skip_all=${5:-"false"}
 
     local overwrite= backup= skip=
@@ -112,7 +106,7 @@ _link_file () {
         fi
     fi
 
-    if [ "$skip" != "true" ]  # "false" or empty
+    if [ "$skip" != "true" ]
     then
         ln -s "$1" "$2"
         success_msg "linked $1 to $2"

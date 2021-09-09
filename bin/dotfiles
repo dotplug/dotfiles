@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-# http://redsymbol.net/articles/unofficial-bash-strict-mode/
-set -euo pipefail
-IFS=$'\n\t'
-
 # This functions set up the dotfiles root configuration with all commands available.
 # By default it will take the parent directory of this file.
 function set_dotfiles_root() {
@@ -19,7 +15,7 @@ function set_dotfiles_root() {
 }
 
 # This functions set up the dotfiles verbose output
-# By defuault disabled
+# By default is disabled
 function set_dotfiles_debug() {
     local DOTFILES_DEBUG=${1:-}
 
@@ -34,14 +30,14 @@ function set_dotfiles_debug() {
 
 function add_dotfiles_internal_libraries_to_path() {
     local DOTFILES_ROOT=${1}
-    for dir_name in libexec bin; do
+    for dir_name in lib bin; do
         local dir="${DOTFILES_ROOT}/${dir_name}"
 
         case ":${PATH}:" in
-            *:${dir}:*) 
+            *:${dir}:*)
                 # echo "\$PATH already contains '${dir}', not adding it again"
                 ;;
-            *) 
+            *)
                 # echo "\$PATH does not contain '${dir}', prepending and exporting it now";
                 export PATH="$PATH:${dir}";
                 ;;
@@ -63,14 +59,14 @@ function readlink_f() {
     echo "$(pwd -P)/${file_name}"
 }
 
-# =====================================
-# MAIN
-# =====================================
+# =====================================
+# MAIN
+# =====================================
 
 DOTFILES_ROOT=$(set_dotfiles_root)
 DOTFILES_DEBUG=$(set_dotfiles_debug)
 
-# Ensure libexec and bin are in $PATH
+# Ensure lib and bin are in $PATH
 add_dotfiles_internal_libraries_to_path $DOTFILES_ROOT
 
 command="${1:-}"

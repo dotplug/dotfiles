@@ -11,7 +11,7 @@
 install_homebrew() {
     if test ! $(which brew)
     then
-        blue "Installing Homebrew for you."
+        blue "Installing Homebrew"
 
         # Install the correct homebrew for each OS type
         if test "$(uname)" = "Darwin"
@@ -22,7 +22,7 @@ install_homebrew() {
            ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/linuxbrew/go/install)"
         fi
     else
-        green "Homebrew already installed"
+        green "Homebrew is already installed"
     fi
 }
 
@@ -38,8 +38,8 @@ update_mac_apps_and_libraries() {
 }
 
 # Sets reasonable macOS defaults.
-# Or, in other words, set shit how I like in macOS.  
-# The original idea (and a couple settings) were grabbed from: 
+# Or, in other words, set shit how I like in macOS.
+# The original idea (and a couple settings) were grabbed from:
 #   https://github.com/mathiasbynens/dotfiles/blob/master/.macos
 set_macos_defaults() {
     ###############################################################################
@@ -70,7 +70,7 @@ set_macos_defaults() {
 
     # Keep folders on top when sorting by name
     defaults write com.apple.finder _FXSortFoldersFirst -bool true
-    
+
     # Finder: show all filename extensions
     defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 
@@ -119,7 +119,7 @@ set_macos_defaults() {
     # Dock                                                                        #
     ###############################################################################
 
-    # Show in Dock just opened appliactions
+    # Show in Dock just opened applications
     defaults write com.apple.dock static-only -bool true
 
     # Automatically hide and show the dock
@@ -131,7 +131,7 @@ set_macos_defaults() {
     # The size of the largest magnification. Min 16, Max 128
     defaults write com.apple.dock largesize -int 50
     defaults write com.apple.dock tilesize -int 50
-    
+
     # orientation of the Dock. Values bottom, left and right
     defaults write com.apple.dock orientation -string bottom
 
@@ -155,15 +155,15 @@ set_macos_defaults() {
 
     # show battery percentage
     defaults write com.apple.menuextra.battery ShowPercent -string yes
-    
-    # Apply changes inside menu extra
+
+    # Apply changes inside menu extra
     killall SystemUIServer
 
     ###############################################################################
     # iCloud                                                                      #
     ###############################################################################
 
-    # Start iTunes from responding to the keyboard media keys. To disable put unnload
+    # Start iTunes from responding to the keyboard media keys. To disable put unload
     launchctl load -w /System/Library/LaunchAgents/com.apple.rcd.plist 2> /dev/null
 
     # Save to disk (not to iCloud) by default
@@ -192,7 +192,7 @@ set_macos_defaults() {
 # Explanation:
 # system_profiler SPBluetoothDataType       -- json show system specifications of the bluetooth in Json Format. To check all list can use system_profiler -listDataTypes
 # grep -e                                   -- filter for both productID and vendor ID. Values are in Hexadecimal
-# grep -o -e "\"0.*\""                      -- delete the 0x of Hechadecimal values
+# grep -o -e "\"0.*\""                      -- delete the 0x of Hexadecimal values
 # tr -d '"'                                 -- delete the quotes remaining from the json output
 # xargs -L1 printf "%d\n" {} 2>/dev/null    -- get all arguments from the previous filters and convert to hexadecimal, ensuring that all the error output goes to /dev/null
 # grep -v 0                                 -- filter remaining 0 in the output to just get the desired ID
@@ -203,14 +203,14 @@ function get_bluetooth_device_info() {
 
 # Obtain  vendor and product ID for bluetooth device attached.
 # Explanation:
-# ioreg -p IOUSB -c IOUSBDevice             -- information aboout mac USB devices
+# ioreg -p IOUSB -c IOUSBDevice             -- information about mac USB devices
 # grep -e class -e idVendor -e idProduct    -- filter for class, vendor and product
 # grep -A2 "Apple Internal Keyboard"        -- filter for apple internal keyboard and two lines for the filtered vendor and product
 # grep -o -e "$KEY_TO_FILTER.*$"            -- filter for the device information required
 # grep -o -e \d+                            -- filter for getting just the number
 function get_keyboard_device_info() {
     KEY_TO_FILTER=$1
-    ioreg -p IOUSB -c IOUSBDevice | grep -e class -e idVendor -e idProduct| grep -A2 "Apple Internal Keyboard" | grep -o -e "$KEY_TO_FILTER.*$" | grep -o -e "\d\+" 
+    ioreg -p IOUSB -c IOUSBDevice | grep -e class -e idVendor -e idProduct| grep -A2 "Apple Internal Keyboard" | grep -o -e "$KEY_TO_FILTER.*$" | grep -o -e "\d\+"
 }
 
 function change_caps_lock_to_control() {
@@ -235,7 +235,7 @@ function change_caps_lock_to_control() {
     fi
 }
 
-# More information: https://apple.stackexchange.com/questions/13598/updating-modifier-key-mappings-through-defaults-command-tool
+# More information: https://apple.stackexchange.com/questions/13598/updating-modifier-key-mappings-through-defaults-command-tool
 function change_caplock_to_control_in_keyboards() {
 
     BT_VENDOR_ID=$(get_bluetooth_device_info "device_vendorID")

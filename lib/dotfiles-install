@@ -4,12 +4,8 @@
 #
 # Search for all install.sh inside DOTFILES_ROOT and execute it
 
-# http://redsymbol.net/articles/unofficial-bash-strict-mode/
-set -euo pipefail
-IFS=$'\n\t'
-
 DOTFILES_ROOT="${1:?Usage: dotfiles-bin-path DOTFILES_ROOT_PATH}"
-source "${DOTFILES_ROOT}/libexec/helpers"
+source "${DOTFILES_ROOT}/lib/helpers"
 
 install_filepaths=$(find -H "$DOTFILES_ROOT" -type f -name "install.sh")
 debug_msg "Paths found: $install_filepaths"
