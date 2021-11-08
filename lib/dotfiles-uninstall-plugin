@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# Summary: Uninstalls a plugin
+
+DOTFILES_ROOT="${1:?Usage: dotfiles-bin-path DOTFILES_ROOT_PATH}"
+source "${DOTFILES_ROOT}/lib/helpers"
+PLUGIN=$1
+
+debug_msg "Uninstall $PLUGIN"
+rm -rf "./plugins/dotfiles-$PLUGIN"
+cd $DOTFILES_ROOT && make setup
+
+if [[ $? != 0 ]]
+then
+    fail_msg "Failed to Install $PLUGIN"
+fi
+

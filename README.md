@@ -46,3 +46,8 @@ If you wanted to create a new topic you can create a directory `<TOPIC>` in the 
 3. Create a file `functions.zsh` to create utility functions for that topic
 4. Create a directory ending with `.symlink` that will symlink all the files inside that directory to your home directory
 
+## Todos
+
+- [ ] Support Linux
+- [ ] Add TNTGitHook
+- [ ] Improve uninstalling plugin process

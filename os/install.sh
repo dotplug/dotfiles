@@ -254,7 +254,7 @@ function change_caplock_to_control_in_keyboards() {
 if test "$(uname)" = "Darwin"
 then
     blue "Go to MacOS directory"
-    cd $HOME/.dotfiles/macos
+    cd $HOME/.dotfiles/os
 
     blue "Setting MacOS sane defaults"
     set_macos_defaults
