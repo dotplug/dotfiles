@@ -1,5 +1,6 @@
 .idea
 .vscode
+.envrc
 
 /projects/**
 !/projects/.gitkeep
