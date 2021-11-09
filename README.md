@@ -13,10 +13,15 @@ Dotfiles are tasked with **storing all your configuration** and **installing all
   ```shell
   make setup
   ```
+3. [OPTIONAL] Install plugins. There are additional plugins that have additional software and configurations depending of what you need. f.e to install front-web plugins
+  ```shell
+  make setup-front-web
+  ```
 
 ## Dotfiles
 
 - `dotfiles install`: Install all required Software
+- `dotfiles install-plugin`: Install desired plugins
 - `dotfiles bin-path`: Loads all files inside `bin` and creates symlinks to `/usr/local/bin` in order to be able to execute them
 - `dotfiles symlink`: Searches for all files ending with `*.symlink` to create a symlink in the `$HOME`
 - `dotfiles git-setup`: Configures git with your username and email
@@ -29,7 +34,7 @@ The file's structure is important to handle the configuration, letting you separ
 
 These folders are what we call **topics**. The structure of each topic is as follows:
 
-- **macos/Brewfile**: This list represent all the applications and tools that will be installed with [Homebrew Cask](http://caskroom.io). Everything we install should be installed with Homebrew and if required you should update the Brewfile.
+- **os/Brewfile**: This list represent all the applications and tools that will be installed with [Homebrew Cask](http://caskroom.io). All the Brewfile located inside the dotfiles will generate a Brewfile in $HOME/.Brewfile.
 - **topic/bin/**: Anything inside the bin directory will be added to the $PATH, so you can use it with `dotfiles bin-path`.
 - **topic/install.sh**: Any file named `install.sh` will be executed automatically when exeucting `dotfiles install`
 - **topic/\<FILENAME | DIRNAME>.symlink**: Any file that ends with `*.symlink` will be added as a symlink to your $HOME.
@@ -50,4 +55,4 @@ If you wanted to create a new topic you can create a directory `<TOPIC>` in the 
 
 - [ ] Support Linux
 - [ ] Add TNTGitHook
-- [ ] Improve uninstalling plugin process
+- [x] Improve uninstalling plugin process
