@@ -13,10 +13,6 @@ Dotfiles are tasked with **storing all your configuration** and **installing all
   ```shell
   make setup
   ```
-3. [OPTIONAL] Install plugins. There are additional plugins that have additional software and configurations depending of what you need. f.e to install front-web plugins
-  ```shell
-  make setup-front-web
-  ```
 
 ## Dotfiles
 
@@ -26,7 +22,7 @@ Dotfiles are tasked with **storing all your configuration** and **installing all
 - `dotfiles symlink`: Searches for all files ending with `*.symlink` to create a symlink in the `$HOME`
 - `dotfiles git-setup`: Configures git with your username and email
 - `dotfiles help`: Shows all the available options
--`dotfiles version`: Displays the version
+- `dotfiles version`: Displays the version
 
 ## How does it work?
 
