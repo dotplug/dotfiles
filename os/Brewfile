@@ -56,6 +56,7 @@ brew 'git'
 
 # Editor
 brew 'vim'
+brew 'nvim'
 
 # Simple yet powerful editor https://github.com/zyedidia/micro
 # brew 'micro'

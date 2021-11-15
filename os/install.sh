@@ -26,6 +26,20 @@ install_homebrew() {
     fi
 }
 
+# Summary: Search for all SOURCE_FILE inside SOURCE_FOLDER and generates the DESTINATION_FILE
+function generate_brewfiles() {
+    local SOURCE_FILE="Brewfile"
+    local SOURCE_FOLDER="$DOTFILES_DIR"
+    local DESTINATION_FILE="$HOME/.Brewfile"
+
+    blue "Cleanup $DESTINATION_FILE"
+    rm $DESTINATION_FILE
+
+    blue "Search for $SOURCE_FILE inside $SOURCE_FOLDER"
+    cat $(find -H "$SOURCE_FOLDER" -type f -name "$SOURCE_FILE") >> $DESTINATION_FILE
+
+    green "Generated $DESTINATION_FILE"
+}
 
 # The Brewfile handles Homebrew-based app and library installs, but there may
 # still be updates and installables in the Mac App Store. There's a nifty
@@ -253,21 +267,22 @@ function change_caplock_to_control_in_keyboards() {
 
 if test "$(uname)" = "Darwin"
 then
-    blue "Go to MacOS directory"
-    cd $HOME/.dotfiles/os
-
     blue "Setting MacOS sane defaults"
     set_macos_defaults
     change_caplock_to_control_in_keyboards
 
     blue "Install Homebrew"
     install_homebrew
+    generate_brewfiles
+
+    blue "Go to $HOME directory"
+    cd $HOME
 
     blue "Install Brew apps defined in the Brewfile"
-    brew bundle
+    brew bundle --cleanup --global
 
-    blue "Update/upgrade all the apps defined in the Brewfile"
-    brew update && brew upgrade
+    blue "Update all the apps defined in the Brewfile"
+    brew update
 
     blue "Upgrade all the cask apps"
     brew upgrade

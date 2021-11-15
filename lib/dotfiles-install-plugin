@@ -2,13 +2,23 @@
 
 # Summary: Installs a plugin
 
-DOTFILES_ROOT="${1:?Usage: dotfiles-bin-path DOTFILES_ROOT_PATH}"
-source "${DOTFILES_ROOT}/lib/helpers"
-PLUGIN=$1
+source "${DOTFILES_DIR}/lib/helpers"
+
+PLUGIN=$3
+
+PLUGIN_DIR="$DOTFILES_DIR/plugins"
+
+
+if [ "$#" -ne 3 ]
+then
+  echo "Usage: dotfiles-install-plugin <PLUGIN>"
+  exit 1
+fi
 
 debug_msg "Install $PLUGIN"
-git -C ./plugins clone "https://gitlab.com/autentia/internal/dotfiles/dotfiles-$PLUGIN"
-cd "dotfiles-$PLUGIN" && make setup
+git clone "git@gitlab.com:autentia/internal/dotfiles/$PLUGIN" "$PLUGIN_DIR/$PLUGIN" -v
+cd "$PLUGIN_DIR/$PLUGIN" && make setup
+cd -
 
 if [[ $? != 0 ]]
 then

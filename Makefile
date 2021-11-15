@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 
-export DOTFILES_DIR ?= ${HOME}/.dotfiles
+export DOTFILES_DIR ?= ${PWD}
 
 .PHONY: help
 help: Makefile
@@ -27,3 +27,16 @@ setup:
 	@cd ${DOTFILES_DIR}/bin && ./dotfiles install
 	@cd ${DOTFILES_DIR}/bin && ./dotfiles symlink
 	@cd ${DOTFILES_DIR}/bin && ./dotfiles git-setup
+	@zsh -l
+
+## setup-front-web: Install front web plugin
+.PHONY: setup-front-web
+setup-front-end:
+	@sudo mkdir -p /usr/local/bin   # dotfiles bin-path add links inside /usr/local/bin and this folder may not exists in new versions of mac.
+	@sudo chmod 755 /usr/local/bin  # dotfiles bin-path add links inside /usr/local/bin and this folder may not exists in new versions of mac.
+	@cd ${DOTFILES_DIR}/bin && ./dotfiles install-plugin dotfiles-front-web
+	@cd ${DOTFILES_DIR}/bin && ./dotfiles bin-path
+	@cd ${DOTFILES_DIR}/bin && ./dotfiles install
+	@cd ${DOTFILES_DIR}/bin && ./dotfiles symlink
+	@cd ${DOTFILES_DIR}/bin && ./dotfiles git-setup
+	@zsh -l
