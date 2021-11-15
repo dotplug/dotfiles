@@ -27,6 +27,7 @@ setup:
 	@cd ${DOTFILES_DIR}/bin && ./dotfiles install
 	@cd ${DOTFILES_DIR}/bin && ./dotfiles symlink
 	@cd ${DOTFILES_DIR}/bin && ./dotfiles git-setup
+	@zsh -l
 
 ## setup-front-web: Install front web plugin
 .PHONY: setup-front-web
@@ -38,3 +39,4 @@ setup-front-end:
 	@cd ${DOTFILES_DIR}/bin && ./dotfiles install
 	@cd ${DOTFILES_DIR}/bin && ./dotfiles symlink
 	@cd ${DOTFILES_DIR}/bin && ./dotfiles git-setup
+	@zsh -l
