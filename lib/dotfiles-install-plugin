@@ -2,6 +2,7 @@
 
 # Summary: Installs a plugin
 source "${DOTFILES_DIR}/lib/helpers"
+ORIGINAL_FOLDER=$PWD
 
 if [ "$#" -ne 3 ]
 then
@@ -9,10 +10,12 @@ then
   exit 1
 fi
 
+# Environment
 PLUGIN_URL=$3
 PLUGIN_DIR="$DOTFILES_DIR/plugins"
 PLUGIN=$(basename $PLUGIN_URL | sed 's/.git$//')
 
+# Checking if plugin exists
 if [ -d $PLUGIN_DIR/$PLUGIN ]; then
     debug_msg "Removing folder $PLUGIN_DIR/$PLUGIN to reinstall"
     rm -rf $PLUGIN_DIR/$PLUGIN
@@ -20,11 +23,15 @@ fi
 
 debug_msg "Installing $PLUGIN"
 git clone $PLUGIN_URL "$PLUGIN_DIR/$PLUGIN" -v
-cd $DOTFILES_DIR && make setup
-cd -
+cd $DOTFILES_DIR && make setup-no-reload
 
 if [[ $? != 0 ]]
 then
     fail_msg "Failed to Install $PLUGIN"
+    exit -1
 fi
+
+debug_msg "Plugin $PLUGIN installed successfully"
+cd $ORIGINAL_FOLDER
+zsh -l
 
