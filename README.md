@@ -4,19 +4,26 @@ Dotfiles are tasked with **storing all your configuration** and **installing all
 
 ## Installation
 
-1. Clone the repo in your home directory:
+1. Fork the project
+2. Clone your fork in your home directory:
   ```shell
   git clone git@gitlab.com:autentia/internal/dotfiles.git ~/.dotfiles
   cd ~/.dotfiles
   ```
-2. Apply configuration
+2. Update and customise the configuration
+3. Apply configuration
   ```shell
   make setup
   ```
-3. [OPTIONAL] Install plugins. There are additional plugins that have additional software and configurations depending of what you need. f.e to install front-web plugins
+4. [OPTIONAL] Install plugins. There are [additional plugins]() that have additional software and configurations depending on what you need. f.e to install front-web plugins
   ```shell
   make setup-front-web
   ```
+
+## Update configuration
+
+1. Add remote: `git remote add upstream https://gitlab.com/autentia/internal/dotfiles/dotfiles`
+2. Update your project: `git pull upstream main`
 
 ## Dotfiles
 
@@ -26,7 +33,7 @@ Dotfiles are tasked with **storing all your configuration** and **installing all
 - `dotfiles symlink`: Searches for all files ending with `*.symlink` to create a symlink in the `$HOME`
 - `dotfiles git-setup`: Configures git with your username and email
 - `dotfiles help`: Shows all the available options
--`dotfiles version`: Displays the version
+- `dotfiles version`: Displays the version
 
 ## How does it work?
 
@@ -34,13 +41,13 @@ The file's structure is important to handle the configuration, letting you separ
 
 These folders are what we call **topics**. The structure of each topic is as follows:
 
-- **os/Brewfile**: This list represent all the applications and tools that will be installed with [Homebrew Cask](http://caskroom.io). All the Brewfile located inside the dotfiles will generate a Brewfile in $HOME/.Brewfile.
+- **os/Brewfile**: This list represent all the applications and tools that will be installed with [Homebrew Cask](http://caskroom.io). All the Brewfiles located inside the dotfiles will generate a Brewfile in $HOME/.Brewfile.
 - **topic/bin/**: Anything inside the bin directory will be added to the $PATH, so you can use it with `dotfiles bin-path`.
 - **topic/install.sh**: Any file named `install.sh` will be executed automatically when exeucting `dotfiles install`
 - **topic/\<FILENAME | DIRNAME>.symlink**: Any file that ends with `*.symlink` will be added as a symlink to your $HOME.
 - **projects/<PROJECT_NAME>**: Here we have all the project's configuration.
 
-> The projects directory **should never be uploaded** as it could contain sensitive information
+> The plugins directory **should never be uploaded** as it could contain sensitive information
 
 ## Create a new topic
 
