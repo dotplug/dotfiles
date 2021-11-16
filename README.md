@@ -7,7 +7,7 @@ Dotfiles are tasked with **storing all your configuration** and **installing all
 Open your terminal and execute:
 
 ```
-bash <(curl -s https://gitlab.com/autentia/internal/dotfiles/dotfiles/-/raw/main/installer)
+/bin/bash -c "$(curl -fsSL https://gitlab.com/autentia/internal/dotfiles/dotfiles/-/raw/main/installer)"
 ```
 
 Now you can check installation with:
