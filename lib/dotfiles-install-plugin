@@ -6,7 +6,7 @@ ORIGINAL_FOLDER=$PWD
 
 if [ "$#" -ne 3 ]
 then
-  echo "Usage: dotfiles-install-plugin <PLUGIN_GIT_URL>"
+  echo "Usage: dotfiles install-plugin <PLUGIN_GIT_URL>"
   exit 1
 fi
 
