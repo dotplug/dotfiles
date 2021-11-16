@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+export DOTFILES_PATH="$HOME/.dotfiles"
+echo "Installing dotfiles into: '$DOTFILES_PATH'"
+
+git clone git@gitlab.com:autentia/internal/dotfiles/dotfiles.git "$DOTFILES_PATH"
+
+make -f $DOTFILES_PATH/Makefile setup
