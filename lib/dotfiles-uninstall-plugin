@@ -21,7 +21,7 @@ fi
 
 debug_msg "Uninstall $PLUGIN"
 rm -rf "$PLUGINS_DIR/$PLUGIN"
-make -f $DOTFILES_ROOT/Makefile setup
+make -f $DOTFILES_ROOT/Makefile setup-no-reload
 
 if [[ $? != 0 ]]
 then
@@ -30,3 +30,4 @@ then
 fi
 
 success_msg "Plugin $PLUGIN uninstalled successfully"
+zsh -l
