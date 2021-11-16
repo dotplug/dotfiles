@@ -23,7 +23,7 @@ fi
 
 debug_msg "Installing $PLUGIN"
 git clone $PLUGIN_URL "$PLUGIN_DIR/$PLUGIN" -v
-cd $DOTFILES_DIR && make setup-no-reload
+make -f $DOTFILES_DIR/Makefile setup-no-reload
 
 if [[ $? != 0 ]]
 then
