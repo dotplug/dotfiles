@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+# Summary: List all plugins installed
+
+DOTFILES_ROOT="${1:?Usage: dotfiles-bin-path DOTFILES_ROOT_PATH}"
+PLUGINS_DIR=$DOTFILES_ROOT/plugins
+
+source "${DOTFILES_ROOT}/lib/helpers"
+
+for plugin in `ls -1 $PLUGINS_DIR`;do
+  if [ -d $PLUGINS_DIR/$plugin ];then
+    cd $PLUGINS_DIR/$plugin
+    plugin_url=$(git remote get-url origin)
+    echo "$plugin: $plugin_url"
+    cd $PLUGINS_DIR 2>/dev/null
+  fi
+done
+
+if [[ $? != 0 ]]
+then
+    fail_msg "Failed to list plugins installed"
+fi
+

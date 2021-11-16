@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
-# Summary: Uninstalls a plugin
+# Summary: Update a plugin
 
 DOTFILES_ROOT="${1:?Usage: dotfiles-bin-path DOTFILES_ROOT_PATH}"
 PLUGINS_DIR=$DOTFILES_ROOT/plugins
+ORIGINAL_FOLDER=$PWD
 
 source "${DOTFILES_ROOT}/lib/helpers"
 
@@ -19,8 +20,10 @@ if [ ! -d ${PLUGINS_DIR}/$PLUGIN ];then
   exit -1
 fi
 
-debug_msg "Uninstall $PLUGIN"
-rm -rf "$PLUGINS_DIR/$PLUGIN"
+debug_msg "Updating $PLUGIN"
+cd $PLUGINS_DIR/$PLUGIN
+git pull --force
+cd $ORIGINAL_FOLDER
 make -f $DOTFILES_ROOT/Makefile setup-no-reload
 
 if [[ $? != 0 ]]
@@ -29,5 +32,5 @@ then
     exit -1
 fi
 
-success_msg "Plugin $PLUGIN uninstalled successfully"
+success_msg "Plugin $PLUGIN updated successfully"
 zsh -l

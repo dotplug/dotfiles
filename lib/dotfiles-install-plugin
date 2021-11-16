@@ -1,27 +1,37 @@
 #!/usr/bin/env bash
 
 # Summary: Installs a plugin
-
 source "${DOTFILES_DIR}/lib/helpers"
-
-PLUGIN=$3
-
-PLUGIN_DIR="$DOTFILES_DIR/plugins"
-
+ORIGINAL_FOLDER=$PWD
 
 if [ "$#" -ne 3 ]
 then
-  echo "Usage: dotfiles-install-plugin <PLUGIN>"
+  echo "Usage: dotfiles install-plugin <PLUGIN_GIT_URL>"
   exit 1
 fi
 
-debug_msg "Install $PLUGIN"
-git clone "git@gitlab.com:autentia/internal/dotfiles/$PLUGIN" "$PLUGIN_DIR/$PLUGIN" -v
-cd "$PLUGIN_DIR/$PLUGIN" && make setup
-cd -
+# Environment
+PLUGIN_URL=$3
+PLUGIN_DIR="$DOTFILES_DIR/plugins"
+PLUGIN=$(basename $PLUGIN_URL | sed 's/.git$//')
+
+# Checking if plugin exists
+if [ -d $PLUGIN_DIR/$PLUGIN ]; then
+    debug_msg "Removing folder $PLUGIN_DIR/$PLUGIN to reinstall"
+    rm -rf $PLUGIN_DIR/$PLUGIN
+fi
+
+debug_msg "Installing $PLUGIN"
+git clone $PLUGIN_URL "$PLUGIN_DIR/$PLUGIN" -v
+make -f $DOTFILES_DIR/Makefile setup-no-reload
 
 if [[ $? != 0 ]]
 then
     fail_msg "Failed to Install $PLUGIN"
+    exit -1
 fi
+
+debug_msg "Plugin $PLUGIN installed successfully"
+cd $ORIGINAL_FOLDER
+zsh -l
 

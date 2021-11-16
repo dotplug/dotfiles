@@ -4,21 +4,17 @@ Dotfiles are tasked with **storing all your configuration** and **installing all
 
 ## Installation
 
-1. Fork the project
-2. Clone your fork in your home directory:
-  ```shell
-  git clone git@gitlab.com:autentia/internal/dotfiles.git ~/.dotfiles
-  cd ~/.dotfiles
-  ```
-2. Update and customise the configuration
-3. Apply configuration
-  ```shell
-  make setup
-  ```
-4. [OPTIONAL] Install plugins. There are [additional plugins]() that have additional software and configurations depending on what you need. f.e to install front-web plugins
-  ```shell
-  make setup-front-web
-  ```
+Open your terminal and execute:
+
+```
+/bin/bash -c "$(curl -fsSL https://gitlab.com/autentia/internal/dotfiles/dotfiles/-/raw/main/installer)"
+```
+
+Now you can check installation with:
+
+```
+dotfiles version
+```
 
 ## Update configuration
 
@@ -28,10 +24,10 @@ Dotfiles are tasked with **storing all your configuration** and **installing all
 ## Dotfiles
 
 - `dotfiles install`: Install all required Software
-- `dotfiles install-plugin`: Install desired plugins
-- `dotfiles bin-path`: Loads all files inside `bin` and creates symlinks to `/usr/local/bin` in order to be able to execute them
-- `dotfiles symlink`: Searches for all files ending with `*.symlink` to create a symlink in the `$HOME`
-- `dotfiles git-setup`: Configures git with your username and email
+- `dotfiles install-plugin <DOTFILES_GIT_URL>`: Install desired plugins
+- `dotfiles update-plugin <PLUGIN_NAME>`: Update a given plugin
+- `dotfiles uninstall-plugin <PLUGIN_NAME>`: Uninstall a given plugin
+- `dotfiles plugins`: Shows all plugins installed
 - `dotfiles help`: Shows all the available options
 - `dotfiles version`: Displays the version
 
@@ -57,9 +53,3 @@ If you wanted to create a new topic you can create a directory `<TOPIC>` in the 
 2. Create an `alias.zsh` file that contains the commands you want
 3. Create a file `functions.zsh` to create utility functions for that topic
 4. Create a directory ending with `.symlink` that will symlink all the files inside that directory to your home directory
-
-## Todos
-
-- [ ] Support Linux
-- [ ] Add TNTGitHook
-- [x] Improve uninstalling plugin process
