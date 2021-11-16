@@ -3,8 +3,8 @@
 # Summary: List all plugins installed
 
 DOTFILES_ROOT="${1:?Usage: dotfiles-bin-path DOTFILES_ROOT_PATH}"
-
 PLUGINS_DIR=$DOTFILES_ROOT/plugins
+
 source "${DOTFILES_ROOT}/lib/helpers"
 
 for plugin in `ls -1 $PLUGINS_DIR`;do

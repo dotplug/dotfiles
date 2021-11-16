@@ -3,16 +3,30 @@
 # Summary: Uninstalls a plugin
 
 DOTFILES_ROOT="${1:?Usage: dotfiles-bin-path DOTFILES_ROOT_PATH}"
+PLUGINS_DIR=$DOTFILES_ROOT/plugins
 
 source "${DOTFILES_ROOT}/lib/helpers"
+
+if [ $# -ne 3 ];then
+  fail_msg "Plugin is a required parameter"
+  exit -1
+fi
+
 PLUGIN=$3
 
+if [ ! -d ${PLUGINS_DIR}/$PLUGIN ];then
+  fail_msg "Plugin $PLUGIN not found"
+  exit -1
+fi
+
 debug_msg "Uninstall $PLUGIN"
-rm -rf "$DOTFILES_ROOT/plugins/$PLUGIN"
+rm -rf "$PLUGINS_DIR/$PLUGIN"
 make -f $DOTFILES_ROOT/Makefile setup
 
 if [[ $? != 0 ]]
 then
     fail_msg "Failed to Install $PLUGIN"
+    exit -1
 fi
 
+success_msg "Plugin $PLUGIN uninstalled successfully"
