@@ -16,6 +16,11 @@ Now you can check installation with:
 dotfiles version
 ```
 
+## Update configuration
+
+1. Add remote: `git remote add upstream https://gitlab.com/autentia/internal/dotfiles/dotfiles`
+2. Update your project: `git pull upstream main`
+
 ## Dotfiles
 
 - `dotfiles install`: Install all required Software
@@ -32,13 +37,13 @@ The file's structure is important to handle the configuration, letting you separ
 
 These folders are what we call **topics**. The structure of each topic is as follows:
 
-- **os/Brewfile**: This list represent all the applications and tools that will be installed with [Homebrew Cask](http://caskroom.io). All the Brewfile located inside the dotfiles will generate a Brewfile in $HOME/.Brewfile.
+- **os/Brewfile**: This list represent all the applications and tools that will be installed with [Homebrew Cask](http://caskroom.io). All the Brewfiles located inside the dotfiles will generate a Brewfile in $HOME/.Brewfile.
 - **topic/bin/**: Anything inside the bin directory will be added to the $PATH, so you can use it with `dotfiles bin-path`.
 - **topic/install.sh**: Any file named `install.sh` will be executed automatically when exeucting `dotfiles install`
 - **topic/\<FILENAME | DIRNAME>.symlink**: Any file that ends with `*.symlink` will be added as a symlink to your $HOME.
 - **projects/<PROJECT_NAME>**: Here we have all the project's configuration.
 
-> The projects directory **should never be uploaded** as it could contain sensitive information
+> The plugins directory **should never be uploaded** as it could contain sensitive information
 
 ## Create a new topic
 
