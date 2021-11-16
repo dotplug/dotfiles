@@ -2,6 +2,9 @@
 
 export DOTFILES_DIR ?= ${PWD}
 
+zsh-reload:
+	@zsh -l
+
 .PHONY: help
 help: Makefile
 	@printf "\nChoose a command run in $(shell basename ${PWD}):\n"
@@ -18,9 +21,11 @@ unset:
 env:
 	@echo 'export DOTFILES_DIR=${DOTFILES_DIR}'
 
-zsh-reload:
-	@zsh -l
+## setup: Install all dependencies
+.PHONY: setup
+setup : setup-no-reload zsh-reload
 
+.PHONY: setup-no-reload
 setup-no-reload:
 	@sudo mkdir -p /usr/local/bin   # dotfiles bin-path add links inside /usr/local/bin and this folder may not exists in new versions of mac.
 	@sudo chmod 755 /usr/local/bin  # dotfiles bin-path add links inside /usr/local/bin and this folder may not exists in new versions of mac.
@@ -28,9 +33,3 @@ setup-no-reload:
 	@cd ${DOTFILES_DIR}/bin && ./dotfiles install
 	@cd ${DOTFILES_DIR}/bin && ./dotfiles symlink
 	@cd ${DOTFILES_DIR}/bin && ./dotfiles git-setup
-
-## setup: Install all dependencies
-setup : setup-no-reload zsh-reload
-.PHONY: setup
-
-.PHONY: setup-no-reload
