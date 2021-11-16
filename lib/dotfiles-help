@@ -6,7 +6,8 @@ Dotfiles tool will manage installation and configuration.
 
 Commands:
    install              Search for all install.sh files and execute it
-   install-plugin       Install a given plugin, it take the name of the plugin as the parameter
+   install-plugin       Install a given plugin, it take the git repository of the plugin as the parameter
+   update-plugin        Update a given plugin, it take the name of the plugin as the parameter
    uninstall-plugin     Uninstall a given plugin, it take the name of the plugin as the parameter
    plugins              Shows all plugins installed
    uninstall            Search for all uninstall.sh files and execute it
