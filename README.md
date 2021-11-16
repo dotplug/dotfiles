@@ -4,23 +4,22 @@ Dotfiles are tasked with **storing all your configuration** and **installing all
 
 ## Installation
 
-1. Clone the repo in your home directory:
-  ```shell
-  git clone git@gitlab.com:autentia/internal/dotfiles.git ~/.dotfiles
-  cd ~/.dotfiles
-  ```
-2. Apply configuration
-  ```shell
-  make setup
-  ```
+Open your terminal and execute:
+
+```
+bash <(curl -s https://gitlab.com/autentia/internal/dotfiles/dotfiles/-/raw/main/installer)
+```
+
+Now you can check installation with:
+
+```
+dotfiles version
+```
 
 ## Dotfiles
 
 - `dotfiles install`: Install all required Software
-- `dotfiles install-plugin`: Install desired plugins
-- `dotfiles bin-path`: Loads all files inside `bin` and creates symlinks to `/usr/local/bin` in order to be able to execute them
-- `dotfiles symlink`: Searches for all files ending with `*.symlink` to create a symlink in the `$HOME`
-- `dotfiles git-setup`: Configures git with your username and email
+- `dotfiles install-plugin <DOTFILES_GIT_URL>`: Install desired plugins
 - `dotfiles help`: Shows all the available options
 - `dotfiles version`: Displays the version
 
@@ -46,9 +45,3 @@ If you wanted to create a new topic you can create a directory `<TOPIC>` in the 
 2. Create an `alias.zsh` file that contains the commands you want
 3. Create a file `functions.zsh` to create utility functions for that topic
 4. Create a directory ending with `.symlink` that will symlink all the files inside that directory to your home directory
-
-## Todos
-
-- [ ] Support Linux
-- [ ] Add TNTGitHook
-- [x] Improve uninstalling plugin process
