@@ -33,3 +33,4 @@ then
 fi
 
 success_msg "Plugin $PLUGIN updated successfully"
+zsh -l
