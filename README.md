@@ -20,6 +20,7 @@ dotfiles version
 
 - `dotfiles install`: Install all required Software
 - `dotfiles install-plugin <DOTFILES_GIT_URL>`: Install desired plugins
+- `dotfiles plugins`: Shows all plugins installed
 - `dotfiles help`: Shows all the available options
 - `dotfiles version`: Displays the version
 
