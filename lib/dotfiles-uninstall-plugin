@@ -3,12 +3,13 @@
 # Summary: Uninstalls a plugin
 
 DOTFILES_ROOT="${1:?Usage: dotfiles-bin-path DOTFILES_ROOT_PATH}"
+
 source "${DOTFILES_ROOT}/lib/helpers"
-PLUGIN=$1
+PLUGIN=$3
 
 debug_msg "Uninstall $PLUGIN"
-rm -rf "./plugins/dotfiles-$PLUGIN"
-cd $DOTFILES_ROOT && make setup
+rm -rf "$DOTFILES_ROOT/plugins/$PLUGIN"
+make -f $DOTFILES_ROOT/Makefile setup
 
 if [[ $? != 0 ]]
 then
