@@ -12,7 +12,7 @@ create_symlinks () {
     local overwrite_all=false backup_all=false skip_all=false
 
     # -H follow links
-    symlink_filepaths=$(find -H "$DOTFILES_ROOT" -maxdepth 2 -name '*.symlink' -not -path '*.git*')
+    symlink_filepaths=$(find -H "$DOTFILES_ROOT" -maxdepth 4 -name '*.symlink' -not -path '*.git*')
     debug_msg "Paths found: $symlink_filepaths"
 
     for src in $symlink_filepaths
