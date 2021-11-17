@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+# ============================================================================
+# UNINSTALL FUNCTION HELPERS
+# ============================================================================
+exec_uninstall_scripts () {
+  SOURCE=$1
+
+  uninstall_filepaths=$(find -H "$1" -type f -name "uninstall.sh")
+  debug_msg "Paths found: $uninstall_filepaths"
+
+  for uninstaller in $uninstall_filepaths
+  do
+      debug_msg "Uninstall $uninstaller"
+      sh -c "$uninstaller"
+
+      if [[ $? != 0 ]]
+      then
+          fail_msg "Failed to uninstall $uninstaller"
+      fi
+  done
+}

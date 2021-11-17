@@ -7,6 +7,7 @@ PLUGINS_DIR=$DOTFILES_ROOT/plugins
 
 source "${DOTFILES_ROOT}/lib/helpers"
 source "${DOTFILES_ROOT}/lib/symlink-helpers"
+source "${DOTFILES_ROOT}/lib/uninstall-helpers"
 
 if [ $# -ne 3 ];then
     echo "Usage: dotfiles uninstall-plugin <PLUGIN_NAME>"
@@ -20,6 +21,17 @@ fi
 
 debug_msg "Uninstalling plugin $PLUGIN"
 remove_plugin_symlinks $PLUGINS_DIR/$PLUGIN
+if [[ $? != 0 ]]
+then
+    fail_msg "Failed to remove symlinks"
+fi
+
+exec_uninstall_scripts $PLUGINS_DIR/$PLUGIN
+if [[ $? != 0 ]]
+then
+    fail_msg "Failed to execute uninstall scripts"
+fi
+
 rm -rf "$PLUGINS_DIR/$PLUGIN"
 make -f $DOTFILES_ROOT/Makefile setup-no-reload
 
@@ -30,4 +42,3 @@ fi
 
 success_msg "Plugin $PLUGIN uninstalled successfully"
 zsh -l
-
