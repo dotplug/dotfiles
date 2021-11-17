@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+# Summary: Create a plugin
+
+DOTFILES_ROOT="${1:?Usage: dotfiles-bin-path DOTFILES_ROOT_PATH}"
+DOTFILES_REPOSITORY_TEMPLATE="git@gitlab.com:achamorro-dev/dotfiles-plugin-template.git"
+
+source "${DOTFILES_ROOT}/lib/helpers"
+
+if [ $# -ne 3 ];then
+    fail_msg "Plugin name is required. Example: dotfiles create-plugin my-plugin"
+fi
+
+PLUGIN_NAME=$3
+debug_msg "Creating plugin $PLUGIN_NAME"
+git clone $DOTFILES_REPOSITORY_TEMPLATE ./$PLUGIN_NAME
+
+if [ $? != 0 -o ! -d $PLUGIN_NAME ];then
+    fail_msg "Failed to create plugin $PLUGIN_NAME"
+fi
+
+# Reset git repository
+cd $PLUGIN_NAME &&
+rm -rf .git &&
+rm -f .gitignore &&
+cd - > /dev/null
+
+success_msg "Plugin $PLUGIN_NAME created successfully"
