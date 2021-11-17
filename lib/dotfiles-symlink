@@ -17,7 +17,7 @@ create_symlinks () {
 
     for src in $symlink_filepaths
     do
-        # the regex puts a dot (.) after the src filename
+        # the regex puts a dot (.) before the src filename
         dst="$HOME/.$(basename "${src%.*}")"
         debug_msg "[$script_file] Execute links"
         _link_file "$src" "$dst" "$overwrite_all" "$backup_all" "$skip_all"
