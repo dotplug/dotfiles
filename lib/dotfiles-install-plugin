@@ -21,7 +21,7 @@ if [ -d $PLUGIN_DIR/$PLUGIN ]; then
     rm -rf $PLUGIN_DIR/$PLUGIN
 fi
 
-debug_msg "Installing $PLUGIN"
+debug_msg "Installing plugin $PLUGIN"
 git clone $PLUGIN_URL "$PLUGIN_DIR/$PLUGIN" -v
 make -f $DOTFILES_DIR/Makefile setup-no-reload
 
