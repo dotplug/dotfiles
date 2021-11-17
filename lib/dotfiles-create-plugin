@@ -8,7 +8,8 @@ DOTFILES_REPOSITORY_TEMPLATE="git@gitlab.com:achamorro-dev/dotfiles-plugin-templ
 source "${DOTFILES_ROOT}/lib/helpers"
 
 if [ $# -ne 3 ];then
-    fail_msg "Plugin name is required. Example: dotfiles create-plugin my-plugin"
+    echo "Usage: dotfiles create-plugin <PLUGIN_NAME>"
+    exit -1
 fi
 
 PLUGIN_NAME=$3
