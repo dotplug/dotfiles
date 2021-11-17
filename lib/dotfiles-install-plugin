@@ -4,7 +4,7 @@
 source "${DOTFILES_DIR}/lib/helpers"
 ORIGINAL_FOLDER=$PWD
 
-if [ "$#" -ne 3 ]
+if [ $# -ne 3 ]
 then
   echo "Usage: dotfiles install-plugin <PLUGIN_GIT_URL>"
   exit 1
@@ -21,14 +21,13 @@ if [ -d $PLUGIN_DIR/$PLUGIN ]; then
     rm -rf $PLUGIN_DIR/$PLUGIN
 fi
 
-debug_msg "Installing $PLUGIN"
+debug_msg "Installing plugin $PLUGIN"
 git clone $PLUGIN_URL "$PLUGIN_DIR/$PLUGIN" -v
 make -f $DOTFILES_DIR/Makefile setup-no-reload
 
 if [[ $? != 0 ]]
 then
     fail_msg "Failed to Install $PLUGIN"
-    exit -1
 fi
 
 debug_msg "Plugin $PLUGIN installed successfully"

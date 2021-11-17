@@ -27,6 +27,7 @@ dotfiles version
 - `dotfiles install-plugin <DOTFILES_GIT_URL>`: Install desired plugins
 - `dotfiles update-plugin <PLUGIN_NAME>`: Update a given plugin
 - `dotfiles uninstall-plugin <PLUGIN_NAME>`: Uninstall a given plugin
+- `dotfiles create-plugin <PLUGIN_NAME>`: Create a plugin using the base template
 - `dotfiles plugins`: Shows all plugins installed
 - `dotfiles help`: Shows all the available options
 - `dotfiles version`: Displays the version

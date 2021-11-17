@@ -9,15 +9,14 @@ ORIGINAL_FOLDER=$PWD
 source "${DOTFILES_ROOT}/lib/helpers"
 
 if [ $# -ne 3 ];then
-  fail_msg "Plugin is a required parameter"
-  exit -1
+    echo "Usage: dotfiles update-plugin <PLUGIN_NAME>"
+    exit -1
 fi
 
 PLUGIN=$3
 
 if [ ! -d ${PLUGINS_DIR}/$PLUGIN ];then
-  fail_msg "Plugin $PLUGIN not found"
-  exit -1
+    fail_msg "Plugin $PLUGIN not found"
 fi
 
 debug_msg "Updating $PLUGIN"
@@ -28,8 +27,7 @@ make -f $DOTFILES_ROOT/Makefile setup-no-reload
 
 if [[ $? != 0 ]]
 then
-    fail_msg "Failed to Install $PLUGIN"
-    exit -1
+    fail_msg "Failed to update $PLUGIN"
 fi
 
 success_msg "Plugin $PLUGIN updated successfully"

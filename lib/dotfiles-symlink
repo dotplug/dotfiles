@@ -3,25 +3,6 @@
 
 DOTFILES_ROOT="${1:?Usage: dotfiles-bin-path DOTFILES_ROOT_PATH}"
 source "${DOTFILES_ROOT}/lib/helpers"
-
-create_symlinks () {
-    set_debug_file_label "$BASH_SOURCE"
-
-    info_msg 'Creating symbolic links'
-
-    local overwrite_all=false backup_all=false skip_all=false
-
-    # -H follow links
-    symlink_filepaths=$(find -H "$DOTFILES_ROOT" -maxdepth 2 -name '*.symlink' -not -path '*.git*')
-    debug_msg "Paths found: $symlink_filepaths"
-
-    for src in $symlink_filepaths
-    do
-        # the regex puts a dot (.) after the src filename
-        dst="$HOME/.$(basename "${src%.*}")"
-        debug_msg "[$script_file] Execute links"
-        _link_file "$src" "$dst" "$overwrite_all" "$backup_all" "$skip_all"
-    done
-}
+source "${DOTFILES_ROOT}/lib/symlink-helpers"
 
 create_symlinks

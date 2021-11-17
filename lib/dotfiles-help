@@ -9,6 +9,7 @@ Commands:
    install-plugin <DOTFILES_GIT_URL>       Install a given plugin, it take the git repository of the plugin as the parameter
    update-plugin <PLUGIN_NAME>             Update a given plugin
    uninstall-plugin <PLUGIN_NAME>          Uninstall a given plugin
+   create-plugin <PLUGIN_NAME>             Create a plugin using the base template
    plugins                                 Shows all plugins installed
    uninstall                               Search for all uninstall.sh files and execute it
 "

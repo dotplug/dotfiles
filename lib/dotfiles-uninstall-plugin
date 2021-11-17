@@ -6,28 +6,28 @@ DOTFILES_ROOT="${1:?Usage: dotfiles-bin-path DOTFILES_ROOT_PATH}"
 PLUGINS_DIR=$DOTFILES_ROOT/plugins
 
 source "${DOTFILES_ROOT}/lib/helpers"
+source "${DOTFILES_ROOT}/lib/symlink-helpers"
 
 if [ $# -ne 3 ];then
-  fail_msg "Plugin is a required parameter"
-  exit -1
+    echo "Usage: dotfiles uninstall-plugin <PLUGIN_NAME>"
+    exit -1
 fi
 
 PLUGIN=$3
-
 if [ ! -d ${PLUGINS_DIR}/$PLUGIN ];then
-  fail_msg "Plugin $PLUGIN not found"
-  exit -1
+    fail_msg "Plugin $PLUGIN not found"
 fi
 
-debug_msg "Uninstall $PLUGIN"
+debug_msg "Uninstalling plugin $PLUGIN"
+remove_plugin_symlinks $PLUGINS_DIR/$PLUGIN
 rm -rf "$PLUGINS_DIR/$PLUGIN"
 make -f $DOTFILES_ROOT/Makefile setup-no-reload
 
 if [[ $? != 0 ]]
 then
-    fail_msg "Failed to Install $PLUGIN"
-    exit -1
+    fail_msg "Failed to uninstall $PLUGIN"
 fi
 
 success_msg "Plugin $PLUGIN uninstalled successfully"
 zsh -l
+
