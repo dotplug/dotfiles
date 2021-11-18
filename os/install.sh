@@ -25,8 +25,10 @@ install_homebrew() {
         green "Homebrew is already installed"
     fi
 
-    # Load Homebrew to environment
-    eval "$(/opt/homebrew/bin/brew shellenv)"
+    # If Homebrew is installed under /opt/homebrew folder
+    if [ -f /opt/homebrew/bin/brew ]; then
+      eval "$(/opt/homebrew/bin/brew shellenv)"
+    fi
 }
 
 # Summary: Search for all SOURCE_FILE inside SOURCE_FOLDER and generates the DESTINATION_FILE
