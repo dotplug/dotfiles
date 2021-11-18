@@ -20,12 +20,13 @@ execute_installers_from_path () {
           fail_msg "Failed to Install $installer"
       fi
   done
-
 }
 
 install_filepaths=$(find -H "$DOTFILES_ROOT" -type f -name "install.sh" -not -path "$DOTFILES_ROOT/plugins/*")
 install_plugins_filepaths=$(find -H "$DOTFILES_ROOT" -type f -name "install.sh" -path "$DOTFILES_ROOT/plugins/*")
 debug_msg "Paths founded:\n$install_filepaths\n$install_plugins_filepaths"
 
-execute_installers_from_path $install_filepaths
-execute_installers_from_path $install_plugins_filepaths
+# Only install scripts inside core folder
+execute_installers_from_path "${install_filepaths[@]}"
+# Install scripts inside plugins folder
+execute_installers_from_path "${install_plugins_filepaths[@]}"
