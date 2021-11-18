@@ -21,7 +21,8 @@ fi
 
 debug_msg "Updating $PLUGIN"
 cd $PLUGINS_DIR/$PLUGIN
-git pull --force
+ACTUAL_BRANCH=$(git branch --show-current)
+git pull origin ${ACTUAL_BRANCH}
 cd $ORIGINAL_FOLDER
 make -f $DOTFILES_ROOT/Makefile setup-no-reload
 

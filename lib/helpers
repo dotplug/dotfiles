@@ -114,7 +114,7 @@ _link_file () {
 }
 
 _get_dotfiles_version () {
-    git_latest_version="$(cd $DOTFILES_ROOT && git describe --tags HEAD 2>/dev/null || true)"
+    git_latest_version="$(cd $DOTFILES_ROOT && git tag | tail -1 || true)"
     echo "${git_latest_version:-0.1.0}"
 }
 
@@ -129,22 +129,28 @@ _check_and_update_last_version () {
     actual_version="$(_get_dotfiles_version)"
     latest_version="$(_get_latest_dotfiles_version)"
 
-    if [ $actual_version = $latest_version ]; then
+    if [ "$actual_version" = "$latest_version" ]; then
         info_msg "Dotfiles is up to date"
         exit
     fi
 
-
+    info_msg "Actual version: $actual_version"
+    info_msg "Latest version: $latest_version"
     read -p "$(info_msg 'New version of dotfiles is available. Do you want to update it? [y/n] ')" update_response
 
-    if [ $update_response = 'y' -o $update_response = 'yes' -o $update_response = 'Y' -o $update_response = 'YES' ]; then
+    if [ ${update_response} = 'y' -o ${update_response} = 'yes' -o ${update_response} = 'Y' -o ${update_response} = 'YES' ]; then
         info_msg "Updating..."
-        $(cd $DOTFILES_ROOT && git pull --force)
+        cd $DOTFILES_ROOT
+        ACTUAL_BRANCH=$(git branch --show-current)
+        git pull origin ${ACTUAL_BRANCH}
+        git_pull_result=$?
+        cd - > /dev/null
 
-        if [ $? -ne 0 ]; then
+        if [ ${git_pull_result} -ne 0 ]; then
             fail_msg "Error updating Dotfiles"
         fi
 
+        success_msg "Dotfiles updated successfully"
         exit 0
     fi
 

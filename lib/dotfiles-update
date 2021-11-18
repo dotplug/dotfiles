@@ -3,8 +3,6 @@
 # Summary: Update a plugin
 
 DOTFILES_ROOT="${1:?Usage: dotfiles-bin-path DOTFILES_ROOT_PATH}"
-ORIGINAL_FOLDER=$PWD
-
 source "${DOTFILES_ROOT}/lib/helpers"
 
 _check_and_update_last_version
@@ -20,6 +18,5 @@ then
     fail_msg "Failed to update dotfiles"
 fi
 
-#cd $ORIGINAL_FOLDER
 success_msg "Dotfiles has been updated successfully"
 zsh -l
