@@ -6,10 +6,24 @@ export DOTFILES_PATH="$HOME/.dotfiles"
 echo "Installing dotfiles into: '$DOTFILES_PATH'"
 
 # Installing Xcode command line tools for git
-xcode-select --install
+if [ ! -d /Library/Developer/CommandLineTools ]; then
+    echo "Installing the Command Line Tools (expect a popup and press install)"
+    sudo "/usr/bin/xcode-select" "--install"
+    echo "Press enter when the installation of Command Line Tools has completed."
+    read
+fi
+
+if [ -d $DOTFILES_PATH ]; then
+    echo "Dotfiles command already installed."
+    echo "Try to execute: dotfiles version"
+    exit 0
+fi
 
 # Cloning repository to local final directory
 git clone git@gitlab.com:autentia/internal/dotfiles/dotfiles.git "$DOTFILES_PATH"
+if [ $? -ne 0 ]; then
+    echo "Error trying to download dotfiles."
+fi
 
 # Execute setup
 make -f $DOTFILES_PATH/Makefile setup
