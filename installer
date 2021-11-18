@@ -5,6 +5,11 @@ set -euo pipefail
 export DOTFILES_PATH="$HOME/.dotfiles"
 echo "Installing dotfiles into: '$DOTFILES_PATH'"
 
+# Installing Xcode command line tools for git
+xcode-select --install
+
+# Cloning repository to local final directory
 git clone git@gitlab.com:autentia/internal/dotfiles/dotfiles.git "$DOTFILES_PATH"
 
+# Execute setup
 make -f $DOTFILES_PATH/Makefile setup
