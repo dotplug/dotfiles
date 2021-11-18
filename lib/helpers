@@ -113,3 +113,41 @@ _link_file () {
     fi
 }
 
+_get_dotfiles_version () {
+    git_latest_version="$(cd $DOTFILES_ROOT && git describe --tags HEAD 2>/dev/null || true)"
+    echo "${git_latest_version:-0.1.0}"
+}
+
+_get_latest_dotfiles_version () {
+    git_latest_remote_version="$(cd $DOTFILES_ROOT && git ls-remote --tags origin | tail -1 | awk '{print $2}' | awk -F'/' '{print $3}')"
+    echo "${git_latest_remote_version:-0.1.0}"
+}
+
+_check_and_update_last_version () {
+    info_msg "Checking dotfiles versions"
+
+    actual_version="$(_get_dotfiles_version)"
+    latest_version="$(_get_latest_dotfiles_version)"
+
+    if [ $actual_version = $latest_version ]; then
+        info_msg "Dotfiles is up to date"
+        exit
+    fi
+
+
+    read -p "$(info_msg 'New version of dotfiles is available. Do you want to update it? [y/n] ')" update_response
+
+    if [ $update_response = 'y' -o $update_response = 'yes' -o $update_response = 'Y' -o $update_response = 'YES' ]; then
+        info_msg "Updating..."
+        $(cd $DOTFILES_ROOT && git pull --force)
+
+        if [ $? -ne 0 ]; then
+            fail_msg "Error updating Dotfiles"
+        fi
+
+        exit 0
+    fi
+
+    # When the response is different to yes
+    exit -1
+}

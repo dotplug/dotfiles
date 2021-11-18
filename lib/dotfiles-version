@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # Summary: Display version of dotfiles
 
-git_latest_version="$(git describe --tags HEAD 2>/dev/null || true)"
-echo "dotfiles ${git_latest_version:-0.1.0}"
+DOTFILES_ROOT="${1:?Usage: dotfiles-bin-path DOTFILES_ROOT_PATH}"
+source "${DOTFILES_ROOT}/lib/helpers"
+
+echo "dotfiles $(_get_dotfiles_version)"

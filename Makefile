@@ -33,3 +33,7 @@ setup-no-reload:
 	@cd ${DOTFILES_DIR}/bin && ./dotfiles install
 	@cd ${DOTFILES_DIR}/bin && ./dotfiles symlink
 	@cd ${DOTFILES_DIR}/bin && ./dotfiles git-setup
+
+.PHONY: update
+update:
+	@cd $DOTFILES_DIR/bin && ./dotfiles update

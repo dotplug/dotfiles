@@ -30,6 +30,7 @@ dotfiles version
 - `dotfiles create-plugin <PLUGIN_NAME>`: Create a plugin using the base template
 - `dotfiles plugins`: Shows all plugins installed
 - `dotfiles help`: Shows all the available options
+- `dotfiles update`: Update to latest version of dotfiles
 - `dotfiles version`: Displays the version
 
 ## How does it work?

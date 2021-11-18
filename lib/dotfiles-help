@@ -11,5 +11,6 @@ Commands:
    uninstall-plugin <PLUGIN_NAME>          Uninstall a given plugin
    create-plugin <PLUGIN_NAME>             Create a plugin using the base template
    plugins                                 Shows all plugins installed
+   update                                  Update to latest version of dotfiles
    uninstall                               Search for all uninstall.sh files and execute it
 "
