@@ -17,13 +17,16 @@ install_homebrew() {
         if test "$(uname)" = "Darwin"
         then
             /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-       elif test "$(expr substr $(uname -s) 1 5)" = "Linux"
-       then
+        elif test "$(expr substr $(uname -s) 1 5)" = "Linux"
+        then
            ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/linuxbrew/go/install)"
         fi
     else
         green "Homebrew is already installed"
     fi
+
+    # Load Homebrew to environment
+    eval "$(/opt/homebrew/bin/brew shellenv)"
 }
 
 # Summary: Search for all SOURCE_FILE inside SOURCE_FOLDER and generates the DESTINATION_FILE
