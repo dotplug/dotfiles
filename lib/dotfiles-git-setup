@@ -11,7 +11,7 @@ setup_gitconfig () {
     local git_config_general_path=$HOME/.gitconfig
     local git_config_path_template=$DOTFILES_ROOT/git/gitconfig.local.symlink.example
 
-    debug_msg "[$script_file] Check if $git_config_path or $git_config_git_config_general_path exists"
+    debug_msg "[$script_file] Check if $git_config_path or $git_config_general_path exists"
 
     if ! [ -f $git_config_path -o -f $git_config_general_path ]
     then
