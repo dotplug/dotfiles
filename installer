@@ -20,7 +20,7 @@ if [ -d $DOTFILES_PATH ]; then
 fi
 
 # Cloning repository to local final directory
-git clone git@gitlab.com:autentia/internal/dotfiles/dotfiles.git "$DOTFILES_PATH"
+git clone https://github.com/autentia/dotfiles.git "$DOTFILES_PATH"
 if [ $? -ne 0 ]; then
     echo "Error trying to download dotfiles."
 fi
