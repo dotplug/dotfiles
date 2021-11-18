@@ -36,4 +36,4 @@ setup-no-reload:
 
 .PHONY: update
 update:
-	@cd $DOTFILES_DIR/bin && ./dotfiles update
+	@cd ${DOTFILES_DIR}/bin && ./dotfiles update
