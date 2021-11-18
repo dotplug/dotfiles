@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 
-export DOTFILES_DIR ?= ${PWD}
+export DOTFILES_DIR ?= ${HOME}/.dotfiles
 
 zsh-reload:
 	@zsh -l
