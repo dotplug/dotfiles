@@ -151,9 +151,8 @@ _check_and_update_last_version () {
         fi
 
         success_msg "Dotfiles updated successfully"
-        exit 0
+    else
+        # When the response is different to yes
+        exit -1
     fi
-
-    # When the response is different to yes
-    exit -1
 }
