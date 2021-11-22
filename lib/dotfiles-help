@@ -13,4 +13,7 @@ Commands:
    plugins                                 Shows all plugins installed
    update                                  Update to latest version of dotfiles
    uninstall                               Search for all uninstall.sh files and execute it
+   reload                                  Search for all install.sh files and execute it.
+                                           Search for all *.symlink and create symbolic links into \$HOME
+                                           Search for all executables inside 'bin' folders made it available from \$PATH.
 "

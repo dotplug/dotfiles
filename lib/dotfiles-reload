@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# Summary: 
+# 1. Search for all install.sh files and execute it.
+# 2. Search for all *.symlink and create symbolic links into $HOME
+# 3. Search for all executables inside "bin" folders made it available from $PATH.
+
+DOTFILES_ROOT="${1:?Usage: dotfiles-bin-path DOTFILES_ROOT_PATH}"
+source "${DOTFILES_ROOT}/lib/helpers"
+
+debug_msg "Reloading the dotfiles"
+
+dotfiles-symlink $DOTFILES_ROOT
+dotfiles-install $DOTFILES_ROOT
+dotfiles-bin-path $DOTFILES_ROOT
+
+success_msg "Dotfiles reloaded"
