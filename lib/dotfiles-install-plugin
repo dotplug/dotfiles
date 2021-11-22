@@ -1,16 +1,51 @@
 #!/usr/bin/env bash
 
-# Summary: Installs a plugin
+# Dependencies
 source "${DOTFILES_DIR}/lib/helpers"
-ORIGINAL_FOLDER=$PWD
+source "${DOTFILES_DIR}/lib/gnu-getopt-helpers"
 
+# Summary: Installs a plugin
+_show_usage () {
+  echo "Usage: dotfiles install-plugin [-nh] <PLUGIN_GIT_URL>
+
+Options:
+    -h, --help          Display help
+    -n, --no-reload     The installer will not refresh the session after the install
+"
+}
+
+# gnu-getopt dependency
+_load_gnu_getopt_to_path
+
+# Checking options
+options=$(getopt -l 'help,no-reload' -o 'h::n::' -a -- "$@")
+eval set -- "$options"
+while true; do
+    case $1 in
+        -h|--help)
+            _show_usage
+            exit 0
+            ;;
+        -n|--no-reload)
+            export DOTFILES_NO_RELOAD="1"
+            ;;
+        --)
+            shift
+            break;;
+    esac
+    shift
+done
+
+# Checking parameters
 if [ $# -ne 3 ]
 then
-  echo "Usage: dotfiles install-plugin <PLUGIN_GIT_URL>"
-  exit 1
+    _show_usage
+    exit 1
 fi
 
 # Environment
+source "${DOTFILES_DIR}/lib/helpers"
+ORIGINAL_FOLDER=$PWD
 PLUGIN_URL=$3
 PLUGIN_DIR="$DOTFILES_DIR/plugins"
 PLUGIN=$(basename $PLUGIN_URL | sed 's/.git$//')
@@ -23,14 +58,18 @@ fi
 
 debug_msg "Installing plugin $PLUGIN"
 git clone $PLUGIN_URL "$PLUGIN_DIR/$PLUGIN" -v
-make -f $DOTFILES_DIR/Makefile setup-no-reload
+if [[ $? -ne 0 ]]; then
+    fail_msg "Failed to download plugin information"
+fi
 
-if [[ $? != 0 ]]
-then
-    fail_msg "Failed to Install $PLUGIN"
+make -f $DOTFILES_DIR/Makefile setup-no-reload
+if [[ $? != 0 ]]; then
+    fail_msg "Failed to install $PLUGIN"
 fi
 
 debug_msg "Plugin $PLUGIN installed successfully"
 cd $ORIGINAL_FOLDER
-zsh -l
 
+if [ $DOTFILES_NO_RELOAD <> "1" ]; then
+    zsh -l
+fi

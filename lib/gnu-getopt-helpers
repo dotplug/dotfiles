@@ -1,0 +1,4 @@
+# gnu-getopt dependency
+_load_gnu_getopt_to_path () {
+  export PATH="/usr/local/opt/gnu-getopt/bin:$PATH"
+}
