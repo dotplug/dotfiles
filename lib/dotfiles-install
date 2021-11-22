@@ -17,7 +17,7 @@ execute_installers_from_path () {
 
       if [[ $? != 0 ]]
       then
-          fail_msg "Failed to Install $installer"
+          fail_msg "Failed to install $installer"
       fi
   done
 }
