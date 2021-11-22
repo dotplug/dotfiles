@@ -16,11 +16,6 @@ Now you can check installation with:
 dotfiles version
 ```
 
-## Update configuration
-
-1. Add remote: `git remote add upstream https://gitlab.com/autentia/internal/dotfiles/dotfiles`
-2. Update your project: `git pull upstream main`
-
 ## Dotfiles
 
 - `dotfiles install`: Install all required Software
@@ -33,7 +28,7 @@ dotfiles version
 - `dotfiles update`: Update to latest version of dotfiles
 - `dotfiles version`: Displays the version
 
-## How does it work?
+## Plugins, how does it work?
 
 The file's structure is important to handle the configuration, letting you separate each tool's configuration in different folders, allowing you to isolate each configuration.
 
