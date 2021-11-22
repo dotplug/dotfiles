@@ -3,7 +3,7 @@
 # Summary: Create a plugin
 
 DOTFILES_ROOT="${1:?Usage: dotfiles-bin-path DOTFILES_ROOT_PATH}"
-DOTFILES_REPOSITORY_TEMPLATE="git@github.com:autentia/dotfiles-plugin-template.git"
+DOTFILES_REPOSITORY_TEMPLATE="https://github.com/autentia/dotfiles-plugin-template.git"
 
 source "${DOTFILES_ROOT}/lib/helpers"
 
