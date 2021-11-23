@@ -17,6 +17,8 @@ Options:
 # gnu-getopt dependency
 _load_gnu_getopt_to_path
 
+export DOTFILES_NO_RELOAD="0"
+
 # Checking options
 options=$(getopt -l 'help,no-reload' -o 'h::n::' -a -- "$@")
 eval set -- "$options"
@@ -70,6 +72,6 @@ fi
 debug_msg "Plugin $PLUGIN installed successfully"
 cd $ORIGINAL_FOLDER
 
-if [ $DOTFILES_NO_RELOAD <> "1" ]; then
+if [ `echo $DOTFILES_NO_RELOAD` != "1" ]; then
     zsh -l
 fi
