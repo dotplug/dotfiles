@@ -10,7 +10,7 @@ _show_usage () {
 
 Options:
     -h, --help          Display help
-    -n, --no-reload     The installer will not refresh the session after the install
+    -n, --no-reload     The installer will not refresh the session at the end
 "
 }
 

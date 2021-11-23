@@ -16,4 +16,5 @@ Commands:
    apply                                   Search for all install.sh files and execute it.
                                            Search for all *.symlink and create symbolic links into \$HOME
                                            Search for all executables inside 'bin' folders and make it available from \$PATH.
+   version                                 Display the version
 "
