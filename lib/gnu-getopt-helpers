@@ -1,4 +1,8 @@
 # gnu-getopt dependency
 _load_gnu_getopt_to_path () {
-  export PATH="/usr/local/opt/gnu-getopt/bin:$PATH"
+  if [ -d /usr/local/opt/gnu-getopt ]; then
+    export PATH="/usr/local/opt/gnu-getopt/bin:$PATH"
+  elif [ -d /opt/homebrew/opt/gnu-getopt ]; then
+    export PATH="/opt/homebrew/opt/gnu-getopt/bin:$PATH"
+  fi
 }

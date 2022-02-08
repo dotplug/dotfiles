@@ -27,3 +27,6 @@ fi
 
 # Execute setup
 make -f $DOTFILES_PATH/Makefile setup
+
+# Reload environment
+zsh -l
