@@ -56,6 +56,14 @@ update_mac_apps_and_libraries() {
     $update_command
 }
 
+# Install Rosetta
+install_rosetta() {
+    if [[ `uname -m` == 'arm64' ]]; then
+        blue "Install Rosetta"
+        /usr/sbin/softwareupdate --install-rosetta --agree-to-license
+    fi
+}
+
 # ============================================================================
 # MAIN
 # ============================================================================
@@ -86,6 +94,8 @@ then
 
     blue "Update Mac App Store apps"
     update_mac_apps_and_libraries
+
+    install_rosetta
 
     blue "Return to the last directory"
     cd -
