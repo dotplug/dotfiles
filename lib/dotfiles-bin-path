@@ -10,7 +10,7 @@ add_bin_files_to_path () {
 
     local overwrite_all=false backup_all=false skip_all=false
 
-    bin_filepaths=$(find -H "$DOTFILES_ROOT" -type f -maxdepth 5 -path "**/bin/*")
+    bin_filepaths=$(find -H "$DOTFILES_ROOT" -type f -maxdepth 5 -path "**/bin/*" ! -name 'README.md')
     debug_msg "Paths found: $bin_filepaths"
 
     for src in $bin_filepaths
