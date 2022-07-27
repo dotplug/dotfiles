@@ -7,3 +7,5 @@
     c = commit -m
     s = status
     l = log
+[push]
+    autoSetupRemote = true
