@@ -31,9 +31,9 @@ setup-no-reload:
 	@sudo chmod 755 /usr/local/bin  # dotfiles bin-path add links inside /usr/local/bin and this folder may not exists in new versions of mac.
 	@sudo chown -R ${USER} /usr/local/bin  # dotfiles bin-path add links inside /usr/local/bin and this folder may not exists in new versions of mac.
 	@cd ${DOTFILES_DIR}/bin && ./dotfiles bin-path
-	@cd ${DOTFILES_DIR}/bin && ./dotfiles install
 	@cd ${DOTFILES_DIR}/bin && ./dotfiles symlink
 	@cd ${DOTFILES_DIR}/bin && ./dotfiles git-setup
+	@cd ${DOTFILES_DIR}/bin && ./dotfiles install
 
 .PHONY: update
 update:
