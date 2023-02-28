@@ -19,24 +19,6 @@ _load_gnu_getopt_to_path
 
 export DOTFILES_NO_RELOAD="0"
 
-# Checking options
-options=$(getopt -l 'help,no-reload' -o 'h::n::' -a -- "$@")
-eval set -- "$options"
-while true; do
-    case $1 in
-        -h|--help)
-            _show_usage
-            exit 0
-            ;;
-        -n|--no-reload)
-            export DOTFILES_NO_RELOAD="1"
-            ;;
-        --)
-            shift
-            break;;
-    esac
-    shift
-done
 
 # Checking parameters
 if [ $# -ne 3 ]
@@ -57,6 +39,25 @@ if [ -d $PLUGIN_DIR/$PLUGIN ]; then
     debug_msg "Removing folder $PLUGIN_DIR/$PLUGIN to reinstall"
     rm -rf $PLUGIN_DIR/$PLUGIN
 fi
+
+# Checking options
+options=$(getopt -l 'help,no-reload' -o 'h::n::' -a -- "$@")
+eval set -- "$options"
+while true; do
+    case $1 in
+        -h|--help)
+            _show_usage
+            exit 0
+            ;;
+        -n|--no-reload)
+            export DOTFILES_NO_RELOAD="1"
+            ;;
+        --)
+            shift
+            break;;
+    esac
+    shift
+done
 
 debug_msg "Installing plugin $PLUGIN"
 git clone $PLUGIN_URL "$PLUGIN_DIR/$PLUGIN" -v
