@@ -1,10 +1,14 @@
 #!/usr/bin/env bash
 
-# Dependencies
-source "${DOTFILES_DIR}/lib/helpers"
-source "${DOTFILES_DIR}/lib/gnu-getopt-helpers"
-
 # Summary: Installs a plugin
+
+DOTFILES_ROOT=$1
+DOTFILES_DEBUG=$2
+
+# Dependencies
+source "${DOTFILES_ROOT}/lib/helpers"
+source "${DOTFILES_ROOT}/lib/gnu-getopt-helpers"
+
 _show_usage () {
   echo "Usage: dotfiles install-plugin [-nh] <PLUGIN_GIT_URL>
 
@@ -21,17 +25,16 @@ export DOTFILES_NO_RELOAD="0"
 
 
 # Checking parameters
-if [ $# -ne 3 ]
+if [ $# -ne 4 ]
 then
     _show_usage
     exit 1
 fi
 
 # Environment
-source "${DOTFILES_DIR}/lib/helpers"
 ORIGINAL_FOLDER=$PWD
-PLUGIN_URL=$3
-PLUGIN_DIR="$DOTFILES_DIR/plugins"
+PLUGIN_URL=$4
+PLUGIN_DIR="$DOTFILES_ROOT/plugins"
 PLUGIN=$(basename $PLUGIN_URL | sed 's/.git$//')
 
 # Checking if plugin exists
@@ -65,7 +68,7 @@ if [[ $? -ne 0 ]]; then
     fail_msg "Failed to download plugin information"
 fi
 
-make -f $DOTFILES_DIR/Makefile setup-no-reload
+make -f $DOTFILES_ROOT/Makefile setup-no-reload
 if [[ $? != 0 ]]; then
     fail_msg "Failed to install $PLUGIN"
 fi

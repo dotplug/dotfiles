@@ -1,11 +1,17 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+IFS=$'\n\t'
+
 # Summary: Search for all uninstall.sh inside DOTFILES_ROOT and execute it
 #
 # Search for all uninstall.sh inside DOTFILES_ROOT and execute it
 
-DOTFILES_ROOT="${1:?Usage: dotfiles-bin-path DOTFILES_ROOT_PATH}"
+DOTFILES_ROOT=$1
+DOTFILES_DEBUG=$2
+
+# Needs to load the helpers before using it
 source "${DOTFILES_ROOT}/lib/helpers"
 source "${DOTFILES_ROOT}/lib/uninstall-helpers"
 
-exec_uninstall_scripts $DOTFILES_ROOT
+exec_uninstall_scripts $DOTFILES_ROOT $DOTFILES_DEBUG

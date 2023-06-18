@@ -1,15 +1,21 @@
 #!/usr/bin/env bash
 
+# Doesn't add set -u to have better validation of undefined input variables.
+set -eo pipefail
+IFS=$'\n\t'
+
 # Summary: Update a plugin
 
-DOTFILES_ROOT="${1:?Usage: dotfiles-bin-path DOTFILES_ROOT_PATH}"
+DOTFILES_ROOT=$1
+DOTFILES_DEBUG=$2
 PLUGINS_DIR=$DOTFILES_ROOT/plugins
 ORIGINAL_FOLDER=$PWD
 
+# Needs to load the helpers before using it
 source "${DOTFILES_ROOT}/lib/helpers"
 
 if [ $# -ne 3 ];then
-    echo "Usage: dotfiles update-plugin <PLUGIN_NAME>"
+    fail_msg "Missing plugin name.\nUsage: dotfiles update-plugin <PLUGIN_NAME>"
     exit -1
 fi
 

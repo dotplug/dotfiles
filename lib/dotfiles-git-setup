@@ -1,12 +1,17 @@
 #!/usr/bin/env bash
 
-DOTFILES_ROOT="${1:?Usage: dotfiles-bin-path DOTFILES_ROOT_PATH}"
+set -euo pipefail
+IFS=$'\n\t'
+
+DOTFILES_ROOT=$1
+DOTFILES_DEBUG=$2
+
+# Needs to load the helpers before using it
 source "${DOTFILES_ROOT}/lib/helpers"
 
 setup_gitconfig () {
     set_debug_file_label "$BASH_SOURCE"
 
-    local DOTFILES_ROOT=${1:?DOTFILE_ROOT must be passed as first argument}
     local git_config_path=$HOME/.gitconfig.local
     local git_config_general_path=$HOME/.gitconfig
     local git_config_path_template=$DOTFILES_ROOT/git/gitconfig.local.symlink.example
@@ -40,5 +45,5 @@ setup_gitconfig () {
     fi
 }
 
-setup_gitconfig $DOTFILES_ROOT
+setup_gitconfig
 

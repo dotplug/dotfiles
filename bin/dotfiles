@@ -3,9 +3,7 @@
 # This functions set up the dotfiles root configuration with all commands available.
 # By default it will take the parent directory of this file.
 function set_dotfiles_root() {
-    local DOTFILES_ROOT=${1:-}
-
-    if [ -z "${DOTFILES_ROOT}" ]; then
+    if [ -z ${DOTFILES_ROOT+x} ]; then
         DOTFILES_ROOT="$(cd "$(dirname "$(readlink_f "${0}")")/.." && pwd)"
     else
         DOTFILES_ROOT="${DOTFILES_ROOT%/}"
@@ -17,10 +15,8 @@ function set_dotfiles_root() {
 # This functions set up the dotfiles verbose output
 # By default is disabled
 function set_dotfiles_debug() {
-    local DOTFILES_DEBUG=${1:-}
-
-    if [ -z "${DOTFILES_DEBUG}" ]; then
-        DOTFILES_DEBUG=""
+    if [ -z ${DOTFILES_DEBUG+x} ]; then
+        DOTFILES_DEBUG=false
     else
         DOTFILES_DEBUG="${DOTFILES_DEBUG%/}"
     fi
@@ -28,6 +24,9 @@ function set_dotfiles_debug() {
     echo $DOTFILES_DEBUG
 }
 
+# This functions ensure that folders just below DOTFILES_ROOT called "lib" and "bin" are added to the path.
+# The function is idempotent so no changes in $PATH are done if the folders already exists in the variable.
+# This function is required at beggining to ensure that all internal functions are called.
 function add_dotfiles_internal_libraries_to_path() {
     local DOTFILES_ROOT=${1}
     for dir_name in lib bin; do
@@ -66,13 +65,12 @@ function readlink_f() {
 DOTFILES_ROOT=$(set_dotfiles_root)
 DOTFILES_DEBUG=$(set_dotfiles_debug)
 
-# Ensure lib and bin are in $PATH
 add_dotfiles_internal_libraries_to_path $DOTFILES_ROOT
 
 command="${1:-}"
 case "${command}" in
     "" )
-        dotfiles-version
+        dotfiles-version $DOTFILES_ROOT $DOTFILES_DEBUG
         dotfiles-help
         ;;
     -v | --version )

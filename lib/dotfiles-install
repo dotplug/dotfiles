@@ -1,18 +1,26 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+IFS=$'\n\t'
+
 # Summary: Search for all install.sh inside DOTFILES_ROOT and execute it
 #
 # Search for all install.sh inside DOTFILES_ROOT and execute it
 
-DOTFILES_ROOT="${1:?Usage: dotfiles-bin-path DOTFILES_ROOT_PATH}"
+DOTFILES_ROOT=$1
+DOTFILES_DEBUG=$2
+PLUGINS_DIR=$DOTFILES_ROOT/plugins
+
+# Needs to load the helpers before using it
 source "${DOTFILES_ROOT}/lib/helpers"
+
 
 execute_installers_from_path () {
   install_paths=$1
 
   for installer in $install_paths
   do
-      debug_msg "Install $installer"
+      info_msg "Installing $installer:"
       sh -c "$installer"
 
       if [[ $? != 0 ]]
@@ -22,11 +30,12 @@ execute_installers_from_path () {
   done
 }
 
-install_filepaths=$(find -H "$DOTFILES_ROOT" -type f -name "install.sh" -not -path "$DOTFILES_ROOT/plugins/*")
-install_plugins_filepaths=$(find -H "$DOTFILES_ROOT" -type f -name "install.sh" -path "$DOTFILES_ROOT/plugins/*")
+install_filepaths=$(find -H "$DOTFILES_ROOT" -type f -name "install.sh" -not -path "$PLUGINS_DIR/*")
+install_plugins_filepaths=$(find -H "$DOTFILES_ROOT" -type f -name "install.sh" -path "$PLUGINS_DIR/*")
 debug_msg "Paths founded:\n$install_filepaths\n$install_plugins_filepaths"
 
 # Only install scripts inside core folder
 execute_installers_from_path "${install_filepaths[@]}"
+
 # Install scripts inside plugins folder
 execute_installers_from_path "${install_plugins_filepaths[@]}"
