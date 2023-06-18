@@ -9,7 +9,9 @@ info_msg () {
 }
 
 debug_msg () {
-    printf "\r  [ \033[0;33mDEBUG\033[0m ] $1\n"
+    if [[ ${DOTFILES_DEBUG} == "true" ]]; then
+        printf "\r  [ \033[0;33mDEBUG\033[0m ] $1\n"
+    fi
 }
 
 # This function is used to update the filename of the debug

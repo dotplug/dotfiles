@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+IFS=$'\n\t'
+
 # ============================================================================
 # UNINSTALL FUNCTION HELPERS
 # ============================================================================
@@ -13,10 +16,5 @@ exec_uninstall_scripts () {
   do
       debug_msg "Uninstall $uninstaller"
       sh -c "$uninstaller"
-
-      if [[ $? != 0 ]]
-      then
-          fail_msg "Failed to uninstall $uninstaller"
-      fi
   done
 }

@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+IFS=$'\n\t'
+
 # Summary: Uninstalls a plugin
 
-DOTFILES_ROOT="${1:?Usage: dotfiles-bin-path DOTFILES_ROOT_PATH}"
+DOTFILES_ROOT=$1
+DOTFILES_DEBUG=$2
 PLUGINS_DIR=$DOTFILES_ROOT/plugins
 
 source "${DOTFILES_ROOT}/lib/helpers"

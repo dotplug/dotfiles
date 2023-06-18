@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 
-DOTFILES_ROOT="${1:?Usage: dotfiles-bin-path DOTFILES_ROOT_PATH}"
+set -euo pipefail
+IFS=$'\n\t'
+
+# Summary: Add all "bin" folders inside the DOTFILES_ROOT to the $PATH
+
+DOTFILES_ROOT=$1
+DOTFILES_DEBUG=$2
+
+# Needs to load the helpers before using it
 source "${DOTFILES_ROOT}/lib/helpers"
 
 add_bin_files_to_path () {
