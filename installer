@@ -21,6 +21,8 @@ fi
 
 # Cloning repository to local final directory
 git clone https://github.com/autentia/dotfiles.git "$DOTFILES_PATH"
+git checkout fix-messages-and-prompts
+
 if [ $? -ne 0 ]; then
     echo "Error trying to download dotfiles."
 fi
