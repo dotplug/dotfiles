@@ -64,7 +64,7 @@ update_mac_apps_and_libraries() {
 install_rosetta() {
     if [[ `uname -m` == 'arm64' ]]; then
         blue "[OS] Install Rosetta"
-        sudo /usr/sbin/softwareupdate --install-rosetta --agree-to-license 1>/dev/null
+        sudo /usr/sbin/softwareupdate --install-rosetta --agree-to-license
         green "[OS] Rosetta installed!"
     fi
 }
@@ -86,7 +86,7 @@ then
     cd $HOME
 
     blue "[OS] Install Brew apps defined in the Brewfile (Takes a lot of time first time to install everything)"
-    brew bundle --cleanup --global 1>/dev/null
+    brew bundle --cleanup --global
     green "[OS] Installed!"
 
     blue "[OS] Update all the apps defined in the Brewfile"
