@@ -119,6 +119,7 @@ dotfiles uninstall-plugin my-awesome-plugin
 - `dotfiles install-plugin [-nh] <DOTFILES_GIT_URL>`: Install desired plugins
   - `-h, --help`          Display help
   - `-n, --no-reload`     The installer will not refresh the session at the end
+- `dotfiles git-setup`: Create the .gitconfig and .gitconfig.local files. Use the DOTFILES_GIT_AUTHORNAME and DOTFILES_GIT_AUTHOREMAIL environment variables to use it non interactive.
 - `dotfiles update-plugin <PLUGIN_NAME>`: Update a given plugin
 - `dotfiles uninstall-plugin <PLUGIN_NAME>`: Uninstall a given plugin
 - `dotfiles create-plugin <PLUGIN_NAME>`: Create a plugin using the base template
