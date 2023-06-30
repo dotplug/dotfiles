@@ -20,7 +20,7 @@ install_homebrew() {
         # Install the correct homebrew for each OS type
         if test "$(uname)" = "Darwin"
         then
-            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+            /bin/bash -c "$(NONINTERACTIVE=1 curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         elif test "$(expr substr $(uname -s) 1 5)" = "Linux"
         then
            ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/linuxbrew/go/install)"
@@ -56,7 +56,7 @@ function generate_brewfiles() {
 # yeah, let's do that.
 update_mac_apps_and_libraries() {
     blue "[OS] Update Mac App Store apps"
-    sudo /usr/sbin/softwareupdate -i -r 1>/dev/null
+    sudo /usr/sbin/softwareupdate -i -r
     green "[OS] Updated!"
 }
 
@@ -90,7 +90,7 @@ then
     green "[OS] Installed!"
 
     blue "[OS] Update all the apps defined in the Brewfile"
-    brew update 1>/dev/null
+    brew update
     green "[OS] Updated!"
 
     blue "[OS] Upgrade all the cask apps"
