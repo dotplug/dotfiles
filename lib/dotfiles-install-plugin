@@ -25,7 +25,7 @@ export DOTFILES_NO_RELOAD="0"
 
 
 # Checking parameters
-if [ $# -ne 4 ]
+if [ $# -ge 4 ]
 then
     _show_usage
     exit 1
