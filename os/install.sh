@@ -20,7 +20,7 @@ install_homebrew() {
         # Install the correct homebrew for each OS type
         if test "$(uname)" = "Darwin"
         then
-            /bin/bash -c "$(NONINTERACTIVE=1 curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+            NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         elif test "$(expr substr $(uname -s) 1 5)" = "Linux"
         then
            ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/linuxbrew/go/install)"
