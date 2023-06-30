@@ -103,6 +103,9 @@ case "${command}" in
             }
         fi
         shift 1
-        exec "${command_path}" "$DOTFILES_ROOT" $DOTFILES_DEBUG $DOTFILES_OS_UPDATE_OS "$@"
+        DOTFILES_OS_UPDATE_OS=$DOTFILES_OS_UPDATE_OS \
+        DOTFILES_GIT_AUTHORNAME=$DOTFILES_GIT_AUTHORNAME \
+        DOTFILES_GIT_AUTHOREMAIL=$DOTFILES_GIT_AUTHOREMAIL \
+                exec "${command_path}" "$DOTFILES_ROOT" $DOTFILES_DEBUG  "$@"
         ;;
 esac

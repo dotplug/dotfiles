@@ -9,7 +9,7 @@ IFS=$'\n\t'
 
 DOTFILES_ROOT=$1
 DOTFILES_DEBUG=${2:-false}
-DOTFILES_OS_UPDATE_OS=${3:-false}
+DOTFILES_OS_UPDATE_OS=${DOTFILES_OS_UPDATE_OS:-false}
 PLUGINS_DIR=$DOTFILES_ROOT/plugins
 
 # Needs to load the helpers before using it

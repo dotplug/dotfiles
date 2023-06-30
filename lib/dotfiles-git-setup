@@ -5,6 +5,8 @@ IFS=$'\n\t'
 
 DOTFILES_ROOT=$1
 DOTFILES_DEBUG=$2
+DOTFILES_GIT_AUTHORNAME=${DOTFILES_GIT_AUTHORNAME:-}
+DOTFILES_GIT_AUTHOREMAIL=${DOTFILES_GIT_AUTHOREMAIL:-}
 
 # Needs to load the helpers before using it
 source "${DOTFILES_ROOT}/lib/helpers"
@@ -22,7 +24,6 @@ setup_gitconfig () {
     then
         info_msg 'setup gitconfig'
 
-
         debug_msg "[$script_file] Define git_credentials"
         git_credential='cache'
         if [ "$(uname -s)" == "Darwin" ]
@@ -31,9 +32,17 @@ setup_gitconfig () {
         fi
 
         info_msg ' - What is your git author name?'
-        read -e git_authorname
+        if [[ -z $DOTFILES_GIT_AUTHORNAME ]]; then
+          read -e git_authorname
+        else
+          git_authorname=$DOTFILES_GIT_AUTHORNAME
+        fi
         info_msg ' - What is your git author email?'
-        read -e git_authoremail
+        if [[ -z $DOTFILES_GIT_AUTHOREMAIL ]]; then
+          read -e git_authoremail
+        else
+          git_authoremail=$DOTFILES_GIT_AUTHOREMAIL
+        fi
 
         debug_msg "[$script_file] Replace values from the template to the original git config"
         sed -e "s/AUTHORNAME/$git_authorname/g" -e "s/AUTHOREMAIL/$git_authoremail/g" -e "s/GIT_CREDENTIAL_HELPER/$git_credential/g" $git_config_path_template > $git_config_path

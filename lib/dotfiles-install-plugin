@@ -25,8 +25,7 @@ export DOTFILES_NO_RELOAD="0"
 
 
 # Checking parameters
-if [ $# -ge 4 ]
-then
+if [[ $# -ne 4 ]]; then
     _show_usage
     exit 1
 fi
@@ -37,11 +36,6 @@ PLUGIN_URL=$4
 PLUGIN_DIR="$DOTFILES_ROOT/plugins"
 PLUGIN=$(basename $PLUGIN_URL | sed 's/.git$//')
 
-# Checking if plugin exists
-if [ -d $PLUGIN_DIR/$PLUGIN ]; then
-    debug_msg "Removing folder $PLUGIN_DIR/$PLUGIN to reinstall"
-    rm -rf $PLUGIN_DIR/$PLUGIN
-fi
 
 # Checking options
 options=$(getopt -l 'help,no-reload' -o 'h::n::' -a -- "$@")
@@ -63,9 +57,16 @@ while true; do
 done
 
 debug_msg "Installing plugin $PLUGIN"
-git clone $PLUGIN_URL "$PLUGIN_DIR/$PLUGIN" -v
-if [[ $? -ne 0 ]]; then
-    fail_msg "Failed to download plugin information"
+
+# Checking if plugin exists
+if [ -d $PLUGIN_DIR/$PLUGIN ]; then
+    info_msg "Plugin already installed. Updating it"
+    cd $PLUGIN_DIR/$PLUGIN && git pull && cd -
+else
+    git clone $PLUGIN_URL "$PLUGIN_DIR/$PLUGIN" -v
+    if [[ $? -ne 0 ]]; then
+        fail_msg "Failed to download plugin information"
+    fi
 fi
 
 make -f $DOTFILES_ROOT/Makefile setup-no-reload
