@@ -20,10 +20,10 @@ install_homebrew() {
         # Install the correct homebrew for each OS type
         if test "$(uname)" = "Darwin"
         then
-            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" 1>/dev/null
+            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         elif test "$(expr substr $(uname -s) 1 5)" = "Linux"
         then
-           ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/linuxbrew/go/install)" 1>/dev/null
+           ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/linuxbrew/go/install)"
         fi
     else
         green "[OS] Homebrew is already installed"
@@ -42,7 +42,7 @@ function generate_brewfiles() {
     local DESTINATION_FILE="$HOME/.Brewfile"
 
     blue "[OS] Cleanup $DESTINATION_FILE"
-    rm $DESTINATION_FILE
+    rm -f $DESTINATION_FILE
 
     blue "[OS] Search for $SOURCE_FILE inside $SOURCE_FOLDER and generate a merged Brewfile"
     cat $(find -H "$SOURCE_FOLDER" -type f -name "$SOURCE_FILE") >> $DESTINATION_FILE
