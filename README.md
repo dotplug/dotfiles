@@ -115,7 +115,7 @@ dotfiles uninstall-plugin my-awesome-plugin
 
 ## Usage reference
 
-- `dotfiles install`: Install all required software
+- `dotfiles install`: Install all required software. To avoid software installation use the DOTFILES_OS_UPDATE_OS envvar set to "false".
 - `dotfiles install-plugin [-nh] <DOTFILES_GIT_URL>`: Install desired plugins
   - `-h, --help`          Display help
   - `-n, --no-reload`     The installer will not refresh the session at the end
