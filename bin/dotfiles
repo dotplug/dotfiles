@@ -12,6 +12,19 @@ function set_dotfiles_root() {
     echo $DOTFILES_ROOT
 }
 
+# This functions set up the dotfiles flag to update operative system
+# By default is disabled
+function set_dotfiles_os_update_os() {
+    if [ -z ${DOTFILES_OS_UPDATE_OS+x} ]; then
+        DOTFILES_OS_UPDATE_OS=true
+    else
+        DOTFILES_OS_UPDATE_OS="${DOTFILES_OS_UPDATE_OS%/}"
+    fi
+
+    echo $DOTFILES_OS_UPDATE_OS
+}
+
+
 # This functions set up the dotfiles verbose output
 # By default is disabled
 function set_dotfiles_debug() {
@@ -64,6 +77,7 @@ function readlink_f() {
 
 DOTFILES_ROOT=$(set_dotfiles_root)
 DOTFILES_DEBUG=$(set_dotfiles_debug)
+DOTFILES_OS_UPDATE_OS=$(set_dotfiles_os_update_os)
 
 add_dotfiles_internal_libraries_to_path $DOTFILES_ROOT
 
@@ -89,6 +103,6 @@ case "${command}" in
             }
         fi
         shift 1
-        exec "${command_path}" "$DOTFILES_ROOT" $DOTFILES_DEBUG "$@"
+        exec "${command_path}" "$DOTFILES_ROOT" $DOTFILES_DEBUG $DOTFILES_OS_UPDATE_OS "$@"
         ;;
 esac

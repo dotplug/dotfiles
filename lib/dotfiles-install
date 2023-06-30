@@ -8,12 +8,12 @@ IFS=$'\n\t'
 # Search for all install.sh inside DOTFILES_ROOT and execute it
 
 DOTFILES_ROOT=$1
-DOTFILES_DEBUG=$2
+DOTFILES_DEBUG=${2:-false}
+DOTFILES_OS_UPDATE_OS=${3:-false}
 PLUGINS_DIR=$DOTFILES_ROOT/plugins
 
 # Needs to load the helpers before using it
 source "${DOTFILES_ROOT}/lib/helpers"
-
 
 execute_installers_from_path () {
   install_paths=$1
@@ -21,7 +21,7 @@ execute_installers_from_path () {
   for installer in $install_paths
   do
       info_msg "Installing $installer:"
-      sh -c "$installer"
+      DOTFILES_OS_UPDATE_OS=$DOTFILES_OS_UPDATE_OS sh -c "$installer"
 
       if [[ $? != 0 ]]
       then

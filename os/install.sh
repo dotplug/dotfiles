@@ -55,9 +55,13 @@ function generate_brewfiles() {
 # command line interface to it that we can use to just install everything, so
 # yeah, let's do that.
 update_mac_apps_and_libraries() {
-    blue "[OS] Update Mac App Store apps"
-    sudo /usr/sbin/softwareupdate -i -r
-    green "[OS] Updated!"
+    if [[ $DOTFILES_OS_UPDATE_OS == "true" ]]; then
+        blue "[OS] Update Mac App Store apps"
+        sudo /usr/sbin/softwareupdate -i -r
+        green "[OS] Updated!"
+    else
+        blue "[OS] Ignored MacOS updated"
+    fi
 }
 
 # Install Rosetta
