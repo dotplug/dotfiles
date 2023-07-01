@@ -9,7 +9,6 @@ IFS=$'\n\t'
 
 DOTFILES_ROOT=$1
 DOTFILES_DEBUG=${2:-false}
-DOTFILES_OS_UPDATE_OS=${DOTFILES_OS_UPDATE_OS:-false}
 PLUGINS_DIR=$DOTFILES_ROOT/plugins
 
 # Needs to load the helpers before using it
@@ -21,7 +20,7 @@ execute_installers_from_path () {
   for installer in $install_paths
   do
       info_msg "Installing $installer:"
-      DOTFILES_OS_UPDATE_OS=$DOTFILES_OS_UPDATE_OS sh -c "$installer"
+      DOTFILES_ROOT=$DOTFILES_ROOT DOTFILES_DEBUG=$DOTFILES_DEBUG sh -c "$installer"
 
       if [[ $? != 0 ]]
       then
