@@ -19,14 +19,10 @@ if [ -d $DOTFILES_PATH ]; then
     exit 0
 fi
 
-set -x
-
 # Cloning repository to local final directory
 git clone https://github.com/autentia/dotfiles.git "$DOTFILES_PATH"
 cd $DOTFILES_PATH && git checkout fix-messages-and-prompts && cd -
 
-
-set +x
 
 if [ $? -ne 0 ]; then
     echo "Error trying to download dotfiles."
@@ -36,4 +32,4 @@ fi
 make -f $DOTFILES_PATH/Makefile setup
 
 # Reload environment
-zsh -l
+# zsh -l
