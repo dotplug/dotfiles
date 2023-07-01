@@ -1,9 +1,9 @@
 # shortcut to this dotfiles path is $DOTFILES
-export DOTFILES_DIR=$HOME/.dotfiles
+export DOTFILES_ROOT=$HOME/.dotfiles
 
 # all of our zsh files
 typeset -U config_files
-config_files=($DOTFILES_DIR/**/*.zsh)
+config_files=($DOTFILES_ROOT/**/*.zsh)
 
 # load the path files
 for file in ${(M)config_files:#*/path.zsh}

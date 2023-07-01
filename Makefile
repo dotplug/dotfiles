@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 
-export DOTFILES_DIR ?= ${HOME}/.dotfiles
+export DOTFILES_ROOT ?= ${HOME}/.dotfiles
 
 zsh-reload:
 	@zsh -l
@@ -14,12 +14,12 @@ help: Makefile
 ## unset: remove variables from terminal session `source <(make unset)`
 .PHONY: unset
 unset:
-	@echo 'unset DOTFILES_DIR'
+	@echo 'unset DOTFILES_ROOT'
 
 ## env: print required variables
 .PHONY: env
 env:
-	@echo 'export DOTFILES_DIR=${DOTFILES_DIR}'
+	@echo 'export DOTFILES_ROOT=${DOTFILES_ROOT}'
 
 ## setup: Install all dependencies
 .PHONY: setup
@@ -30,11 +30,11 @@ setup-no-reload:
 	@sudo mkdir -p /usr/local/bin   # dotfiles bin-path add links inside /usr/local/bin and this folder may not exists in new versions of mac.
 	@sudo chmod 755 /usr/local/bin  # dotfiles bin-path add links inside /usr/local/bin and this folder may not exists in new versions of mac.
 	@sudo chown -R ${USER} /usr/local/bin  # dotfiles bin-path add links inside /usr/local/bin and this folder may not exists in new versions of mac.
-	@cd ${DOTFILES_DIR}/bin && ./dotfiles bin-path
-	@cd ${DOTFILES_DIR}/bin && ./dotfiles symlink
-	@cd ${DOTFILES_DIR}/bin && ./dotfiles git-setup
-	@cd ${DOTFILES_DIR}/bin && ./dotfiles install
+	@cd ${DOTFILES_ROOT}/bin && ./dotfiles bin-path
+	@cd ${DOTFILES_ROOT}/bin && ./dotfiles symlink
+	@cd ${DOTFILES_ROOT}/bin && ./dotfiles git-setup
+	@cd ${DOTFILES_ROOT}/bin && ./dotfiles install
 
 .PHONY: update
 update:
-	@cd ${DOTFILES_DIR}/bin && ./dotfiles update
+	@cd ${DOTFILES_ROOT}/bin && ./dotfiles update

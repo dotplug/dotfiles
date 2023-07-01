@@ -38,7 +38,7 @@ install_homebrew() {
 # Summary: Search for all SOURCE_FILE inside SOURCE_FOLDER and generates the DESTINATION_FILE
 function generate_brewfiles() {
     local SOURCE_FILE="Brewfile"
-    local SOURCE_FOLDER="$DOTFILES_DIR"
+    local SOURCE_FOLDER="$DOTFILES_ROOT"
     local DESTINATION_FILE="$HOME/.Brewfile"
 
     blue "[OS] Cleanup $DESTINATION_FILE"
