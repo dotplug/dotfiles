@@ -16,8 +16,8 @@ source "${DOTFILES_ROOT}/lib/helpers"
 
 debug_msg "Reloading the dotfiles"
 
-dotfiles-symlink $DOTFILES_ROOT
-dotfiles-install $DOTFILES_ROOT
-dotfiles-bin-path $DOTFILES_ROOT
+dotfiles-symlink $DOTFILES_ROOT $DOTFILES_DEBUG
+dotfiles-install $DOTFILES_ROOT $DOTFILES_DEBUG
+dotfiles-bin-path $DOTFILES_ROOT $DOTFILES_DEBUG
 
 success_msg "Dotfiles reloaded"
