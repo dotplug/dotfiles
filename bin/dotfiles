@@ -1,61 +1,6 @@
 #!/usr/bin/env bash
 
-# This functions set up the dotfiles root configuration with all commands available.
-# By default it will take the parent directory of this file.
-function set_dotfiles_root() {
-    if [ -z ${DOTFILES_ROOT+x} ]; then
-        DOTFILES_ROOT="$(cd "$(dirname "$(readlink_f "${0}")")/.." && pwd)"
-    else
-        DOTFILES_ROOT="${DOTFILES_ROOT%/}"
-    fi
-
-    echo $DOTFILES_ROOT
-}
-
-# This functions set up the dotfiles flag to update operative system
-# By default is disabled
-function set_dotfiles_os_update_os() {
-    if [ -z ${DOTFILES_OS_UPDATE_OS+x} ]; then
-        DOTFILES_OS_UPDATE_OS=true
-    else
-        DOTFILES_OS_UPDATE_OS="${DOTFILES_OS_UPDATE_OS%/}"
-    fi
-
-    echo $DOTFILES_OS_UPDATE_OS
-}
-
-
-# This functions set up the dotfiles verbose output
-# By default is disabled
-function set_dotfiles_debug() {
-    if [ -z ${DOTFILES_DEBUG+x} ]; then
-        DOTFILES_DEBUG=false
-    else
-        DOTFILES_DEBUG="${DOTFILES_DEBUG%/}"
-    fi
-
-    echo $DOTFILES_DEBUG
-}
-
-# This functions ensure that folders just below DOTFILES_ROOT called "lib" and "bin" are added to the path.
-# The function is idempotent so no changes in $PATH are done if the folders already exists in the variable.
-# This function is required at beggining to ensure that all internal functions are called.
-function add_dotfiles_internal_libraries_to_path() {
-    local DOTFILES_ROOT=${1}
-    for dir_name in lib bin; do
-        local dir="${DOTFILES_ROOT}/${dir_name}"
-
-        case ":${PATH}:" in
-            *:${dir}:*)
-                # echo "\$PATH already contains '${dir}', not adding it again"
-                ;;
-            *)
-                # echo "\$PATH does not contain '${dir}', prepending and exporting it now";
-                export PATH="$PATH:${dir}";
-                ;;
-        esac;
-    done;
-}
+set -e
 
 # http://stackoverflow.com/questions/1055671/how-can-i-get-the-behavior-of-gnus-readlink-f-on-a-mac
 function readlink_f() {
@@ -75,9 +20,10 @@ function readlink_f() {
 # MAIN
 # =====================================
 
-DOTFILES_ROOT=$(set_dotfiles_root)
-DOTFILES_DEBUG=$(set_dotfiles_debug)
-DOTFILES_OS_UPDATE_OS=$(set_dotfiles_os_update_os)
+DEFAULT_DOTFILES_ROOT="$(cd "$(dirname "$(readlink_f "${0}")")/.." && pwd)"
+export DOTFILES_ROOT=${DOTFILES_ROOT:-DEFAULT_DOTFILES_ROOT}
+export DOTFILES_DEBUG=${DOTFILES_DEBUG:-"false"}
+export DOTFILES_OS_UPDATE_OS=${DOTFILES_OS_UPDATE_OS:-"true"}
 
 add_dotfiles_internal_libraries_to_path $DOTFILES_ROOT
 
@@ -102,10 +48,8 @@ case "${command}" in
                 exec dotfiles-help
             }
         fi
+        # Move the arrays to start at position 1 instead of 0 for $@ by default
         shift 1
-        DOTFILES_OS_UPDATE_OS=$DOTFILES_OS_UPDATE_OS \
-        DOTFILES_GIT_AUTHORNAME=$DOTFILES_GIT_AUTHORNAME \
-        DOTFILES_GIT_AUTHOREMAIL=$DOTFILES_GIT_AUTHOREMAIL \
-                exec "${command_path}" "$DOTFILES_ROOT" $DOTFILES_DEBUG  "$@"
+        "${command_path}" "$DOTFILES_ROOT" $DOTFILES_DEBUG  "$@"
         ;;
 esac
