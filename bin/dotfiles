@@ -25,31 +25,28 @@ export DOTFILES_ROOT=${DOTFILES_ROOT:-DEFAULT_DOTFILES_ROOT}
 export DOTFILES_DEBUG=${DOTFILES_DEBUG:-"false"}
 export DOTFILES_OS_UPDATE_OS=${DOTFILES_OS_UPDATE_OS:-"true"}
 
-add_dotfiles_internal_libraries_to_path $DOTFILES_ROOT
-
 command="${1:-}"
 case "${command}" in
     "" )
-        dotfiles-version $DOTFILES_ROOT $DOTFILES_DEBUG
-        dotfiles-help
+        "${DOTFILES_ROOT}/lib/dotfiles-version"
+        "${DOTFILES_ROOT}/lib/dotfiles-help"
         ;;
     -v | --version )
-        dotfiles-version
+        "${DOTFILES_ROOT}/lib/dotfiles-version"
         ;;
     -h | --help )
-        dotfiles-help
+        "${DOTFILES_ROOT}/lib/dotfiles-help"
         ;;
     * )
-        command_path="$(command -v "dotfiles-${command}" || true)"
-        if [ -z "${command_path}" ];then
-            {
+        if [ -f "${DOTFILES_ROOT}/lib/dotfiles-${command}" ]; then
+                # Move the arrays to start at position 1 instead of 0 for $@ by default
+                shift 1
+                "${DOTFILES_ROOT}/lib/dotfiles-${command}" "$@"
+        else
                 echo "No such command '${command}'"
-                exec dotfiles-version
-                exec dotfiles-help
-            }
+                "${DOTFILES_ROOT}/lib/dotfiles-version"
+                "${DOTFILES_ROOT}/lib/dotfiles-help"
+                exit 1
         fi
-        # Move the arrays to start at position 1 instead of 0 for $@ by default
-        shift 1
-        "${command_path}" "$DOTFILES_ROOT" $DOTFILES_DEBUG  "$@"
         ;;
 esac

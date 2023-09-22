@@ -2,9 +2,6 @@
 
 # Summary: Installs a plugin
 
-DOTFILES_ROOT=$1
-DOTFILES_DEBUG=$2
-
 # Dependencies
 source "${DOTFILES_ROOT}/lib/helpers"
 source "${DOTFILES_ROOT}/lib/gnu-getopt-helpers"

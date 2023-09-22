@@ -6,8 +6,6 @@ IFS=$'\n\t'
 
 # Summary: Update a plugin
 
-DOTFILES_ROOT=$1
-DOTFILES_DEBUG=$2
 PLUGINS_DIR=$DOTFILES_ROOT/plugins
 ORIGINAL_FOLDER=$PWD
 

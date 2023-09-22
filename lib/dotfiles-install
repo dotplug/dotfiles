@@ -7,8 +7,6 @@ IFS=$'\n\t'
 #
 # Search for all install.sh inside DOTFILES_ROOT and execute it
 
-DOTFILES_ROOT=$1
-DOTFILES_DEBUG=${2:-false}
 PLUGINS_DIR=$DOTFILES_ROOT/plugins
 
 # Needs to load the helpers before using it

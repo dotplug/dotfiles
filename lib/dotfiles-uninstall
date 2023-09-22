@@ -7,9 +7,6 @@ IFS=$'\n\t'
 #
 # Search for all uninstall.sh inside DOTFILES_ROOT and execute it
 
-DOTFILES_ROOT=$1
-DOTFILES_DEBUG=$2
-
 # Needs to load the helpers before using it
 source "${DOTFILES_ROOT}/lib/helpers"
 source "${DOTFILES_ROOT}/lib/uninstall-helpers"
