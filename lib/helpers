@@ -1,41 +1,50 @@
 #!/usr/bin/env bash
 
+# export -f is because this file exports the function to others.
+
+
 # ============================================================================
 # PRINT FUNCTION HELPERS
 # ============================================================================
 
-info_msg () {
+function info_msg () {
     printf "\r  [ \033[00;34mINFO\033[0m ] $1\n"
 }
+export -f info_msg
 
-debug_msg () {
+function debug_msg () {
     if [[ ${DOTFILES_DEBUG} == "true" ]]; then
         printf "\r  [ \033[0;33mDEBUG\033[0m ] $1\n"
     fi
 }
+export -f debug_msg
+
+function success_msg () {
+    printf "\r\033[2K  [ \033[00;32mOK\033[0m ] $1\n"
+}
+export -f success_msg
+
+function fail_msg () {
+    printf "\r\033[2K  [ \033[0;31mFAIL\033[0m ] $1\n"
+    exit -1
+}
+export -f fail_msg
+
 
 # This function is used to update the filename of the debug
-set_debug_file_label() {
+function set_debug_file_label() {
     # Get current script directory
     script_file=${1:-$BASH_SOURCE}
     script_dir=$(dirname $script_file)
 }
-
-success_msg () {
-    printf "\r\033[2K  [ \033[00;32mOK\033[0m ] $1\n"
-}
-
-fail_msg () {
-    printf "\r\033[2K  [ \033[0;31mFAIL\033[0m ] $1\n"
-    exit -1
-}
+export -f set_debug_file_label
 
 # ============================================================================
 # DOTFILES
 # ============================================================================
 
 # This functions will perform the symlink between a SRC and DEST and will behave idempotently asking for actions if  conflicts exist
-_link_file () {
+function _link_file () {
     set_debug_file_label "$BASH_SOURCE"
 
     local src=$1 dst=$2
@@ -114,18 +123,22 @@ _link_file () {
         success_msg "linked $1 to $2"
     fi
 }
+export -f _link_file
 
-_get_dotfiles_version () {
+function _get_dotfiles_version () {
     git_latest_version="$(cd $DOTFILES_ROOT && git tag | tail -1 || true)"
     echo "${git_latest_version:-0.1.0}"
 }
+export -f _get_dotfiles_version
 
-_get_latest_dotfiles_version () {
+
+function _get_latest_dotfiles_version () {
     git_latest_remote_version="$(cd $DOTFILES_ROOT && git ls-remote --tags origin | tail -1 | awk '{print $2}' | awk -F'/' '{print $3}')"
     echo "${git_latest_remote_version:-0.1.0}"
 }
+export -f _get_latest_dotfiles_version
 
-_check_and_update_last_version () {
+function _check_and_update_last_version () {
     info_msg "Checking dotfiles versions"
 
     actual_version="$(_get_dotfiles_version)"
@@ -158,3 +171,4 @@ _check_and_update_last_version () {
         exit -1
     fi
 }
+export -f _check_and_update_last_version

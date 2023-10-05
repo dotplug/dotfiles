@@ -6,17 +6,16 @@ IFS=$'\n\t'
 # Summary: Uninstalls a plugin
 
 PLUGINS_DIR=$DOTFILES_ROOT/plugins
+PLUGIN=$1
 
-source "${DOTFILES_ROOT}/lib/helpers"
 source "${DOTFILES_ROOT}/lib/symlink-helpers"
 source "${DOTFILES_ROOT}/lib/uninstall-helpers"
 
-if [ $# -ne 3 ];then
+if [ $# -ne 1 ];then
     echo "Usage: dotfiles uninstall-plugin <PLUGIN_NAME>"
     exit -1
 fi
 
-PLUGIN=$3
 if [ ! -d ${PLUGINS_DIR}/$PLUGIN ];then
     fail_msg "Plugin $PLUGIN not found"
 fi

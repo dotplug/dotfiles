@@ -5,9 +5,6 @@ IFS=$'\n\t'
 
 # Summary: Update a plugin
 
-# Needs to load the helpers before using it
-source "${DOTFILES_ROOT}/lib/helpers"
-
 _check_and_update_last_version
 if [[ $? != 0 ]]
 then

@@ -25,6 +25,9 @@ export DOTFILES_ROOT=${DOTFILES_ROOT:-DEFAULT_DOTFILES_ROOT}
 export DOTFILES_DEBUG=${DOTFILES_DEBUG:-"false"}
 export DOTFILES_OS_UPDATE_OS=${DOTFILES_OS_UPDATE_OS:-"true"}
 
+# Needs to load the helpers before using it
+source "${DOTFILES_ROOT}/lib/helpers"
+
 command="${1:-}"
 case "${command}" in
     "" )
@@ -48,5 +51,5 @@ case "${command}" in
                 "${DOTFILES_ROOT}/lib/dotfiles-help"
                 exit 1
         fi
-        ;;
+    ;;
 esac

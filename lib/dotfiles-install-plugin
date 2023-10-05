@@ -3,7 +3,6 @@
 # Summary: Installs a plugin
 
 # Dependencies
-source "${DOTFILES_ROOT}/lib/helpers"
 source "${DOTFILES_ROOT}/lib/gnu-getopt-helpers"
 
 _show_usage () {

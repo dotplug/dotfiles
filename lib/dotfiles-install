@@ -9,9 +9,6 @@ IFS=$'\n\t'
 
 PLUGINS_DIR=$DOTFILES_ROOT/plugins
 
-# Needs to load the helpers before using it
-source "${DOTFILES_ROOT}/lib/helpers"
-
 execute_installers_from_path () {
   install_paths=$1
 

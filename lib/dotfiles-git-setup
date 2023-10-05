@@ -6,9 +6,6 @@ IFS=$'\n\t'
 DOTFILES_GIT_AUTHORNAME=${DOTFILES_GIT_AUTHORNAME:-}
 DOTFILES_GIT_AUTHOREMAIL=${DOTFILES_GIT_AUTHOREMAIL:-}
 
-# Needs to load the helpers before using it
-source "${DOTFILES_ROOT}/lib/helpers"
-
 setup_gitconfig () {
     set_debug_file_label "$BASH_SOURCE"
 

@@ -8,16 +8,12 @@ IFS=$'\n\t'
 
 PLUGINS_DIR=$DOTFILES_ROOT/plugins
 ORIGINAL_FOLDER=$PWD
+PLUGIN=${1}
 
-# Needs to load the helpers before using it
-source "${DOTFILES_ROOT}/lib/helpers"
-
-if [ $# -ne 3 ];then
+if [ $# -ne 1 ];then
     fail_msg "Missing plugin name.\nUsage: dotfiles update-plugin <PLUGIN_NAME>"
     exit -1
 fi
-
-PLUGIN=$3
 
 if [ ! -d ${PLUGINS_DIR}/$PLUGIN ];then
     fail_msg "Plugin $PLUGIN not found"
