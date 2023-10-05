@@ -8,10 +8,10 @@ source "${DOTFILES_ROOT}/lib/gnu-getopt-helpers"
 _show_usage () {
   echo "Usage: dotfiles install-plugin [-nh] <PLUGIN_GIT_URL>
 
-Options:
-    -h, --help          Display help
-    -n, --no-reload     The installer will not refresh the session at the end
-"
+  Options:
+  -h, --help          Display help
+  -n, --no-reload     The installer will not refresh the session at the end
+  "
 }
 
 # gnu-getopt dependency
@@ -22,8 +22,8 @@ export DOTFILES_NO_RELOAD="0"
 
 # Checking parameters
 if [[ $# -ne 4 ]]; then
-    _show_usage
-    exit 1
+  _show_usage
+  exit 1
 fi
 
 # Environment
@@ -37,42 +37,42 @@ PLUGIN=$(basename $PLUGIN_URL | sed 's/.git$//')
 options=$(getopt -l 'help,no-reload' -o 'h::n::' -a -- "$@")
 eval set -- "$options"
 while true; do
-    case $1 in
-        -h|--help)
-            _show_usage
-            exit 0
-            ;;
-        -n|--no-reload)
-            export DOTFILES_NO_RELOAD="1"
-            ;;
-        --)
-            shift
-            break;;
-    esac
-    shift
+  case $1 in
+    -h|--help)
+      _show_usage
+      exit 0
+      ;;
+    -n|--no-reload)
+      export DOTFILES_NO_RELOAD="1"
+      ;;
+    --)
+      shift
+      break;;
+  esac
+  shift
 done
 
 debug_msg "Installing plugin $PLUGIN"
 
 # Checking if plugin exists
 if [ -d $PLUGIN_DIR/$PLUGIN ]; then
-    info_msg "Plugin already installed. Updating it"
-    cd $PLUGIN_DIR/$PLUGIN && git pull && cd -
+  info_msg "Plugin already installed. Updating it"
+  cd $PLUGIN_DIR/$PLUGIN && git pull && cd -
 else
-    git clone $PLUGIN_URL "$PLUGIN_DIR/$PLUGIN" -v
-    if [[ $? -ne 0 ]]; then
-        fail_msg "Failed to download plugin information"
-    fi
+  git clone $PLUGIN_URL "$PLUGIN_DIR/$PLUGIN" -v
+  if [[ $? -ne 0 ]]; then
+    fail_msg "Failed to download plugin information"
+  fi
 fi
 
 make -f $DOTFILES_ROOT/Makefile setup-no-reload
 if [[ $? != 0 ]]; then
-    fail_msg "Failed to install $PLUGIN"
+  fail_msg "Failed to install $PLUGIN"
 fi
 
 debug_msg "Plugin $PLUGIN installed successfully"
 cd $ORIGINAL_FOLDER
 
 if [ `echo $DOTFILES_NO_RELOAD` != "1" ]; then
-    zsh -l
+  zsh -l
 fi

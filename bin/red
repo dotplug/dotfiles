@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 function red() {
-    local RED='\033[00;31m'
-    local NC='\033[0m'
-    printf "\r ${RED}${*}${NC}\n"
+  local RED="$(tput setaf 1)"
+  local NOCOLOR="$(tput sgr0)"
+  printf "\r ${RED}${*}${NOCOLOR}\n"
 }
 
 red $*

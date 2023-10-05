@@ -14,7 +14,7 @@ exec_uninstall_scripts () {
 
   for uninstaller in $uninstall_filepaths
   do
-      debug_msg "Uninstall $uninstaller"
-      sh -c "$uninstaller"
+    debug_msg "Uninstall $uninstaller"
+    sh -c "$uninstaller"
   done
 }

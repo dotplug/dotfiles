@@ -20,6 +20,6 @@ done
 
 if [[ $? != 0 ]]
 then
-    fail_msg "Failed to list plugins installed"
+  fail_msg "Failed to list plugins installed"
 fi
 

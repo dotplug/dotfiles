@@ -10,29 +10,39 @@
 # Colors definition
 BLACK="$(tput setaf 0)"
 export BLACK
+
 RED="$(tput setaf 1)"
 export RED
+
 GREEN="$(tput setaf 2)"
 export GREEN
+
 YELLOW="$(tput setaf 3)"
 export YELLOW
+
 BLUE="$(tput setaf 4)"
-export BLUE
+export BLUES
+
 MAGENTA="$(tput setaf 5)"
 export MAGENTA
+
 CYAN="$(tput setaf 6)"
 export CYAN
+
 WHITE="$(tput setaf 7)"
 export WHITE
+
 NOCOLOR="$(tput sgr0)"
 export NOCOLOR
+
 BOLD="$(tput bold)"
 export BOLD
+
 UNDERLINE="$(tput smul)"
 export UNDERLINE
+
 NOUNDERLINE="$(tput rmul)"
 export NOUNDERLINE
-
 
 function title() { echo -e "${BOLD}${UNDERLINE}${*}${NOUNDERLINE}${NOCOLOR}"; }
 export -f title
@@ -41,9 +51,9 @@ function info_msg() { echo -e "${CYAN}${*}${NOCOLOR}"; }
 export -f info_msg
 
 function debug_msg () {
-    if [[ ${DOTFILES_DEBUG} == "true" ]]; then
-        echo -e "${YELLOW}${*}${NOCOLOR}";
-    fi
+  if [[ ${DOTFILES_DEBUG} == "true" ]]; then
+    echo -e "${YELLOW}${*}${NOCOLOR}";
+  fi
 }
 export -f debug_msg
 
@@ -60,130 +70,130 @@ export -f fail_msg
 
 # This functions will perform the symlink between a SRC and DEST and will behave idempotently asking for actions if  conflicts exist
 function _link_file () {
-    local src=$1 dst=$2
-    local overwrite_all=${3:-"false"}
-    local backup_all=${4:-"false"}
-    local skip_all=${5:-"false"}
+  local src=$1 dst=$2
+  local overwrite_all=${3:-"false"}
+  local backup_all=${4:-"false"}
+  local skip_all=${5:-"false"}
 
-    local overwrite= backup= skip=
-    local action=
+  local overwrite= backup= skip=
+  local action=
 
-    info_msg "SRC=$src, DST=$dst, OVERWRITE_ALL=$overwrite_all, BACKUP_ALL=$backup_all, SKIP_ALL=$skip_all"
+  info_msg "SRC=$src, DST=$dst, OVERWRITE_ALL=$overwrite_all, BACKUP_ALL=$backup_all, SKIP_ALL=$skip_all"
 
-    if [ -f "$dst" -o -d "$dst" -o -L "$dst" ]
+  if [ -f "$dst" -o -d "$dst" -o -L "$dst" ]
+  then
+    if [ "$overwrite_all" == "false" ] && [ "$backup_all" == "false" ] && [ "$skip_all" == "false" ]
     then
-        if [ "$overwrite_all" == "false" ] && [ "$backup_all" == "false" ] && [ "$skip_all" == "false" ]
-        then
-            local currentSrc="$(readlink $dst)"
+      local currentSrc="$(readlink $dst)"
 
-            if [ "$currentSrc" == "$src" ]
-            then
-                debug_msg "Current directory $currentSrc its the same that source $src, no action required."
-                skip=true;
-            else
+      if [ "$currentSrc" == "$src" ]
+      then
+        debug_msg "Current directory $currentSrc its the same that source $src, no action required."
+        skip=true;
+      else
 
-                info_msg "File $dst exists when linking $src
-What do you want to do?
-[s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?"
+        info_msg "File $dst exists when linking $src
+        What do you want to do?
+        [s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?"
 
-                read -n 1 action
+        read -n 1 action
 
-                case "$action" in
-                    o )
-                        overwrite=true;;
-                    O )
-                        overwrite_all=true;;
-                    b )
-                        backup=true;;
-                    B )
-                        backup_all=true;;
-                    s )
-                        skip=true;;
-                    S )
-                        skip_all=true;;
-                    * )
-                        ;;
-                esac
-            fi
-        fi
-
-        overwrite=${overwrite:-$overwrite_all}
-        backup=${backup:-$backup_all}
-        skip=${skip:-$skip_all}
-
-
-        debug_msg "OVERWRITE=$overwrite, BACKUP=$backup, SKIP=$skip"
-
-        if [ "$overwrite" == "true" ]
-        then
-            rm -rf "$dst"
-            success_msg "removed $dst"
-        fi
-
-        if [ "$backup" == "true" ]
-        then
-            mv "$dst" "${dst}.backup"
-            success_msg "moved $dst to ${dst}.backup"
-        fi
-
-        if [ "$skip" == "true" ]
-        then
-            success_msg "skipped $src"
-        fi
+        case "$action" in
+          o )
+            overwrite=true;;
+          O )
+            overwrite_all=true;;
+          b )
+            backup=true;;
+          B )
+            backup_all=true;;
+          s )
+            skip=true;;
+          S )
+            skip_all=true;;
+          * )
+            ;;
+        esac
+      fi
     fi
 
-    if [ "$skip" != "true" ]
+    overwrite=${overwrite:-$overwrite_all}
+    backup=${backup:-$backup_all}
+    skip=${skip:-$skip_all}
+
+
+    debug_msg "OVERWRITE=$overwrite, BACKUP=$backup, SKIP=$skip"
+
+    if [ "$overwrite" == "true" ]
     then
-        ln -s "$1" "$2"
-        success_msg "linked $1 to $2"
+      rm -rf "$dst"
+      success_msg "removed $dst"
     fi
+
+    if [ "$backup" == "true" ]
+    then
+      mv "$dst" "${dst}.backup"
+      success_msg "moved $dst to ${dst}.backup"
+    fi
+
+    if [ "$skip" == "true" ]
+    then
+      success_msg "skipped $src"
+    fi
+  fi
+
+  if [ "$skip" != "true" ]
+  then
+    ln -s "$1" "$2"
+    success_msg "linked $1 to $2"
+  fi
 }
 export -f _link_file
 
 function _get_dotfiles_version () {
-    git_latest_version="$(cd $DOTFILES_ROOT && git tag | tail -1 || true)"
-    echo "${git_latest_version:-0.1.0}"
+  git_latest_version="$(cd $DOTFILES_ROOT && git tag | tail -1 || true)"
+  echo "${git_latest_version:-0.1.0}"
 }
 export -f _get_dotfiles_version
 
 
 function _get_latest_dotfiles_version () {
-    git_latest_remote_version="$(cd $DOTFILES_ROOT && git ls-remote --tags origin | tail -1 | awk '{print $2}' | awk -F'/' '{print $3}')"
-    echo "${git_latest_remote_version:-0.1.0}"
+  git_latest_remote_version="$(cd $DOTFILES_ROOT && git ls-remote --tags origin | tail -1 | awk '{print $2}' | awk -F'/' '{print $3}')"
+  echo "${git_latest_remote_version:-0.1.0}"
 }
 export -f _get_latest_dotfiles_version
 
 function _check_and_update_last_version () {
-    info_msg "Checking dotfiles versions"
+  info_msg "Checking dotfiles versions"
 
-    actual_version="$(_get_dotfiles_version)"
-    latest_version="$(_get_latest_dotfiles_version)"
+  actual_version="$(_get_dotfiles_version)"
+  latest_version="$(_get_latest_dotfiles_version)"
 
-    if [ "$actual_version" = "$latest_version" ]; then
-        info_msg "Dotfiles is up to date"
-        exit
+  if [ "$actual_version" = "$latest_version" ]; then
+    info_msg "Dotfiles is up to date"
+    exit
+  fi
+
+  info_msg "Actual version: $actual_version"
+  info_msg "Latest version: $latest_version"
+  read -p "$(info_msg 'New version of dotfiles is available. Do you want to update it? [y/n] ')" update_response
+
+  if [ ${update_response} = 'y' -o ${update_response} = 'yes' -o ${update_response} = 'Y' -o ${update_response} = 'YES' ]; then
+    info_msg "Updating..."
+    cd $DOTFILES_ROOT
+    ACTUAL_BRANCH=$(git branch --show-current)
+    git pull origin ${ACTUAL_BRANCH}
+    git_pull_result=$?
+    cd - > /dev/null
+
+    if [ ${git_pull_result} -ne 0 ]; then
+      fail_msg "Error updating Dotfiles"
     fi
 
-    info_msg "Actual version: $actual_version"
-    info_msg "Latest version: $latest_version"
-    read -p "$(info_msg 'New version of dotfiles is available. Do you want to update it? [y/n] ')" update_response
-
-    if [ ${update_response} = 'y' -o ${update_response} = 'yes' -o ${update_response} = 'Y' -o ${update_response} = 'YES' ]; then
-        info_msg "Updating..."
-        cd $DOTFILES_ROOT
-        ACTUAL_BRANCH=$(git branch --show-current)
-        git pull origin ${ACTUAL_BRANCH}
-        git_pull_result=$?
-        cd - > /dev/null
-
-        if [ ${git_pull_result} -ne 0 ]; then
-            fail_msg "Error updating Dotfiles"
-        fi
-
-        success_msg "Dotfiles updated successfully"
-    else
-        # When the response is different to yes
-        exit -1
-    fi
+    success_msg "Dotfiles updated successfully"
+  else
+    # When the response is different to yes
+    exit -1
+  fi
 }
 export -f _check_and_update_last_version

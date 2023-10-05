@@ -11,12 +11,12 @@ ORIGINAL_FOLDER=$PWD
 PLUGIN=${1}
 
 if [ $# -ne 1 ];then
-    fail_msg "Missing plugin name.\nUsage: dotfiles update-plugin <PLUGIN_NAME>"
-    exit -1
+  fail_msg "Missing plugin name.\nUsage: dotfiles update-plugin <PLUGIN_NAME>"
+  exit -1
 fi
 
 if [ ! -d ${PLUGINS_DIR}/$PLUGIN ];then
-    fail_msg "Plugin $PLUGIN not found"
+  fail_msg "Plugin $PLUGIN not found"
 fi
 
 debug_msg "Updating $PLUGIN"
@@ -28,7 +28,7 @@ make -f $DOTFILES_ROOT/Makefile setup-no-reload
 
 if [[ $? != 0 ]]
 then
-    fail_msg "Failed to update $PLUGIN"
+  fail_msg "Failed to update $PLUGIN"
 fi
 
 success_msg "Plugin $PLUGIN updated successfully"

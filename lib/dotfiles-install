@@ -14,13 +14,13 @@ execute_installers_from_path () {
 
   for installer in $install_paths
   do
-      info_msg "Installing $installer:"
-      DOTFILES_ROOT=$DOTFILES_ROOT DOTFILES_DEBUG=$DOTFILES_DEBUG sh -c "$installer"
+    info_msg "Installing $installer:"
+    DOTFILES_ROOT=$DOTFILES_ROOT DOTFILES_DEBUG=$DOTFILES_DEBUG sh -c "$installer"
 
-      if [[ $? != 0 ]]
-      then
-          fail_msg "Failed to install $installer"
-      fi
+    if [[ $? != 0 ]]
+    then
+      fail_msg "Failed to install $installer"
+    fi
   done
 }
 

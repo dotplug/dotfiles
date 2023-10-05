@@ -7,44 +7,44 @@ DOTFILES_GIT_AUTHORNAME=${DOTFILES_GIT_AUTHORNAME:-}
 DOTFILES_GIT_AUTHOREMAIL=${DOTFILES_GIT_AUTHOREMAIL:-}
 
 setup_gitconfig () {
-    local git_config_path=$HOME/.gitconfig.local
-    local git_config_general_path=$HOME/.gitconfig
-    local git_config_path_template=$DOTFILES_ROOT/git/gitconfig.local.symlink.example
+  local git_config_path=$HOME/.gitconfig.local
+  local git_config_general_path=$HOME/.gitconfig
+  local git_config_path_template=$DOTFILES_ROOT/git/gitconfig.local.symlink.example
 
-    debug_msg "Check if $git_config_path or $git_config_general_path exists"
+  debug_msg "Check if $git_config_path or $git_config_general_path exists"
 
-    if ! [ -f $git_config_path -o -f $git_config_general_path ]
+  if ! [ -f $git_config_path -o -f $git_config_general_path ]
+  then
+    info_msg 'setup gitconfig'
+
+    debug_msg "Define git_credentials"
+    git_credential='cache'
+    if [ "$(uname -s)" == "Darwin" ]
     then
-        info_msg 'setup gitconfig'
-
-        debug_msg "Define git_credentials"
-        git_credential='cache'
-        if [ "$(uname -s)" == "Darwin" ]
-        then
-            git_credential='osxkeychain'
-        fi
-
-        info_msg ' - What is your git author name?'
-        if [[ -z $DOTFILES_GIT_AUTHORNAME ]]; then
-          read -e git_authorname
-        else
-          git_authorname=$DOTFILES_GIT_AUTHORNAME
-        fi
-        info_msg ' - What is your git author email?'
-        if [[ -z $DOTFILES_GIT_AUTHOREMAIL ]]; then
-          read -e git_authoremail
-        else
-          git_authoremail=$DOTFILES_GIT_AUTHOREMAIL
-        fi
-
-        debug_msg "Replace values from the template to the original git config"
-        sed -e "s/AUTHORNAME/$git_authorname/g" -e "s/AUTHOREMAIL/$git_authoremail/g" -e "s/GIT_CREDENTIAL_HELPER/$git_credential/g" $git_config_path_template > $git_config_path
-        cp $git_config_path $git_config_general_path
-
-        success_msg 'gitconfig files created'
-    else
-        info_msg 'gitconfig already exists'
+      git_credential='osxkeychain'
     fi
+
+    info_msg ' - What is your git author name?'
+    if [[ -z $DOTFILES_GIT_AUTHORNAME ]]; then
+      read -e git_authorname
+    else
+      git_authorname=$DOTFILES_GIT_AUTHORNAME
+    fi
+    info_msg ' - What is your git author email?'
+    if [[ -z $DOTFILES_GIT_AUTHOREMAIL ]]; then
+      read -e git_authoremail
+    else
+      git_authoremail=$DOTFILES_GIT_AUTHOREMAIL
+    fi
+
+    debug_msg "Replace values from the template to the original git config"
+    sed -e "s/AUTHORNAME/$git_authorname/g" -e "s/AUTHOREMAIL/$git_authoremail/g" -e "s/GIT_CREDENTIAL_HELPER/$git_credential/g" $git_config_path_template > $git_config_path
+    cp $git_config_path $git_config_general_path
+
+    success_msg 'gitconfig files created'
+  else
+    info_msg 'gitconfig already exists'
+  fi
 }
 
 setup_gitconfig

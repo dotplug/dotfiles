@@ -10,20 +10,20 @@ PLUGIN_NAME=$1
 DOTFILES_REPOSITORY_TEMPLATE="https://github.com/autentia/dotfiles-plugin-template.git"
 
 if [ $# -ne 1 ];then
-    fail_msg "Missing plugin name.\nUsage: dotfiles create-plugin <PLUGIN_NAME>"
+  fail_msg "Missing plugin name.\nUsage: dotfiles create-plugin <PLUGIN_NAME>"
 fi
 
 debug_msg "Creating plugin $PLUGIN_NAME"
 git clone $DOTFILES_REPOSITORY_TEMPLATE ./$PLUGIN_NAME
 
 if [ $? != 0 -o ! -d $PLUGIN_NAME ];then
-    fail_msg "Failed to create plugin $PLUGIN_NAME"
+  fail_msg "Failed to create plugin $PLUGIN_NAME"
 fi
 
 # Reset git repository
 cd $PLUGIN_NAME &&
-rm -rf .git &&
-rm -f .gitignore &&
-cd - > /dev/null
+  rm -rf .git &&
+  rm -f .gitignore &&
+  cd - > /dev/null
 
 success_msg "Plugin $PLUGIN_NAME created successfully"

@@ -6,18 +6,18 @@ IFS=$'\n\t'
 # Summary: Add all "bin" folders inside the DOTFILES_ROOT to the $PATH
 
 add_bin_files_to_path () {
-    info_msg 'Add all files inside bin directory to the $PATH'
+  info_msg 'Add all files inside bin directory to the $PATH'
 
-    local overwrite_all=false backup_all=false skip_all=false
+  local overwrite_all=false backup_all=false skip_all=false
 
-    bin_filepaths=$(find -H "$DOTFILES_ROOT" -type f -maxdepth 5 -path "**/bin/*" ! -name 'README.md')
-    debug_msg "Paths found: $bin_filepaths"
+  bin_filepaths=$(find -H "$DOTFILES_ROOT" -type f -maxdepth 5 -path "**/bin/*" ! -name 'README.md')
+  debug_msg "Paths found: $bin_filepaths"
 
-    for src in $bin_filepaths
-    do
-        dst="/usr/local/bin/$(basename ${src})"
-        _link_file "$src" "$dst" "$overwrite_all" "$backup_all" "$skip_all"
-    done
+  for src in $bin_filepaths
+  do
+    dst="/usr/local/bin/$(basename ${src})"
+    _link_file "$src" "$dst" "$overwrite_all" "$backup_all" "$skip_all"
+  done
 }
 
 add_bin_files_to_path
