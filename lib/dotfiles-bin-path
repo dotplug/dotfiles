@@ -6,8 +6,6 @@ IFS=$'\n\t'
 # Summary: Add all "bin" folders inside the DOTFILES_ROOT to the $PATH
 
 add_bin_files_to_path () {
-    set_debug_file_label "$BASH_SOURCE"
-
     info_msg 'Add all files inside bin directory to the $PATH'
 
     local overwrite_all=false backup_all=false skip_all=false

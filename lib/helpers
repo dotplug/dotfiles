@@ -1,43 +1,58 @@
 #!/usr/bin/env bash
 
-# export -f is because this file exports the function to others.
+# export -f is because this file exports the function to others after a source
 
 
 # ============================================================================
 # PRINT FUNCTION HELPERS
 # ============================================================================
 
-function info_msg () {
-    printf "\r  [ \033[00;34mINFO\033[0m ] $1\n"
-}
+# Colors definition
+BLACK="$(tput setaf 0)"
+export BLACK
+RED="$(tput setaf 1)"
+export RED
+GREEN="$(tput setaf 2)"
+export GREEN
+YELLOW="$(tput setaf 3)"
+export YELLOW
+BLUE="$(tput setaf 4)"
+export BLUE
+MAGENTA="$(tput setaf 5)"
+export MAGENTA
+CYAN="$(tput setaf 6)"
+export CYAN
+WHITE="$(tput setaf 7)"
+export WHITE
+NOCOLOR="$(tput sgr0)"
+export NOCOLOR
+BOLD="$(tput bold)"
+export BOLD
+UNDERLINE="$(tput smul)"
+export UNDERLINE
+NOUNDERLINE="$(tput rmul)"
+export NOUNDERLINE
+
+
+function title() { echo -e "${BOLD}${UNDERLINE}${*}${NOUNDERLINE}${NOCOLOR}"; }
+export -f title
+
+function info_msg() { echo -e "${CYAN}${*}${NOCOLOR}"; }
 export -f info_msg
 
 function debug_msg () {
     if [[ ${DOTFILES_DEBUG} == "true" ]]; then
-        printf "\r  [ \033[0;33mDEBUG\033[0m ] $1\n"
+        echo -e "${YELLOW}${*}${NOCOLOR}";
     fi
 }
 export -f debug_msg
 
-function success_msg () {
-    printf "\r\033[2K  [ \033[00;32mOK\033[0m ] $1\n"
-}
+function success_msg() { echo -e "${GREEN}${*}${NOCOLOR}"; }
 export -f success_msg
 
-function fail_msg () {
-    printf "\r\033[2K  [ \033[0;31mFAIL\033[0m ] $1\n"
-    exit -1
-}
+function fail_msg() { echo -e "${RED}${*}${NOCOLOR}"; }
 export -f fail_msg
 
-
-# This function is used to update the filename of the debug
-function set_debug_file_label() {
-    # Get current script directory
-    script_file=${1:-$BASH_SOURCE}
-    script_dir=$(dirname $script_file)
-}
-export -f set_debug_file_label
 
 # ============================================================================
 # DOTFILES
@@ -45,8 +60,6 @@ export -f set_debug_file_label
 
 # This functions will perform the symlink between a SRC and DEST and will behave idempotently asking for actions if  conflicts exist
 function _link_file () {
-    set_debug_file_label "$BASH_SOURCE"
-
     local src=$1 dst=$2
     local overwrite_all=${3:-"false"}
     local backup_all=${4:-"false"}
@@ -55,7 +68,7 @@ function _link_file () {
     local overwrite= backup= skip=
     local action=
 
-    info_msg "[$script_file] SRC=$src, DST=$dst, OVERWRITE_ALL=$overwrite_all, BACKUP_ALL=$backup_all, SKIP_ALL=$skip_all"
+    info_msg "SRC=$src, DST=$dst, OVERWRITE_ALL=$overwrite_all, BACKUP_ALL=$backup_all, SKIP_ALL=$skip_all"
 
     if [ -f "$dst" -o -d "$dst" -o -L "$dst" ]
     then
@@ -65,12 +78,14 @@ function _link_file () {
 
             if [ "$currentSrc" == "$src" ]
             then
-                debug_msg "[$script_file] Current directory $currentSrc its the same that source $src, no action required."
+                debug_msg "Current directory $currentSrc its the same that source $src, no action required."
                 skip=true;
             else
 
-                debug_msg "File already exists: $dst ($(basename "$src")), what do you want to do?\n\
-                    [s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?"
+                info_msg "File $dst exists when linking $src
+What do you want to do?
+[s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?"
+
                 read -n 1 action
 
                 case "$action" in
@@ -97,7 +112,7 @@ function _link_file () {
         skip=${skip:-$skip_all}
 
 
-        debug_msg "[$script_file] OVERWRITE=$overwrite, BACKUP=$backup, SKIP=$skip"
+        debug_msg "OVERWRITE=$overwrite, BACKUP=$backup, SKIP=$skip"
 
         if [ "$overwrite" == "true" ]
         then

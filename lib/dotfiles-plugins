@@ -7,6 +7,8 @@ IFS=$'\n\t'
 
 PLUGINS_DIR=$DOTFILES_ROOT/plugins
 
+info_msg "List Dotfile plugins"
+
 for plugin in `ls -1 $PLUGINS_DIR`;do
   if [ -d $PLUGINS_DIR/$plugin ];then
     cd $PLUGINS_DIR/$plugin

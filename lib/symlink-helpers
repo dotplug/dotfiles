@@ -11,8 +11,6 @@ get_symlink_dst_name () {
 }
 
 create_symlinks () {
-    set_debug_file_label "$BASH_SOURCE"
-
     info_msg 'Creating symbolic links'
 
     local overwrite_all=false backup_all=false skip_all=false
@@ -25,7 +23,7 @@ create_symlinks () {
     do
         # the regex puts a dot (.) before the src filename
         dst="$(get_symlink_dst_name $src)"
-        debug_msg "[$script_file] Execute links"
+        debug_msg "[$(basename ${src})] Execute links"
         _link_file "$src" "$dst" "$overwrite_all" "$backup_all" "$skip_all"
     done
 }
