@@ -21,14 +21,14 @@ export DOTFILES_NO_RELOAD="0"
 
 
 # Checking parameters
-if [[ $# -ne 4 ]]; then
+if [[ $# -ne 1 ]]; then
   _show_usage
   exit 1
 fi
 
 # Environment
 ORIGINAL_FOLDER=$PWD
-PLUGIN_URL=$4
+PLUGIN_URL=$1
 PLUGIN_DIR="$DOTFILES_ROOT/plugins"
 PLUGIN=$(basename $PLUGIN_URL | sed 's/.git$//')
 
