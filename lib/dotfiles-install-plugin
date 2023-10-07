@@ -19,16 +19,15 @@ _load_gnu_getopt_to_path
 
 export DOTFILES_NO_RELOAD="0"
 
-
 # Checking parameters
-if [[ $# -ne 1 ]]; then
+if [[ $# -ne 2 ]]; then
   _show_usage
   exit 1
 fi
 
 # Environment
 ORIGINAL_FOLDER=$PWD
-PLUGIN_URL=$1
+PLUGIN_URL=$2
 PLUGIN_DIR="$DOTFILES_ROOT/plugins"
 PLUGIN=$(basename $PLUGIN_URL | sed 's/.git$//')
 
