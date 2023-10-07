@@ -5,6 +5,7 @@ IFS=$'\n\t'
 
 DOTFILES_GIT_AUTHORNAME=${DOTFILES_GIT_AUTHORNAME:-}
 DOTFILES_GIT_AUTHOREMAIL=${DOTFILES_GIT_AUTHOREMAIL:-}
+DOTFILES_GIT_AUTHORSIGNINKEY=${DOTFILES_GIT_AUTHORSIGNINKEY:-}
 
 setup_gitconfig () {
   local git_config_path=$HOME/.gitconfig.local
@@ -30,6 +31,7 @@ setup_gitconfig () {
     else
       git_authorname=$DOTFILES_GIT_AUTHORNAME
     fi
+
     info_msg ' - What is your git author email?'
     if [[ -z $DOTFILES_GIT_AUTHOREMAIL ]]; then
       read -e git_authoremail
@@ -37,8 +39,15 @@ setup_gitconfig () {
       git_authoremail=$DOTFILES_GIT_AUTHOREMAIL
     fi
 
+    info_msg ' - What is your git author signinkey?'
+    if [[ -z $DOTFILES_GIT_AUTHORSIGNINKEY ]]; then
+      read -e git_authorsigninkey
+    else
+      git_authorsigninkey=$DOTFILES_GIT_AUTHORSIGNINKEY
+    fi
+
     debug_msg "Replace values from the template to the original git config"
-    sed -e "s/AUTHORNAME/$git_authorname/g" -e "s/AUTHOREMAIL/$git_authoremail/g" -e "s/GIT_CREDENTIAL_HELPER/$git_credential/g" $git_config_path_template > $git_config_path
+    sed -e "s/AUTHORNAME/$git_authorname/g" -e "s/AUTHOREMAIL/$git_authoremail/g" -e "s/AUTHORSIGNINKEY/$git_authorsigninkey/g" -e "s/GIT_CREDENTIAL_HELPER/$git_credential/g" $git_config_path_template > $git_config_path
     cp $git_config_path $git_config_general_path
 
     success_msg 'gitconfig files created'
