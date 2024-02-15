@@ -9,8 +9,8 @@ DOTFILES_DEBUG=$2
 source "${DOTFILES_ROOT}/lib/helpers"
 source "${DOTFILES_ROOT}/lib/gnu-getopt-helpers"
 
-_show_usage () {
-  echo "Usage: dotfiles install-plugin [-nh] <PLUGIN_GIT_URL>
+_show_usage() {
+    echo "Usage: dotfiles install-plugin [-nh] <PLUGIN_GIT_URL>
 
 Options:
     -h, --help          Display help
@@ -23,9 +23,8 @@ _load_gnu_getopt_to_path
 
 export DOTFILES_NO_RELOAD="0"
 
-
 # Checking parameters
-if [[ $# -ne 4 ]]; then
+if [[ $# -ne 3 ]]; then
     _show_usage
     exit 1
 fi
@@ -36,22 +35,22 @@ PLUGIN_URL=$4
 PLUGIN_DIR="$DOTFILES_ROOT/plugins"
 PLUGIN=$(basename $PLUGIN_URL | sed 's/.git$//')
 
-
 # Checking options
 options=$(getopt -l 'help,no-reload' -o 'h::n::' -a -- "$@")
 eval set -- "$options"
 while true; do
     case $1 in
-        -h|--help)
-            _show_usage
-            exit 0
-            ;;
-        -n|--no-reload)
-            export DOTFILES_NO_RELOAD="1"
-            ;;
-        --)
-            shift
-            break;;
+    -h | --help)
+        _show_usage
+        exit 0
+        ;;
+    -n | --no-reload)
+        export DOTFILES_NO_RELOAD="1"
+        ;;
+    --)
+        shift
+        break
+        ;;
     esac
     shift
 done
@@ -77,6 +76,6 @@ fi
 debug_msg "Plugin $PLUGIN installed successfully"
 cd $ORIGINAL_FOLDER
 
-if [ `echo $DOTFILES_NO_RELOAD` != "1" ]; then
+if [ $(echo $DOTFILES_NO_RELOAD) != "1" ]; then
     zsh -l
 fi
