@@ -31,7 +31,7 @@ fi
 
 # Environment
 ORIGINAL_FOLDER=$PWD
-PLUGIN_URL=$4
+PLUGIN_URL=$3
 PLUGIN_DIR="$DOTFILES_ROOT/plugins"
 PLUGIN=$(basename $PLUGIN_URL | sed 's/.git$//')
 
