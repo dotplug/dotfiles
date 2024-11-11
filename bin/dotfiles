@@ -23,7 +23,7 @@ function readlink_f() {
 DEFAULT_DOTFILES_ROOT="$(cd "$(dirname "$(readlink_f "${0}")")/.." && pwd)"
 export DOTFILES_ROOT=${DOTFILES_ROOT:-"${DEFAULT_DOTFILES_ROOT}"}
 export DOTFILES_DEBUG=${DOTFILES_DEBUG:-"false"}
-export DOTFILES_OS_UPDATE_OS=${DOTFILES_OS_UPDATE_OS:-"true"}
+export DOTFILES_OS_UPDATE_OS=${DOTFILES_OS_UPDATE_OS:-"false"}
 
 # Needs to load the helpers before using it
 source "${DOTFILES_ROOT}/lib/helpers"
