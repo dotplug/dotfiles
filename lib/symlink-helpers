@@ -15,7 +15,7 @@ create_symlinks () {
 
     info_msg 'Creating symbolic links'
 
-    local overwrite_all=false backup_all=false skip_all=false
+    local overwrite_all=true backup_all=false skip_all=false
 
     # -H follow links
     symlink_filepaths=$(find -H "$DOTFILES_ROOT" -maxdepth 4 -name '*.symlink' -not -path '*.git*')
