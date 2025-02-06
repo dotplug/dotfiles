@@ -1,3 +1,9 @@
+.DEFAULT_GOAL := _setup
+
+
+.PHONY: _setup
+_setup:
+	@node .github/setup.js
 .DEFAULT_GOAL := help
 
 export DOTFILES_ROOT ?= ${HOME}/.dotfiles
