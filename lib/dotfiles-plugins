@@ -5,12 +5,9 @@ IFS=$'\n\t'
 
 # Summary: List all plugins installed
 
-DOTFILES_ROOT=$1
-DOTFILES_DEBUG=$2
 PLUGINS_DIR=$DOTFILES_ROOT/plugins
 
-# Needs to load the helpers before using it
-source "${DOTFILES_ROOT}/lib/helpers"
+info_msg "List Dotfile plugins"
 
 for plugin in `ls -1 $PLUGINS_DIR`;do
   if [ -d $PLUGINS_DIR/$plugin ];then
@@ -23,6 +20,6 @@ done
 
 if [[ $? != 0 ]]
 then
-    fail_msg "Failed to list plugins installed"
+  fail_msg "Failed to list plugins installed"
 fi
 

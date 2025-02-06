@@ -5,35 +5,32 @@ IFS=$'\n\t'
 
 # Summary: Uninstalls a plugin
 
-DOTFILES_ROOT=$1
-DOTFILES_DEBUG=$2
 PLUGINS_DIR=$DOTFILES_ROOT/plugins
+PLUGIN=$1
 
-source "${DOTFILES_ROOT}/lib/helpers"
 source "${DOTFILES_ROOT}/lib/symlink-helpers"
 source "${DOTFILES_ROOT}/lib/uninstall-helpers"
 
-if [ $# -ne 3 ];then
-    echo "Usage: dotfiles uninstall-plugin <PLUGIN_NAME>"
-    exit -1
+if [ $# -ne 1 ];then
+  echo "Usage: dotfiles uninstall-plugin <PLUGIN_NAME>"
+  exit -1
 fi
 
-PLUGIN=$3
 if [ ! -d ${PLUGINS_DIR}/$PLUGIN ];then
-    fail_msg "Plugin $PLUGIN not found"
+  fail_msg "Plugin $PLUGIN not found"
 fi
 
 debug_msg "Uninstalling plugin $PLUGIN"
 remove_plugin_symlinks $PLUGINS_DIR/$PLUGIN
 if [[ $? != 0 ]]
 then
-    fail_msg "Failed to remove symlinks"
+  fail_msg "Failed to remove symlinks"
 fi
 
 exec_uninstall_scripts $PLUGINS_DIR/$PLUGIN
 if [[ $? != 0 ]]
 then
-    fail_msg "Failed to execute uninstall scripts"
+  fail_msg "Failed to execute uninstall scripts"
 fi
 
 rm -rf "$PLUGINS_DIR/$PLUGIN"
@@ -41,7 +38,7 @@ make -f $DOTFILES_ROOT/Makefile setup-no-reload
 
 if [[ $? != 0 ]]
 then
-    fail_msg "Failed to uninstall $PLUGIN"
+  fail_msg "Failed to uninstall $PLUGIN"
 fi
 
 success_msg "Plugin $PLUGIN uninstalled successfully"

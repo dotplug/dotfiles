@@ -5,23 +5,17 @@ IFS=$'\n\t'
 
 # Summary: Update a plugin
 
-DOTFILES_ROOT=$1
-DOTFILES_DEBUG=$2
-
-# Needs to load the helpers before using it
-source "${DOTFILES_ROOT}/lib/helpers"
-
 _check_and_update_last_version
 if [[ $? != 0 ]]
 then
-    fail_msg "Failed to update dotfiles"
+  fail_msg "Failed to update dotfiles"
 fi
 
 make -f $DOTFILES_ROOT/Makefile setup-no-reload
 
 if [[ $? != 0 ]]
 then
-    fail_msg "Failed to update dotfiles"
+  fail_msg "Failed to update dotfiles"
 fi
 
 success_msg "Dotfiles has been updated successfully"

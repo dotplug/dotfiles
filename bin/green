@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 function green() {
-    local GREEN='\033[00;32m'
-    local NC='\033[0m'
-    printf "\r ${GREEN}${*}${NC}\n"
+  local GREEN="$(tput setaf 2)"
+  local NOCOLOR="$(tput sgr0)"
+  printf "\r ${GREEN}${*}${NC}\n"
 }
 
 green $*

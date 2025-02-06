@@ -3,51 +3,49 @@
 # ============================================================================
 # SYMLINK FUNCTION HELPERS
 # ============================================================================
-get_symlink_dst_name () {
+function get_symlink_dst_name () {
   src=$1
+  # the regex puts a dot (.) before the src filename
   dst="$HOME/.$(basename "${src%.*}")"
 
   echo $dst
 }
 
-create_symlinks () {
-    set_debug_file_label "$BASH_SOURCE"
+function create_symlinks () {
+  info_msg 'Creating symbolic links'
 
-    info_msg 'Creating symbolic links'
+  local overwrite_all=false backup_all=false skip_all=false
 
-    local overwrite_all=true backup_all=false skip_all=false
+  # -H follow links
+  symlink_filepaths=$(find -H "$DOTFILES_ROOT" -maxdepth 4 -name '*.symlink' -not -path '*.git*')
+  debug_msg "Paths found: $symlink_filepaths"
 
-    # -H follow links
-    symlink_filepaths=$(find -H "$DOTFILES_ROOT" -maxdepth 4 -name '*.symlink' -not -path '*.git*')
-    debug_msg "Paths found: $symlink_filepaths"
-
-    for src in $symlink_filepaths
-    do
-        # the regex puts a dot (.) before the src filename
-        dst="$(get_symlink_dst_name $src)"
-        debug_msg "[$script_file] Execute links"
-        _link_file "$src" "$dst" "$overwrite_all" "$backup_all" "$skip_all"
-    done
+  for src in $symlink_filepaths
+  do
+    dst="$(get_symlink_dst_name $src)"
+    debug_msg "[$(basename ${src})] Execute links"
+    _link_file "$src" "$dst" "$overwrite_all" "$backup_all" "$skip_all"
+  done
 }
 
-remove_plugin_symlinks () {
-    if [ $# -ne 1 ]; then
-      fail_msg "Directory is required"
-    fi
+function remove_plugin_symlinks () {
+  if [ $# -ne 1 ]; then
+    fail_msg "Directory is required"
+  fi
 
-    SYMLINKS_DIRECTORY=$1
-    local overwrite_all=false backup_all=false skip_all=false
+  SYMLINKS_DIRECTORY=$1
+  local overwrite_all=false backup_all=false skip_all=false
 
-    info_msg 'Removing symbolic links'
+  info_msg 'Removing symbolic links'
 
-    # -H follow links
-    symlink_filepaths=$(find -H "$PLUGINS_DIR/$PLUGIN" -maxdepth 2 -name '*.symlink' -not -path '*.git*')
+  # -H follow links
+  symlink_filepaths=$(find -H "$PLUGINS_DIR/$PLUGIN" -maxdepth 2 -name '*.symlink' -not -path '*.git*')
 
-    for src in $symlink_filepaths
-    do
-        # the regex puts a dot (.) before the src filename
-        dst="$(get_symlink_dst_name $src)"
-        debug_msg "Removing link $dst -> $src"
-        rm -f "$dst"
-    done
+  for src in $symlink_filepaths
+  do
+    # the regex puts a dot (.) before the src filename
+    dst="$(get_symlink_dst_name $src)"
+    debug_msg "Removing link $dst -> $src"
+    rm -f "$dst"
+  done
 }

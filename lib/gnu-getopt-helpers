@@ -1,5 +1,7 @@
+#!/usr/bin/env bash
+
 # gnu-getopt dependency
-_load_gnu_getopt_to_path () {
+function _load_gnu_getopt_to_path () {
   if [ -d /usr/local/opt/gnu-getopt ]; then
     export PATH="/usr/local/opt/gnu-getopt/bin:$PATH"
   elif [ -d /opt/homebrew/opt/gnu-getopt ]; then

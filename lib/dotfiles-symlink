@@ -5,11 +5,6 @@ IFS=$'\n\t'
 
 # Summary: Symlink
 
-DOTFILES_ROOT=$1
-DOTFILES_DEBUG=$2
-
-# Needs to load the helpers before using it
-source "${DOTFILES_ROOT}/lib/helpers"
 source "${DOTFILES_ROOT}/lib/symlink-helpers"
 
 create_symlinks

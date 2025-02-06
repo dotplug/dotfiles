@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 function blue() {
-    local BLUE='\033[00;34m'
-    local NC='\033[0m'
-    printf "\r ${BLUE}${*}${NC}\n"
+  local BLUE='\033[00;34m'
+  local NOCOLOR="$(tput sgr0)"
+  printf "\r ${BLUE}${*}${NOCOLOR}\n"
 }
 
 blue $*

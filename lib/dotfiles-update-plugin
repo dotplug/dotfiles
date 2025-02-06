@@ -6,23 +6,17 @@ IFS=$'\n\t'
 
 # Summary: Update a plugin
 
-DOTFILES_ROOT=$1
-DOTFILES_DEBUG=$2
 PLUGINS_DIR=$DOTFILES_ROOT/plugins
 ORIGINAL_FOLDER=$PWD
+PLUGIN=${1}
 
-# Needs to load the helpers before using it
-source "${DOTFILES_ROOT}/lib/helpers"
-
-if [ $# -ne 3 ];then
-    fail_msg "Missing plugin name.\nUsage: dotfiles update-plugin <PLUGIN_NAME>"
-    exit -1
+if [ $# -ne 1 ];then
+  fail_msg "Missing plugin name.\nUsage: dotfiles update-plugin <PLUGIN_NAME>"
+  exit -1
 fi
 
-PLUGIN=$3
-
 if [ ! -d ${PLUGINS_DIR}/$PLUGIN ];then
-    fail_msg "Plugin $PLUGIN not found"
+  fail_msg "Plugin $PLUGIN not found"
 fi
 
 debug_msg "Updating $PLUGIN"
@@ -34,7 +28,7 @@ make -f $DOTFILES_ROOT/Makefile setup-no-reload
 
 if [[ $? != 0 ]]
 then
-    fail_msg "Failed to update $PLUGIN"
+  fail_msg "Failed to update $PLUGIN"
 fi
 
 success_msg "Plugin $PLUGIN updated successfully"

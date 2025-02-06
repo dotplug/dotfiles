@@ -8,16 +8,6 @@ IFS=$'\n\t'
 # 2. Search for all *.symlink and create symbolic links into $HOME
 # 3. Search for all executables inside "bin" folders made it available from $PATH.
 
-DOTFILES_ROOT=$1
-DOTFILES_DEBUG=$2
-
-# Needs to load the helpers before using it
-source "${DOTFILES_ROOT}/lib/helpers"
-
-debug_msg "Reloading the dotfiles"
-
-dotfiles-symlink $DOTFILES_ROOT $DOTFILES_DEBUG
-dotfiles-install $DOTFILES_ROOT $DOTFILES_DEBUG
-dotfiles-bin-path $DOTFILES_ROOT $DOTFILES_DEBUG
-
-success_msg "Dotfiles reloaded"
+$DOTFILES_ROOT/lib/dotfiles-symlink
+$DOTFILES_ROOT/lib/dotfiles-install
+$DOTFILES_ROOT/lib/dotfiles-bin-path

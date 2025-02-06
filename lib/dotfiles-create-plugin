@@ -6,29 +6,24 @@ IFS=$'\n\t'
 
 # Summary: Create a plugin
 
-DOTFILES_ROOT=$1
-DOTFILES_DEBUG=$2
-PLUGIN_NAME=$3
+PLUGIN_NAME=$1
 DOTFILES_REPOSITORY_TEMPLATE="https://github.com/autentia/dotfiles-plugin-template.git"
 
-# Needs to load the helpers before using it
-source "${DOTFILES_ROOT}/lib/helpers"
-
-if [ $# -ne 3 ];then
-    fail_msg "Missing plugin name.\nUsage: dotfiles create-plugin <PLUGIN_NAME>"
+if [ $# -ne 1 ];then
+  fail_msg "Missing plugin name.\nUsage: dotfiles create-plugin <PLUGIN_NAME>"
 fi
 
 debug_msg "Creating plugin $PLUGIN_NAME"
 git clone $DOTFILES_REPOSITORY_TEMPLATE ./$PLUGIN_NAME
 
 if [ $? != 0 -o ! -d $PLUGIN_NAME ];then
-    fail_msg "Failed to create plugin $PLUGIN_NAME"
+  fail_msg "Failed to create plugin $PLUGIN_NAME"
 fi
 
 # Reset git repository
 cd $PLUGIN_NAME &&
-rm -rf .git &&
-rm -f .gitignore &&
-cd - > /dev/null
+  rm -rf .git &&
+  rm -f .gitignore &&
+  cd - > /dev/null
 
 success_msg "Plugin $PLUGIN_NAME created successfully"
