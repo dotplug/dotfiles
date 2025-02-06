@@ -5,8 +5,8 @@
 # Dependencies
 source "${DOTFILES_ROOT}/lib/gnu-getopt-helpers"
 
-_show_usage () {
-  echo "Usage: dotfiles install-plugin [-nh] <PLUGIN_GIT_URL>
+_show_usage() {
+    echo "Usage: dotfiles install-plugin [-nh] <PLUGIN_GIT_URL>
 
   Options:
   -h, --help          Display help
@@ -30,7 +30,6 @@ ORIGINAL_FOLDER=$PWD
 PLUGIN_URL=$2
 PLUGIN_DIR="$DOTFILES_ROOT/plugins"
 PLUGIN=$(basename $PLUGIN_URL | sed 's/.git$//')
-
 
 # Checking options
 options=$(getopt -l 'help,no-reload' -o 'h::n::' -a -- "$@")
