@@ -103,9 +103,13 @@ then
   brew cleanup
   green "[OS] Cleaned!"
 
-  # blue "[OS] Pass Doctor to check everything is fine"
-  # brew doctor
-  green "[OS] Everything OK!"
+  if [[ $DOTFILES_OS_ENABLE_DOCTOR == "true" ]]; then
+    blue "[OS] Pass Doctor to check everything is fine"
+    brew doctor
+    green "[OS] Updated!"
+  else
+    blue "[OS] Ignored Brew Doctor command"
+  fi
 
   update_mac_apps_and_libraries
 
