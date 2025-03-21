@@ -49,7 +49,7 @@ function generate_brewfiles() {
 # command line interface to it that we can use to just install everything, so
 # yeah, let's do that.
 update_mac_apps_and_libraries() {
-  if [[ -v DOTFILES_OS_UPDATE_OS && "$DOTFILES_OS_UPDATE_OS" == "true" ]]; then
+  if [[ "$DOTFILES_OS_UPDATE_OS" == "true" ]]; then
     blue "[OS] Update Mac App Store apps"
     sudo /usr/sbin/softwareupdate -i -r
     green "[OS] Updated!"
@@ -98,7 +98,7 @@ if test "$(uname)" = "Darwin"; then
   brew cleanup
   green "[OS] Cleaned!"
 
-  if [[ -v DOTFILES_OS_ENABLE_DOCTOR && $DOTFILES_OS_ENABLE_DOCTOR == "true" ]]; then
+  if [[ "$DOTFILES_OS_ENABLE_DOCTOR" == "true" ]]; then
     blue "[OS] Pass Doctor to check everything is fine"
     brew doctor
     green "[OS] Updated!"
