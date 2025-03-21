@@ -3,7 +3,6 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-
 # ============================================================================
 # FUNCTIONS
 # ============================================================================
@@ -13,15 +12,12 @@ IFS=$'\n\t'
 # This installs some of the common dependencies needed (or at least desired)
 # using Homebrew.
 install_homebrew() {
-  if test ! $(which brew)
-  then
+  if test ! $(which brew); then
     blue "[OS] Installing Homebrew"
 
-    if test "$(uname)" = "Darwin"
-    then
+    if test "$(uname)" = "Darwin"; then
       NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    elif test "$(expr substr $(uname -s) 1 5)" = "Linux"
-    then
+    elif test "$(expr substr $(uname -s) 1 5)" = "Linux"; then
       ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/linuxbrew/go/install)"
     fi
   else
@@ -43,7 +39,7 @@ function generate_brewfiles() {
   rm -f $DESTINATION_FILE
 
   blue "[OS] Search for $SOURCE_FILE inside $SOURCE_FOLDER and generate a merged Brewfile"
-  cat $(find -H "$SOURCE_FOLDER" -type f -name "$SOURCE_FILE") >> $DESTINATION_FILE
+  cat $(find -H "$SOURCE_FOLDER" -type f -name "$SOURCE_FILE") >>$DESTINATION_FILE
 
   green "[OS] Generated $DESTINATION_FILE"
 }
@@ -53,7 +49,7 @@ function generate_brewfiles() {
 # command line interface to it that we can use to just install everything, so
 # yeah, let's do that.
 update_mac_apps_and_libraries() {
-  if [[ $DOTFILES_OS_UPDATE_OS == "true" ]]; then
+  if [[ -v DOTFILES_OS_UPDATE_OS && "$DOTFILES_OS_UPDATE_OS" == "true" ]]; then
     blue "[OS] Update Mac App Store apps"
     sudo /usr/sbin/softwareupdate -i -r
     green "[OS] Updated!"
@@ -64,7 +60,7 @@ update_mac_apps_and_libraries() {
 
 # Install Rosetta
 install_rosetta() {
-  if [[ `uname -m` == 'arm64' ]]; then
+  if [[ $(uname -m) == 'arm64' ]]; then
     blue "[OS] Install Rosetta"
     sudo /usr/sbin/softwareupdate --install-rosetta --agree-to-license
     green "[OS] Rosetta installed!"
@@ -75,8 +71,7 @@ install_rosetta() {
 # MAIN
 # ============================================================================
 
-if test "$(uname)" = "Darwin"
-then
+if test "$(uname)" = "Darwin"; then
   blue "[OS] Request sudo password to future process"
   sudo echo "Password added!"
 
@@ -103,7 +98,7 @@ then
   brew cleanup
   green "[OS] Cleaned!"
 
-  if [[ $DOTFILES_OS_ENABLE_DOCTOR == "true" ]]; then
+  if [[ -v DOTFILES_OS_ENABLE_DOCTOR && $DOTFILES_OS_ENABLE_DOCTOR == "true" ]]; then
     blue "[OS] Pass Doctor to check everything is fine"
     brew doctor
     green "[OS] Updated!"
