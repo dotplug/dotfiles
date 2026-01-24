@@ -20,7 +20,7 @@ if [ -d $DOTFILES_PATH ]; then
 fi
 
 # Cloning repository to local final directory
-git clone https://github.com/autentia/dotfiles.git "$DOTFILES_PATH"
+git clone https://github.com/dotplug/dotfiles.git "$DOTFILES_PATH"
 cd $DOTFILES_PATH && git checkout main && cd -
 
 if [ $? -ne 0 ]; then

@@ -7,7 +7,7 @@ IFS=$'\n\t'
 # Summary: Create a plugin
 
 PLUGIN_NAME=$1
-DOTFILES_REPOSITORY_TEMPLATE="https://github.com/autentia/dotfiles-plugin-template.git"
+DOTFILES_REPOSITORY_TEMPLATE="https://github.com/dotplug/dotfiles-plugin-template.git"
 
 if [ $# -ne 1 ];then
   fail_msg "Missing plugin name.\nUsage: dotfiles create-plugin <PLUGIN_NAME>"

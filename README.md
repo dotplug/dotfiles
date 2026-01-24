@@ -33,7 +33,7 @@ It works **based on plugins** that you can add to extend and automate the config
 Open your terminal and execute:
 
 ```
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/autentia/dotfiles/main/installer)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/dotplug/dotfiles/main/installer)"
 ```
 
 Now you can check installation with:
@@ -71,7 +71,7 @@ dotfiles install-plugin <GIT_REPOSITORY_URL>
 For example:
 
 ```shell
-dotfiles install-plugin git@github.com:autentia/my-awesome-plugin-template.git
+dotfiles install-plugin git@github.com:dotplug/my-awesome-plugin-template.git
 ```
 
 ### Creating a plugin
@@ -135,5 +135,5 @@ dotfiles uninstall-plugin my-awesome-plugin
 
 ## License
 
-[Apache License](https://github.com/autentia/dotfiles/blob/main/LICENSE.txt)
+[Apache License](https://github.com/dotplug/dotfiles/blob/main/LICENSE.txt)
 
