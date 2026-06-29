@@ -3,7 +3,19 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-# Summary: Update a plugin
+# Summary: Update to latest version of dotfiles
+#
+# Options:
+#   --skip-deps-installation  Skip installing dependencies (Homebrew) while still
+#                             applying the rest of the configuration.
+
+for arg in "$@"; do
+  case "$arg" in
+    --skip-deps-installation)
+      export DOTFILES_SKIP_DEPS_INSTALLATION="true"
+      ;;
+  esac
+done
 
 _check_and_update_last_version
 if [[ $? != 0 ]]

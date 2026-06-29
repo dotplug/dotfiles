@@ -5,14 +5,29 @@ set -eo pipefail
 IFS=$'\n\t'
 
 # Summary: Update a plugin
+#
+# Options:
+#   --skip-deps-installation  Skip installing dependencies (Homebrew) while still
+#                             applying the rest of the configuration.
 
 PLUGINS_DIR=$DOTFILES_ROOT/plugins
 ORIGINAL_FOLDER=$PWD
-PLUGIN=${1}
+PLUGIN=""
 
-if [ $# -ne 1 ];then
-  fail_msg "Missing plugin name.\nUsage: dotfiles update-plugin <PLUGIN_NAME>"
-  exit -1
+for arg in "$@"; do
+  case "$arg" in
+    --skip-deps-installation)
+      export DOTFILES_SKIP_DEPS_INSTALLATION="true"
+      ;;
+    *)
+      PLUGIN="$arg"
+      ;;
+  esac
+done
+
+if [ -z "$PLUGIN" ];then
+  fail_msg "Missing plugin name.\nUsage: dotfiles update-plugin <PLUGIN_NAME> [--skip-deps-installation]"
+  exit 1
 fi
 
 if [ ! -d ${PLUGINS_DIR}/$PLUGIN ];then
