@@ -6,6 +6,18 @@ IFS=$'\n\t'
 # Summary: Search for all install.sh inside DOTFILES_ROOT and execute it
 #
 # Search for all install.sh inside DOTFILES_ROOT and execute it
+#
+# Options:
+#   --skip-deps-installation  Skip installing dependencies (Homebrew) while still
+#                             applying the rest of the configuration.
+
+for arg in "$@"; do
+  case "$arg" in
+    --skip-deps-installation)
+      export DOTFILES_SKIP_DEPS_INSTALLATION="true"
+      ;;
+  esac
+done
 
 PLUGINS_DIR=$DOTFILES_ROOT/plugins
 

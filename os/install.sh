@@ -75,43 +75,47 @@ if test "$(uname)" = "Darwin"; then
   blue "[OS] Request sudo password to future process"
   sudo echo "Password added!"
 
-  blue "[OS] Install Homebrew"
-  install_homebrew
-  generate_brewfiles
+  if [[ "$DOTFILES_SKIP_DEPS_INSTALLATION" != "true" ]]; then
+    blue "[OS] Install Homebrew"
+    install_homebrew
+    generate_brewfiles
 
-  blue "[OS] Go to $HOME directory"
-  cd $HOME
+    blue "[OS] Go to $HOME directory"
+    cd $HOME
 
-  blue "[OS] Install Brew apps defined in the Brewfile (Takes a lot of time first time to install everything)"
-  brew bundle --cleanup --global
-  green "[OS] Installed!"
+    blue "[OS] Install Brew apps defined in the Brewfile (Takes a lot of time first time to install everything)"
+    brew bundle --cleanup --global
+    green "[OS] Installed!"
 
-  blue "[OS] Update all the apps defined in the Brewfile"
-  brew update
-  green "[OS] Updated!"
-
-  blue "[OS] Upgrade all the cask apps"
-  brew upgrade
-  green "[OS] Upgraded!"
-
-  blue "[OS] Clean old stuff dont required"
-  brew cleanup
-  green "[OS] Cleaned!"
-
-  if [[ "$DOTFILES_OS_ENABLE_DOCTOR" == "true" ]]; then
-    blue "[OS] Pass Doctor to check everything is fine"
-    brew doctor
+    blue "[OS] Update all the apps defined in the Brewfile"
+    brew update
     green "[OS] Updated!"
+
+    blue "[OS] Upgrade all the cask apps"
+    brew upgrade
+    green "[OS] Upgraded!"
+
+    blue "[OS] Clean old stuff dont required"
+    brew cleanup
+    green "[OS] Cleaned!"
+
+    if [[ "$DOTFILES_OS_ENABLE_DOCTOR" == "true" ]]; then
+      blue "[OS] Pass Doctor to check everything is fine"
+      brew doctor
+      green "[OS] Updated!"
+    else
+      blue "[OS] Ignored Brew Doctor command"
+    fi
+
+    blue "[OS] Return to the last directory"
+    cd -
   else
-    blue "[OS] Ignored Brew Doctor command"
+    blue "[OS] Skipping dependency installation (DOTFILES_SKIP_DEPS_INSTALLATION=true)"
   fi
 
   update_mac_apps_and_libraries
 
   install_rosetta
-
-  blue "[OS] Return to the last directory"
-  cd -
 
   green "[OS] Successful installation"
 fi

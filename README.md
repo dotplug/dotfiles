@@ -115,22 +115,23 @@ dotfiles uninstall-plugin my-awesome-plugin
 
 ## Usage reference
 
-- `dotfiles install`: Install all required software. Configure the installation with the following configuration:
+- `dotfiles install [--skip-deps-installation]`: Install all required software. Configure the installation with the following configuration:
    - To avoid software installation use the `DOTFILES_OS_UPDATE_OS` envvar set to `false`.
    - To avoid executing the `brew doctor` command use the `DOTFILES_OS_ENABLE_DOCTOR` envvar set to `false`.
+   - To apply the configuration without installing dependencies (Homebrew), pass `--skip-deps-installation` or set the `DOTFILES_SKIP_DEPS_INSTALLATION` envvar to `true`. Symlinks, bin-path and the rest of the config are still applied; only the `brew bundle`/`update`/`upgrade`/`cleanup` steps are skipped.
 - `dotfiles install-plugin [-nh] <DOTFILES_GIT_URL>`: Install desired plugins
   - `-h, --help`          Display help
   - `-n, --no-reload`     The installer will not refresh the session at the end
 - `dotfiles git-setup`: Create the .gitconfig and .gitconfig.local files. Configure the installation with the following configuration:
   - Use the `DOTFILES_GIT_AUTHORNAME` and `DOTFILES_GIT_AUTHOREMAIL` environment variables to use it non interactive.
-- `dotfiles update-plugin <PLUGIN_NAME>`: Update a given plugin
+- `dotfiles update-plugin <PLUGIN_NAME> [--skip-deps-installation]`: Update a given plugin. Pass `--skip-deps-installation` to re-apply the plugin config without running the Homebrew dependency install.
 - `dotfiles uninstall-plugin <PLUGIN_NAME>`: Uninstall a given plugin
 - `dotfiles create-plugin <PLUGIN_NAME>`: Create a plugin using the base template
 - `dotfiles plugins`: Shows all plugins installed
 - `dotfiles help`: Shows all the available options
-- `dotfiles update`: Update to latest version of dotfiles
+- `dotfiles update [--skip-deps-installation]`: Update to latest version of dotfiles. Pass `--skip-deps-installation` to skip the Homebrew dependency install.
 - `dotfiles uninstall`: Search for all uninstall.sh files and execute it
-- `dotfiles apply`: Apply all configuration again: execute install.sh, create symlinks, etc
+- `dotfiles apply [--skip-deps-installation]`: Apply all configuration again: execute install.sh, create symlinks, etc. Pass `--skip-deps-installation` to skip the Homebrew dependency install.
 - `dotfiles version`: Display the version
 
 ## License

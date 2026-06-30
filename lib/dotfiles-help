@@ -20,4 +20,9 @@ Commands:
                                            Search for all *.symlink and create symbolic links into \$HOME
                                            Search for all executables inside 'bin' folders and make it available from \$PATH.
    version                                 Display the version
+
+Options:
+   --skip-deps-installation                Apply configuration without installing dependencies (Homebrew).
+                                           Available on: install, update, update-plugin, apply.
+                                           Equivalent to setting DOTFILES_SKIP_DEPS_INSTALLATION=true.
 "
