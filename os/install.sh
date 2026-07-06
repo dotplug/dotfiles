@@ -128,8 +128,22 @@ if test "$(uname)" = "Darwin"; then
     trust_brewfile_taps
 
     blue "[OS] Install Brew apps defined in the Brewfile (Takes a lot of time first time to install everything)"
-    brew bundle --cleanup --global
+    brew bundle --global
     green "[OS] Installed!"
+
+    # Removing apps not listed in the Brewfile is opt-in and off by default, so
+    # an install never uninstalls anything you did not ask it to. Set
+    # DOTFILES_OS_ENABLE_BREW_CLEANUP=true to enable it. The old `brew bundle
+    # --cleanup` switch is deprecated, so this uses the `cleanup` subcommand.
+    # `--force` performs the removal and avoids the exit code 1 that a dry run
+    # returns, which would abort the script under `set -e`.
+    if [[ "${DOTFILES_OS_ENABLE_BREW_CLEANUP:-false}" == "true" ]]; then
+      blue "[OS] Remove Brew apps not listed in the Brewfile"
+      brew bundle cleanup --global --force
+      green "[OS] Removed apps not in the Brewfile!"
+    else
+      blue "[OS] Keep Brew apps not in the Brewfile (set DOTFILES_OS_ENABLE_BREW_CLEANUP=true to remove them)"
+    fi
 
     blue "[OS] Update all the apps defined in the Brewfile"
     brew update
