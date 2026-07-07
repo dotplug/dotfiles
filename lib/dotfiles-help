@@ -25,4 +25,20 @@ Options:
    --skip-deps-installation                Apply configuration without installing dependencies (Homebrew).
                                            Available on: install, update, update-plugin, apply.
                                            Equivalent to setting DOTFILES_SKIP_DEPS_INSTALLATION=true.
+   --no-reload                             Do not open a new shell session at the end.
+                                           Available on: update, update-plugin, install-plugin, uninstall-plugin.
+                                           Equivalent to setting DOTFILES_NO_RELOAD=1.
+
+Configuration:
+   Settings are read from ~/.dotfiles.json (see dotfiles.json.example). The path
+   can be changed with DOTFILES_CONFIG_FILE. Environment variables take
+   precedence over the file. Keys and defaults:
+
+   debug                 false   Print debug messages (DOTFILES_DEBUG)
+   skipDepsInstallation  false   Skip Homebrew dependency installation (DOTFILES_SKIP_DEPS_INSTALLATION)
+   noReload              0       Do not open a new shell after commands (DOTFILES_NO_RELOAD)
+   os.updateOs           false   Run macOS software updates (DOTFILES_OS_UPDATE_OS)
+   os.enableDoctor       false   Run brew doctor after installing (DOTFILES_OS_ENABLE_DOCTOR)
+   os.enableBrewCleanup  false   Remove brew apps not in the Brewfile (DOTFILES_OS_ENABLE_BREW_CLEANUP)
+   os.upgradeApps        true    Run brew update/upgrade/cleanup on install and update (DOTFILES_OS_UPGRADE_APPS)
 "

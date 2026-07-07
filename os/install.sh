@@ -15,11 +15,9 @@ install_homebrew() {
   if test ! $(which brew); then
     blue "[OS] Installing Homebrew"
 
-    if test "$(uname)" = "Darwin"; then
-      NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    elif test "$(expr substr $(uname -s) 1 5)" = "Linux"; then
-      ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/linuxbrew/go/install)"
-    fi
+    # The official installer supports both macOS and Linux (linuxbrew was merged
+    # into Homebrew and its old installer URL is dead).
+    NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   else
     green "[OS] Homebrew is already installed"
   fi
@@ -100,22 +98,23 @@ update_mac_apps_and_libraries() {
   fi
 }
 
-# Install Rosetta
-install_rosetta() {
-  if [[ $(uname -m) == 'arm64' ]]; then
-    blue "[OS] Install Rosetta"
-    sudo /usr/sbin/softwareupdate --install-rosetta --agree-to-license
-    green "[OS] Rosetta installed!"
-  fi
-}
-
 # ============================================================================
 # MAIN
 # ============================================================================
 
 if test "$(uname)" = "Darwin"; then
-  blue "[OS] Request sudo password to future process"
-  sudo echo "Password added!"
+  # Ask for the password once, and only when some step will actually need it.
+  needs_sudo=false
+  if [[ "${DOTFILES_SKIP_DEPS_INSTALLATION:-}" != "true" ]]; then needs_sudo=true; fi
+  if [[ "${DOTFILES_OS_UPDATE_OS:-}" == "true" ]]; then needs_sudo=true; fi
+
+  if [[ "$needs_sudo" == "true" ]]; then
+    blue "[OS] Request sudo password once for the whole run"
+    sudo -v
+    # Refresh the sudo timestamp until this script exits, so long brew runs
+    # do not trigger a second password prompt.
+    while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+  fi
 
   if [[ "$DOTFILES_SKIP_DEPS_INSTALLATION" != "true" ]]; then
     blue "[OS] Install Homebrew"
@@ -145,17 +144,21 @@ if test "$(uname)" = "Darwin"; then
       blue "[OS] Keep Brew apps not in the Brewfile (set DOTFILES_OS_ENABLE_BREW_CLEANUP=true to remove them)"
     fi
 
-    blue "[OS] Update all the apps defined in the Brewfile"
-    brew update
-    green "[OS] Updated!"
+    if [[ "${DOTFILES_OS_UPGRADE_APPS:-true}" == "true" ]]; then
+      blue "[OS] Update all the apps defined in the Brewfile"
+      brew update
+      green "[OS] Updated!"
 
-    blue "[OS] Upgrade all the cask apps"
-    brew upgrade
-    green "[OS] Upgraded!"
+      blue "[OS] Upgrade all the cask apps"
+      brew upgrade
+      green "[OS] Upgraded!"
 
-    blue "[OS] Clean old stuff dont required"
-    brew cleanup
-    green "[OS] Cleaned!"
+      blue "[OS] Clean old stuff dont required"
+      brew cleanup
+      green "[OS] Cleaned!"
+    else
+      blue "[OS] Skip upgrading installed apps (set DOTFILES_OS_UPGRADE_APPS=true or os.upgradeApps to enable)"
+    fi
 
     if [[ "$DOTFILES_OS_ENABLE_DOCTOR" == "true" ]]; then
       blue "[OS] Pass Doctor to check everything is fine"
@@ -172,8 +175,6 @@ if test "$(uname)" = "Darwin"; then
   fi
 
   update_mac_apps_and_libraries
-
-  install_rosetta
 
   green "[OS] Successful installation"
 fi
