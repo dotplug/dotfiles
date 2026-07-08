@@ -22,10 +22,34 @@ function readlink_f() {
 
 DEFAULT_DOTFILES_ROOT="$(cd "$(dirname "$(readlink_f "${0}")")/.." && pwd)"
 export DOTFILES_ROOT=${DOTFILES_ROOT:-"${DEFAULT_DOTFILES_ROOT}"}
-export DOTFILES_DEBUG=${DOTFILES_DEBUG:-"false"}
-export DOTFILES_OS_UPDATE_OS=${DOTFILES_OS_UPDATE_OS:-"false"}
-export DOTFILES_OS_ENABLE_DOCTOR=${DOTFILES_OS_ENABLE_DOCTOR:-"false"}
-export DOTFILES_SKIP_DEPS_INSTALLATION=${DOTFILES_SKIP_DEPS_INSTALLATION:-"false"}
+
+# Configuration is read from a JSON file (see dotfiles.json.example), with
+# explicit env vars taking precedence so one-off overrides keep working.
+config_file="${DOTFILES_CONFIG_FILE:-$HOME/.dotfiles.json}"
+
+# _config <jq-path> <default>: config value when readable, default otherwise.
+# jq ships with macOS 15+ and is in the Brewfile; without it the defaults apply.
+_config () {
+    if [ -f "$config_file" ] && command -v jq >/dev/null 2>&1; then
+        local value
+        # select(. != null) instead of '// empty': jq's // also discards an
+        # explicit false, which would make boolean keys unreadable from the file.
+        value="$(jq -r "$1 | select(. != null)" "$config_file" 2>/dev/null)"
+        if [ -n "$value" ]; then
+            echo "$value"
+            return
+        fi
+    fi
+    echo "$2"
+}
+
+export DOTFILES_DEBUG=${DOTFILES_DEBUG:-"$(_config '.debug' 'false')"}
+export DOTFILES_NO_RELOAD=${DOTFILES_NO_RELOAD:-"$(_config '.noReload' '0')"}
+export DOTFILES_SKIP_DEPS_INSTALLATION=${DOTFILES_SKIP_DEPS_INSTALLATION:-"$(_config '.skipDepsInstallation' 'false')"}
+export DOTFILES_OS_UPDATE_OS=${DOTFILES_OS_UPDATE_OS:-"$(_config '.os.updateOs' 'false')"}
+export DOTFILES_OS_ENABLE_DOCTOR=${DOTFILES_OS_ENABLE_DOCTOR:-"$(_config '.os.enableDoctor' 'false')"}
+export DOTFILES_OS_ENABLE_BREW_CLEANUP=${DOTFILES_OS_ENABLE_BREW_CLEANUP:-"$(_config '.os.enableBrewCleanup' 'false')"}
+export DOTFILES_OS_UPGRADE_APPS=${DOTFILES_OS_UPGRADE_APPS:-"$(_config '.os.upgradeApps' 'true')"}
 
 # Needs to load the helpers before using it
 source "${DOTFILES_ROOT}/lib/helpers"

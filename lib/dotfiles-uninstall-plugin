@@ -4,15 +4,29 @@ set -euo pipefail
 IFS=$'\n\t'
 
 # Summary: Uninstalls a plugin
+#
+# Options:
+#   --no-reload  Do not open a new shell session at the end.
 
 PLUGINS_DIR=$DOTFILES_ROOT/plugins
-PLUGIN=$1
+PLUGIN=""
 
 source "${DOTFILES_ROOT}/lib/symlink-helpers"
 source "${DOTFILES_ROOT}/lib/uninstall-helpers"
 
-if [ $# -ne 1 ];then
-  echo "Usage: dotfiles uninstall-plugin <PLUGIN_NAME>"
+for arg in "$@"; do
+  case "$arg" in
+    --no-reload)
+      export DOTFILES_NO_RELOAD="1"
+      ;;
+    *)
+      PLUGIN="$arg"
+      ;;
+  esac
+done
+
+if [ -z "$PLUGIN" ];then
+  echo "Usage: dotfiles uninstall-plugin <PLUGIN_NAME> [--no-reload]"
   exit -1
 fi
 
@@ -42,4 +56,6 @@ then
 fi
 
 success_msg "Plugin $PLUGIN uninstalled successfully"
-zsh -l
+if [ "${DOTFILES_NO_RELOAD:-0}" != "1" ]; then
+  zsh -l
+fi

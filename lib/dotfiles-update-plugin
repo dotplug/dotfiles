@@ -9,6 +9,7 @@ IFS=$'\n\t'
 # Options:
 #   --skip-deps-installation  Skip installing dependencies (Homebrew) while still
 #                             applying the rest of the configuration.
+#   --no-reload               Do not open a new shell session at the end.
 
 PLUGINS_DIR=$DOTFILES_ROOT/plugins
 ORIGINAL_FOLDER=$PWD
@@ -19,6 +20,9 @@ for arg in "$@"; do
     --skip-deps-installation)
       export DOTFILES_SKIP_DEPS_INSTALLATION="true"
       ;;
+    --no-reload)
+      export DOTFILES_NO_RELOAD="1"
+      ;;
     *)
       PLUGIN="$arg"
       ;;
@@ -26,7 +30,7 @@ for arg in "$@"; do
 done
 
 if [ -z "$PLUGIN" ];then
-  fail_msg "Missing plugin name.\nUsage: dotfiles update-plugin <PLUGIN_NAME> [--skip-deps-installation]"
+  fail_msg "Missing plugin name.\nUsage: dotfiles update-plugin <PLUGIN_NAME> [--skip-deps-installation] [--no-reload]"
   exit 1
 fi
 
@@ -47,4 +51,6 @@ then
 fi
 
 success_msg "Plugin $PLUGIN updated successfully"
-zsh -l
+if [ "${DOTFILES_NO_RELOAD:-0}" != "1" ]; then
+  zsh -l
+fi

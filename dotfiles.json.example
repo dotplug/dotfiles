@@ -1,0 +1,11 @@
+{
+  "debug": false,
+  "skipDepsInstallation": false,
+  "noReload": 0,
+  "os": {
+    "updateOs": false,
+    "enableDoctor": false,
+    "enableBrewCleanup": false,
+    "upgradeApps": true
+  }
+}

@@ -27,9 +27,13 @@ setup : setup-no-reload zsh-reload
 
 .PHONY: setup-no-reload
 setup-no-reload:
-	@sudo mkdir -p /usr/local/bin   # dotfiles bin-path add links inside /usr/local/bin and this folder may not exists in new versions of mac.
-	@sudo chmod 755 /usr/local/bin  # dotfiles bin-path add links inside /usr/local/bin and this folder may not exists in new versions of mac.
-	@sudo chown -R ${USER} /usr/local/bin  # dotfiles bin-path add links inside /usr/local/bin and this folder may not exists in new versions of mac.
+	@# dotfiles bin-path links inside /usr/local/bin, which may not exist or may be
+	@# root-owned on a fresh mac. Once it is user-writable no sudo is ever needed again.
+	@if [ ! -w /usr/local/bin ]; then \
+		sudo mkdir -p /usr/local/bin; \
+		sudo chmod 755 /usr/local/bin; \
+		sudo chown -R ${USER} /usr/local/bin; \
+	fi
 	@cd ${DOTFILES_ROOT}/bin && ./dotfiles bin-path
 	@cd ${DOTFILES_ROOT}/bin && ./dotfiles symlink
 	@cd ${DOTFILES_ROOT}/bin && ./dotfiles git-setup

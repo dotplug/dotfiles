@@ -17,7 +17,8 @@ _show_usage() {
 # gnu-getopt dependency
 _load_gnu_getopt_to_path
 
-export DOTFILES_NO_RELOAD="0"
+# Respect a no-reload preference inherited from the environment or config file.
+export DOTFILES_NO_RELOAD="${DOTFILES_NO_RELOAD:-0}"
 
 # Checking parameters
 if [[ $# -lt 1 || $# -gt 2 ]]; then
